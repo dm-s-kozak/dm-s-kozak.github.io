@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dmytro Kozak — Research Graph</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f4ef;
+      color: #1f2933;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 22px 70px;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      font-size: 18px;
+      color: #4b5563;
+    }
+
+    .top-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: #1f2933;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid #1f2933;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .graph-card,
+    .info-card {
+      background: #ffffff;
+      border: 1px solid #e0ddd6;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .graph-card {
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .info-card {
+      padding: 24px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .info-card h2 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .info-card p {
+      color: #4b5563;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: radial-gradient(circle at center, #ffffff 0%, #fbfaf7 60%, #f3efe7 100%);
+      border-radius: 18px;
+    }
+
+    .link {
+      stroke: #b9b2a3;
+      stroke-width: 2;
+      opacity: 0.75;
+    }
+
+    .node circle {
+      fill: #ffffff;
+      stroke: #5b6472;
+      stroke-width: 2;
+      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.10));
+    }
+
+    .node text {
+      font-size: 14px;
+      fill: #1f2933;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+      font-weight: 600;
+    }
+
+    .node:hover circle {
+      stroke-width: 3;
+      stroke: #111827;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .center circle {
+      fill: #1f2933;
+      stroke: #1f2933;
+    }
+
+    .center text {
+      fill: #ffffff;
+    }
+
+    .professional circle {
+      fill: #eef2ff;
+    }
+
+    .experimental circle {
+      fill: #ecfdf5;
+    }
+
+    .conceptual circle {
+      fill: #fff7ed;
+    }
+
+    .output circle {
+      fill: #fdf2f8;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      border: 1px solid #e0ddd6;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid #9ca3af;
+    }
+
+    .professional-dot { background: #eef2ff; }
+    .experimental-dot { background: #ecfdf5; }
+    .conceptual-dot { background: #fff7ed; }
+    .output-dot { background: #fdf2f8; }
+
+    footer {
+      margin-top: 34px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .info-card {
+        position: static;
+      }
+
+      h1 {
+        font-size: 31px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Dmytro Kozak — Research Graph</h1>
+      <p class="subtitle">
+        A first graph-based view of my research profile: experimental R&amp;D,
+        material systems, field-assisted processes, AI-assisted workflows,
+        and the exploratory smysloTalk branch.
+      </p>
+      <a class="top-link" href="index.html">← Back to profile page</a>
+    </header>
+
+    <div class="layout">
+      <section class="graph-card">
+        <svg viewBox="0 0 1000 720" role="img" aria-label="Research graph of Dmytro Kozak">
+          <!-- Links -->
+          <line class="link" x1="500" y1="350" x2="500" y2="120" />
+          <line class="link" x1="500" y1="350" x2="250" y2="220" />
+          <line class="link" x1="500" y1="350" x2="750" y2="220" />
+          <line class="link" x1="500" y1="350" x2="250" y2="500" />
+          <line class="link" x1="500" y1="350" x2="750" y2="500" />
+
+          <line class="link" x1="500" y1="120" x2="250" y2="220" />
+          <line class="link" x1="500" y1="120" x2="750" y2="220" />
+
+          <line class="link" x1="250" y1="220" x2="120" y2="350" />
+          <line class="link" x1="250" y1="220" x2="250" y2="500" />
+          <line class="link" x1="250" y1="220" x2="390" y2="560" />
+
+          <line class="link" x1="750" y1="220" x2="880" y2="350" />
+          <line class="link" x1="750" y1="220" x2="750" y2="500" />
+          <line class="link" x1="750" y1="220" x2="610" y2="560" />
+
+          <line class="link" x1="250" y1="500" x2="390" y2="560" />
+          <line class="link" x1="750" y1="500" x2="610" y2="560" />
+          <line class="link" x1="390" y1="560" x2="610" y2="560" />
+
+          <line class="link" x1="120" y1="350" x2="250" y2="500" />
+          <line class="link" x1="880" y1="350" x2="750" y2="500" />
+
+          <!-- Nodes -->
+          <g class="node center" onclick="showInfo('dmytro')" transform="translate(500 350)">
+            <circle r="72"></circle>
+            <text>
+              <tspan x="0" dy="-8">Dmytro</tspan>
+              <tspan x="0" dy="20">Kozak</tspan>
+            </text>
+          </g>
+
+          <g class="node professional" onclick="showInfo('ku')" transform="translate(500 120)">
+            <circle r="64"></circle>
+            <text>
+              <tspan x="0" dy="-8">BioTeC+ /</tspan>
+              <tspan x="0" dy="20">KU Leuven</tspan>
+            </text>
+          </g>
+
+          <g class="node experimental" onclick="showInfo('rnd')" transform="translate(250 220)">
+            <circle r="66"></circle>
+            <text>
+              <tspan x="0" dy="-8">Experimental</tspan>
+              <tspan x="0" dy="20">R&amp;D</tspan>
+            </text>
+          </g>
+
+          <g class="node experimental" onclick="showInfo('materials')" transform="translate(120 350)">
+            <circle r="60"></circle>
+            <text>
+              <tspan x="0" dy="-8">Functional</tspan>
+              <tspan x="0" dy="20">Materials</tspan>
+            </text>
+          </g>
+
+          <g class="node experimental" onclick="showInfo('fields')" transform="translate(250 500)">
+            <circle r="62"></circle>
+            <text>
+              <tspan x="0" dy="-8">Plasma / RF</tspan>
+              <tspan x="0" dy="20">/ PEF</tspan>
+            </text>
+          </g>
+
+          <g class="node experimental" onclick="showInfo('surfaces')" transform="translate(390 560)">
+            <circle r="58"></circle>
+            <text>
+              <tspan x="0" dy="-8">Surface</tspan>
+              <tspan x="0" dy="20">Engineering</tspan>
+            </text>
+          </g>
+
+          <g class="node conceptual" onclick="showInfo('ai')" transform="translate(750 220)">
+            <circle r="66"></circle>
+            <text>
+              <tspan x="0" dy="-8">AI-assisted</tspan>
+              <tspan x="0" dy="20">Workflows</tspan>
+            </text>
+          </g>
+
+          <g class="node conceptual" onclick="showInfo('smyslo')" transform="translate(880 350)">
+            <circle r="62"></circle>
+            <text>
+              <tspan x="0" dy="-8">smyslo</tspan>
+              <tspan x="0" dy="20">Talk</tspan>
+            </text>
+          </g>
+
+          <g class="node conceptual" onclick="showInfo('trace')" transform="translate(750 500)">
+            <circle r="62"></circle>
+            <text>
+              <tspan x="0" dy="-8">Trace-based</tspan>
+              <tspan x="0" dy="20">Reasoning</tspan>
+            </text>
+          </g>
+
+          <g class="node conceptual" onclick="showInfo('emergence')" transform="translate(610 560)">
+            <circle r="58"></circle>
+            <text>
+              <tspan x="0" dy="-8">Emergence</tspan>
+              <tspan x="0" dy="20">Tracking</tspan>
+            </text>
+          </g>
+
+          <g class="node output" onclick="showInfo('outputs')" transform="translate(500 655)">
+            <circle r="54"></circle>
+            <text>
+              <tspan x="0" dy="-8">Outputs /</tspan>
+              <tspan x="0" dy="20">Site</tspan>
+            </text>
+          </g>
+
+          <line class="link" x1="500" y1="350" x2="500" y2="655" />
+          <line class="link" x1="390" y1="560" x2="500" y2="655" />
+          <line class="link" x1="610" y1="560" x2="500" y2="655" />
+        </svg>
+
+        <div class="legend">
+          <span><i class="dot professional-dot"></i> institutional / professional context</span>
+          <span><i class="dot experimental-dot"></i> experimental R&amp;D contour</span>
+          <span><i class="dot conceptual-dot"></i> AI / reasoning / smysloTalk contour</span>
+          <span><i class="dot output-dot"></i> public outputs</span>
+        </div>
+      </section>
+
+      <aside class="info-card">
+        <h2 id="info-title">Graph view</h2>
+        <p id="info-text">
+          Click any node in the graph to see a short description. This page is a first
+          experimental map, not a fixed hierarchy. It shows connections rather than a tree.
+        </p>
+      </aside>
+    </div>
+
+    <footer>
+      <p>© 2026 Dmytro Kozak. Experimental graph view of a personal research profile.</p>
+    </footer>
+  </main>
+
+  <script>
+    const info = {
+      dmytro: {
+        title: "Dmytro Kozak",
+        text: "Personal research profile connecting experimental R&D, applied materials work, field-assisted systems, and AI-assisted reasoning workflows."
+      },
+      ku: {
+        title: "BioTeC+ / KU Leuven",
+        text: "Current professional context. The site remains a personal research profile, while this node marks the laboratory and institutional environment where part of the work is situated."
+      },
+      rnd: {
+        title: "Experimental R&D",
+        text: "Hands-on research mode: building, testing, adjusting, and extracting minimal working corridors inside complex experimental systems."
+      },
+      materials: {
+        title: "Functional Materials",
+        text: "Work with coatings, polymer systems, surface modification, material formulations, and functional material behavior."
+      },
+      fields: {
+        title: "Plasma / RF / PEF",
+        text: "Experimental work around field-assisted processes, pulsed electric fields, RF systems, plasma-related setups, and process testing."
+      },
+      surfaces: {
+        title: "Surface Engineering",
+        text: "A practical layer connecting materials, coatings, antimicrobial applications, and process-driven modification of surfaces."
+      },
+      ai: {
+        title: "AI-assisted Workflows",
+        text: "Use of AI as a structured reasoning medium for early-stage R&D, trace preservation, hypothesis tracking, and language-based clarification."
+      },
+      smyslo: {
+        title: "smysloTalk",
+        text: "An exploratory project on trace-based reasoning, emergence tracking, and human–AI dialogue. It is a separate branch of the site, not a claim of institutional affiliation."
+      },
+      trace: {
+        title: "Trace-based Reasoning",
+        text: "A way of preserving how ideas, hypotheses, distinctions, and project directions appear and develop before they become final outputs."
+      },
+      emergence: {
+        title: "Emergence Tracking",
+        text: "Attention to early, fragile, and not-yet-stabilized forms of insight: where a project begins to appear before it becomes a standard result."
+      },
+      outputs: {
+        title: "Outputs / Site",
+        text: "The public-facing layer: profile, project descriptions, documents, publications, notes, and future pages."
+      }
+    };
+
+    function showInfo(key) {
+      document.getElementById("info-title").textContent = info[key].title;
+      document.getElementById("info-text").textContent = info[key].text;
+    }
+  </script>
+</body>
+</html>
