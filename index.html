@@ -1,17 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dmytro Kozak</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f4ef;
+      color: #1f2933;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    header {
+      padding: 56px 0 40px;
+      border-bottom: 1px solid #d8d2c4;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin: 0 0 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      color: #4b5563;
+      max-width: 720px;
+    }
+
+    nav {
+      margin-top: 28px;
+    }
+
+    nav a {
+      margin-right: 18px;
+      color: #1f2933;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 36px 0;
+      border-bottom: 1px solid #e2ddd2;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e0ddd6;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    footer {
+      padding: 32px 0;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .tagline {
+      font-weight: 600;
+      color: #374151;
+    }
+  </style>
 </head>
 <body>
-  <h1>Dmytro Kozak</h1>
-  <p>Independent research profile and project site.</p>
+  <main class="page">
+    <header>
+      <h1>Dmytro Kozak</h1>
+      <p class="subtitle">
+        Independent research profile focused on experimental R&amp;D, functional materials,
+        surface engineering, and AI-assisted research workflows.
+      </p>
 
-  <h2>Focus</h2>
-  <p>Experimental R&D, functional materials, surface engineering, plasma/RF/PEF systems, antimicrobial technologies, and AI-assisted research workflows.</p>
+      <nav>
+        <a href="#profile">Profile</a>
+        <a href="#projects">Projects</a>
+        <a href="#smyslotalk">smysloTalk</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
 
-  <h2>smysloTalk</h2>
-  <p>An exploratory project on trace-based reasoning, emergence tracking, and human–AI dialogue.</p>
+    <section id="profile">
+      <h2>Profile</h2>
+      <p>
+        I work across experimental research, materials development, surface-related technologies,
+        plasma/RF/PEF systems, antimicrobial testing, and early-stage R&amp;D workflows.
+      </p>
+      <p class="tagline">
+        My practical approach is based on minimal viable corridors: small, testable pathways
+        through complex systems that can be expanded when they begin to hold.
+      </p>
+    </section>
+
+    <section id="projects">
+      <h2>Research &amp; Project Areas</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Functional Materials</h3>
+          <p>
+            Experimental work with coatings, polymer systems, surface modification,
+            and applied material formulations.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Plasma / RF / PEF Systems</h3>
+          <p>
+            Hands-on development of experimental setups involving electric fields,
+            plasma-related processes, pulsed systems, and process-oriented testing.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>AI-Assisted R&amp;D</h3>
+          <p>
+            Using AI as a structured reasoning medium for tracking hypotheses,
+            preserving traces of emergence, and shaping early-stage research paths.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="smyslotalk">
+      <h2>smysloTalk</h2>
+      <p>
+        smysloTalk is an exploratory project on trace-based reasoning, emergence tracking,
+        and human–AI dialogue.
+      </p>
+      <p>
+        The name combines “smyslo” — from the Slavic root for meaning or sense —
+        and “Talk”, pointing to dialogue as a medium where emerging ideas become traceable.
+      </p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Email: <a href="mailto:dm.s.kozak@gmail.com">dm.s.kozak@gmail.com</a>
+      </p>
+      <p>
+        GitHub: <a href="https://github.com/dm-s-kozak">github.com/dm-s-kozak</a>
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2026 Dmytro Kozak. Personal research profile and project site.</p>
+    </footer>
+  </main>
 </body>
 </html>
