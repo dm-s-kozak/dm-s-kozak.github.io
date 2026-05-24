@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physical & Field-Assisted Methods — Dmytro Kozak</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f4ef;
+      color: #1f2933;
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+
+    header {
+      padding-bottom: 34px;
+      border-bottom: 1px solid #d8d2c4;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin: 0 0 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      font-size: 19px;
+      color: #4b5563;
+      max-width: 760px;
+    }
+
+    nav {
+      margin-top: 24px;
+    }
+
+    nav a {
+      margin-right: 18px;
+      color: #1f2933;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 34px 0;
+      border-bottom: 1px solid #e2ddd2;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e0ddd6;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .note {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 18px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .tagline {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    footer {
+      padding-top: 32px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header>
+      <h1>Physical & Field-Assisted Methods</h1>
+      <p class="subtitle">
+        A working domain of my experimental R&amp;D profile, focused on physical treatment
+        methods, plasma/RF/PEF systems, electric-field-assisted processes, prototype setups,
+        and process-oriented laboratory testing.
+      </p>
+
+      <nav>
+        <a href="index.html">Profile</a>
+        <a href="graph.html">Research Graph</a>
+        <a href="functional-materials.html">Functional Materials</a>
+      </nav>
+    </header>
+
+    <section>
+      <h2>Domain Overview</h2>
+      <p>
+        This domain brings together experimental methods where physical fields, energy input,
+        process conditions, and prototype-level setups are used to affect materials, surfaces,
+        biological systems, or process behavior.
+      </p>
+
+      <p class="tagline">
+        The focus is on practical experimental corridors: how a physical method can be shaped,
+        tested, adjusted, and connected to a material or biological application.
+      </p>
+    </section>
+
+    <section>
+      <h2>What This Domain Includes</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Plasma-Related Processes</h3>
+          <p>
+            Experimental interest in plasma-based, plasma-related treatment methods and plasma-assisted nanomaterial synthesis,
+            especially in relation to surfaces, materials, activation, functional modification and metal-oxide nanomateals syntheis.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>RF Systems</h3>
+          <p>
+            Work connected to radio-frequency systems, matching concepts, field coupling,
+            experimental setup development, and process-oriented testing.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Pulsed Electric Fields</h3>
+          <p>
+            Exploration of pulsed electric field concepts, treatment cells, field-assisted
+            interactions, and possible applications in microbiological or bio-related systems.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>High-Voltage Prototyping</h3>
+          <p>
+            Prototype-level work with high-voltage and pulsed systems, focusing on experimental
+            feasibility, measurement, safety awareness, and controlled laboratory exploration.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Process Testing</h3>
+          <p>
+            Practical testing of how process parameters, energy delivery, geometry, timing,
+            and material conditions influence experimental outcomes.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Measurement & Observation</h3>
+          <p>
+            Attention to observable effects, process traces, temperature, signal behavior,
+            stability, repeatability, and the limits of early-stage experimental interpretation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experimental Direction</h2>
+      <p>
+        My work in this domain is not limited to one fixed technology. It is centered on how
+        physical methods can be used as experimental tools for modifying, activating, treating,
+        or testing systems under real laboratory constraints.
+      </p>
+
+      <p>
+        This includes building and adjusting prototype pathways, identifying what can be tested
+        safely, and separating early experimental traces from validated technological claims.
+      </p>
+    </section>
+
+    <section>
+      <h2>Example: Field-Assisted Experimental Setups</h2>
+      <p>
+        One recurring direction in this domain is the development and testing of field-assisted
+        setups, where electrical, RF, plasma-related, or pulsed processes are connected with
+        material or bio-related questions.
+      </p>
+
+      <div class="note">
+        <strong>Positioning:</strong>
+        this domain is presented as an experimental R&amp;D layer, not as a set of finalized
+        devices or commercial systems. The value lies in building working corridors for testing,
+        observation, and later refinement.
+      </div>
+    </section>
+
+    <section>
+      <h2>Relation to Other Domains</h2>
+      <p>
+        Physical and field-assisted methods connect directly with functional materials,
+        surface engineering, coatings, nanomaterial systems, and antimicrobial applications.
+        They also connect with AI-assisted R&amp;D workflows, where experimental conditions,
+        observations, failures, and process traces can be documented and structured.
+      </p>
+
+      <p>
+        In this sense, plasma, RF, PEF, and related methods are not isolated techniques.
+        They are part of a broader research graph involving material response, process control,
+        observation, safety, interpretation, and future development.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2026 Dmytro Kozak. Physical & Field-Assisted Methods.</p>
+    </footer>
+  </main>
+</body>
+</html>
