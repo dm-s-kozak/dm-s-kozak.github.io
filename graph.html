@@ -3,20 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dmytro Kozak — Research Graph</title>
+  <title>Dmytro Kozak — Biosketch-Graph</title>
+
   <style>
+    :root {
+      --bg: #f7f7f4;
+      --text: #202020;
+      --muted: #666;
+      --line: #d8d8d2;
+      --card: #ffffff;
+      --accent: #2f4f4f;
+      --accent-soft: #e7eeee;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f6f4ef;
-      color: #1f2933;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
     }
 
     .page {
       max-width: 1180px;
       margin: 0 auto;
-      padding: 42px 22px 70px;
+      padding: 32px 20px 56px;
     }
 
     header {
@@ -24,392 +40,541 @@
     }
 
     h1 {
-      font-size: 38px;
-      margin: 0 0 10px;
-      letter-spacing: -0.03em;
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
     }
 
     .subtitle {
-      max-width: 780px;
-      font-size: 18px;
-      color: #4b5563;
+      max-width: 850px;
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--muted);
     }
 
-    .top-link {
-      display: inline-block;
-      margin-top: 18px;
-      color: #1f2933;
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 1px solid #1f2933;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .graph-card,
-    .info-card {
-      background: #ffffff;
-      border: 1px solid #e0ddd6;
-      border-radius: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-
-    .graph-card {
-      padding: 10px;
-      overflow: hidden;
-    }
-
-    .info-card {
-      padding: 24px;
-      position: sticky;
-      top: 20px;
-    }
-
-    .info-card h2 {
-      margin-top: 0;
-      font-size: 24px;
-    }
-
-    .info-card p {
-      color: #4b5563;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: radial-gradient(circle at center, #ffffff 0%, #fbfaf7 60%, #f3efe7 100%);
-      border-radius: 18px;
-    }
-
-    .link {
-      stroke: #b9b2a3;
-      stroke-width: 2;
-      opacity: 0.75;
-    }
-
-    .node circle {
-      fill: #ffffff;
-      stroke: #5b6472;
-      stroke-width: 2;
-      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.10));
-    }
-
-    .node text {
-      font-size: 14px;
-      fill: #1f2933;
-      text-anchor: middle;
-      dominant-baseline: middle;
-      pointer-events: none;
-      font-weight: 600;
-    }
-
-    .node:hover circle {
-      stroke-width: 3;
-      stroke: #111827;
-    }
-
-    .node {
-      cursor: pointer;
-    }
-
-    .center circle {
-      fill: #1f2933;
-      stroke: #1f2933;
-    }
-
-    .center text {
-      fill: #ffffff;
-    }
-
-    .professional circle {
-      fill: #eef2ff;
-    }
-
-    .experimental circle {
-      fill: #ecfdf5;
-    }
-
-    .conceptual circle {
-      fill: #fff7ed;
-    }
-
-    .output circle {
-      fill: #fdf2f8;
-    }
-
-    .legend {
+    nav {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 16px;
-      font-size: 14px;
-      color: #4b5563;
+      margin: 28px 0 34px;
     }
 
-    .legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #ffffff;
-      border: 1px solid #e0ddd6;
-      padding: 6px 10px;
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 8px 13px;
       border-radius: 999px;
+      font-size: 0.95rem;
     }
 
-    .dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      display: inline-block;
-      border: 1px solid #9ca3af;
+    nav a.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
     }
 
-    .professional-dot { background: #eef2ff; }
-    .experimental-dot { background: #ecfdf5; }
-    .conceptual-dot { background: #fff7ed; }
-    .output-dot { background: #fdf2f8; }
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .compact-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .compact-list li {
+      margin-bottom: 6px;
+    }
+
+    .graph-section {
+      margin-top: 28px;
+    }
+
+    .graph-title {
+      margin-bottom: 10px;
+    }
+
+    .graph-note {
+      color: var(--muted);
+      max-width: 850px;
+      margin-bottom: 24px;
+    }
+
+    .biosketch-graph {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(220px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .layer {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      min-height: 520px;
+    }
+
+    .layer h3 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .layer-label {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .node {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 13px 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font: inherit;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .node:hover,
+    .node:focus {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .node.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 3px;
+      line-height: 1.25;
+    }
+
+    .node span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .orbit {
+      border: 2px solid var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .details {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr);
+      gap: 20px;
+    }
+
+    #node-details {
+      min-height: 180px;
+    }
+
+    #node-details h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 0.96rem;
+      margin-top: 0;
+    }
+
+    .trajectory {
+      border-left: 3px solid var(--accent);
+      padding-left: 18px;
+    }
+
+    .trajectory p {
+      margin: 0 0 12px;
+    }
 
     footer {
-      margin-top: 34px;
-      color: #6b7280;
-      font-size: 14px;
+      margin-top: 44px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
     }
 
-    @media (max-width: 860px) {
-      .layout {
+    @media (max-width: 950px) {
+      .intro,
+      .details {
         grid-template-columns: 1fr;
       }
 
-      .info-card {
-        position: static;
+      .biosketch-graph {
+        grid-template-columns: 1fr 1fr;
       }
 
-      h1 {
-        font-size: 31px;
+      .layer {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .biosketch-graph {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        padding: 24px 14px 42px;
+      }
+
+      .panel,
+      .layer {
+        border-radius: 18px;
       }
     }
   </style>
 </head>
+
 <body>
   <main class="page">
     <header>
-      <h1>Dmytro Kozak — Research Graph</h1>
+      <h1>Dmytro Kozak — Biosketch-Graph</h1>
       <p class="subtitle">
-        A first graph-based view of my research profile: experimental R&amp;D,
-        material systems, field-assisted processes, AI-assisted workflows,
-        and the exploratory smysloTalk branch.
+        A trajectory map of my research profile: from earlier materials-engineering and technical experience,
+        through the BioTeC+ / KU Leuven research orbit, toward a current academic-professional profile connecting
+        functional materials, field-assisted methods, bio-related testing, and AI-assisted R&D structuring.
       </p>
-      <div style="margin: 24px 0; display: flex; flex-wrap: wrap; gap: 14px;">
-  <a href="index.html" style="color: #1f2933; font-weight: 600; text-decoration: none; border-bottom: 1px solid #1f2933;">Profile</a>
-  <a href="graph.html" style="color: #1f2933; font-weight: 600; text-decoration: none; border-bottom: 1px solid #1f2933;">Research Graph</a>
-  <a href="functional-materials.html" style="color: #1f2933; font-weight: 600; text-decoration: none; border-bottom: 1px solid #1f2933;">Functional Materials</a>
-  <a href="field-assisted-methods.html" style="color: #1f2933; font-weight: 600; text-decoration: none; border-bottom: 1px solid #1f2933;">Field-Assisted Methods</a>
-  <a href="ai-assisted-rd.html" style="color: #1f2933; font-weight: 600; text-decoration: none; border-bottom: 1px solid #1f2933;">AI-assisted R&amp;D</a>
-</div>
     </header>
 
-    <div class="layout">
-      <section class="graph-card">
-        <svg viewBox="0 0 1000 720" role="img" aria-label="Research graph of Dmytro Kozak">
-          <!-- Links -->
-          <line class="link" x1="500" y1="350" x2="500" y2="120" />
-          <line class="link" x1="500" y1="350" x2="250" y2="220" />
-          <line class="link" x1="500" y1="350" x2="750" y2="220" />
-          <line class="link" x1="500" y1="350" x2="250" y2="500" />
-          <line class="link" x1="500" y1="350" x2="750" y2="500" />
+    <nav aria-label="Main navigation">
+      <a href="index.html">Profile</a>
+      <a href="graph.html" class="active">Biosketch-Graph</a>
+      <a href="functional-materials.html">Functional Materials</a>
+      <a href="field-assisted-methods.html">Field-Assisted Methods</a>
+      <a href="ai-assisted-rd.html">AI-assisted R&D</a>
+    </nav>
 
-          <line class="link" x1="500" y1="120" x2="250" y2="220" />
-          <line class="link" x1="500" y1="120" x2="750" y2="220" />
+    <section class="intro">
+      <div class="panel">
+        <h2>What this graph shows</h2>
+        <p>
+          This Biosketch-Graph is not a full biography and not a fixed hierarchy. It is a structured map of how
+          different technical, experimental, and research layers connect into one developing academic-professional profile.
+        </p>
+        <p>
+          The central idea is simple: earlier materials and surface-engineering experience formed a technical foundation;
+          this foundation entered the BioTeC+ / KU Leuven experimental research orbit; and it now develops into a profile
+          connecting functional materials, field-assisted processing, antimicrobial and bio-related testing, setup work,
+          and AI-assisted research structuring.
+        </p>
+      </div>
 
-          <line class="link" x1="250" y1="220" x2="120" y2="350" />
-          <line class="link" x1="250" y1="220" x2="250" y2="500" />
-          <line class="link" x1="250" y1="220" x2="390" y2="560" />
+      <aside class="panel">
+        <h3>Reading logic</h3>
+        <ul class="compact-list">
+          <li><strong>Foundation:</strong> what existed before KU Leuven.</li>
+          <li><strong>Orbit:</strong> where the profile became academically anchored.</li>
+          <li><strong>Current profile:</strong> what is active now.</li>
+          <li><strong>Emerging directions:</strong> what is being carefully developed.</li>
+        </ul>
+      </aside>
+    </section>
 
-          <line class="link" x1="750" y1="220" x2="880" y2="350" />
-          <line class="link" x1="750" y1="220" x2="750" y2="500" />
-          <line class="link" x1="750" y1="220" x2="610" y2="560" />
+    <section class="graph-section">
+      <h2 class="graph-title">Biosketch-Graph view</h2>
+      <p class="graph-note">
+        Click any node to see a short description. The graph shows connections and trajectory rather than a linear CV.
+      </p>
 
-          <line class="link" x1="250" y1="500" x2="390" y2="560" />
-          <line class="link" x1="750" y1="500" x2="610" y2="560" />
-          <line class="link" x1="390" y1="560" x2="610" y2="560" />
+      <div class="biosketch-graph" aria-label="Biosketch graph">
+        <section class="layer">
+          <h3>1. Before KU Leuven</h3>
+          <p class="layer-label">Technical and materials-engineering foundation</p>
 
-          <line class="link" x1="120" y1="350" x2="250" y2="500" />
-          <line class="link" x1="880" y1="350" x2="750" y2="500" />
+          <button class="node" data-node="materials">
+            <strong>Materials Engineering</strong>
+            <span>Metals, coatings, polymers, and applied material systems.</span>
+          </button>
 
-          <!-- Nodes -->
-          <g class="node center" onclick="showInfo('dmytro')" transform="translate(500 350)">
-            <circle r="72"></circle>
-            <text>
-              <tspan x="0" dy="-8">Dmytro</tspan>
-              <tspan x="0" dy="20">Kozak</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="surface">
+            <strong>Surface Modification</strong>
+            <span>Surface-related thinking, coating logic, and interface work.</span>
+          </button>
 
-          <g class="node professional" onclick="showInfo('ku')" transform="translate(500 120)">
-            <circle r="64"></circle>
-            <text>
-              <tspan x="0" dy="-8">BioTeC+ /</tspan>
-              <tspan x="0" dy="20">KU Leuven</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="electrodeposition">
+            <strong>Electrodeposition</strong>
+            <span>Electrochemical routes, metallic layers, and process observation.</span>
+          </button>
 
-          <g class="node experimental" onclick="showInfo('rnd')" transform="translate(250 220)">
-            <circle r="66"></circle>
-            <text>
-              <tspan x="0" dy="-8">Experimental</tspan>
-              <tspan x="0" dy="20">R&amp;D</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="characterization">
+            <strong>Characterization</strong>
+            <span>SEM, microscopy, XRD, FTIR, UV–Vis and related analytical traces.</span>
+          </button>
 
-          <g class="node experimental" onclick="showInfo('materials')" transform="translate(120 350)">
-            <circle r="60"></circle>
-            <text>
-              <tspan x="0" dy="-8">Functional</tspan>
-              <tspan x="0" dy="20">Materials</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="troubleshooting">
+            <strong>Experimental Troubleshooting</strong>
+            <span>Practical fault-finding, setup adjustment, and process correction.</span>
+          </button>
+        </section>
 
-          <g class="node experimental" onclick="showInfo('fields')" transform="translate(250 500)">
-            <circle r="62"></circle>
-            <text>
-              <tspan x="0" dy="-8">Plasma / RF</tspan>
-              <tspan x="0" dy="20">/ PEF</tspan>
-            </text>
-          </g>
+        <section class="layer orbit">
+          <h3>2. KU Leuven / BioTeC+ Orbit</h3>
+          <p class="layer-label">Academic and experimental anchoring</p>
 
-          <g class="node experimental" onclick="showInfo('surfaces')" transform="translate(390 560)">
-            <circle r="58"></circle>
-            <text>
-              <tspan x="0" dy="-8">Surface</tspan>
-              <tspan x="0" dy="20">Engineering</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="biotec">
+            <strong>BioTeC+ / KU Leuven</strong>
+            <span>Current institutional and research environment.</span>
+          </button>
 
-          <g class="node conceptual" onclick="showInfo('ai')" transform="translate(750 220)">
-            <circle r="66"></circle>
-            <text>
-              <tspan x="0" dy="-8">AI-assisted</tspan>
-              <tspan x="0" dy="20">Workflows</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="research-assistant">
+            <strong>Research Assistant</strong>
+            <span>Formal current role within an experimental research context.</span>
+          </button>
 
-          <g class="node conceptual" onclick="showInfo('smyslo')" transform="translate(880 350)">
-            <circle r="62"></circle>
-            <text>
-              <tspan x="0" dy="-8">smyslo</tspan>
-              <tspan x="0" dy="20">Talk</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="experimental-rd">
+            <strong>Experimental R&D</strong>
+            <span>Hands-on work with setups, materials, testing, and early-stage workflows.</span>
+          </button>
 
-          <g class="node conceptual" onclick="showInfo('trace')" transform="translate(750 500)">
-            <circle r="62"></circle>
-            <text>
-              <tspan x="0" dy="-8">Trace-based</tspan>
-              <tspan x="0" dy="20">Reasoning</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="antimicrobial">
+            <strong>Antimicrobial Testing Context</strong>
+            <span>Bio-related experimental context connected to materials and processes.</span>
+          </button>
 
-          <g class="node conceptual" onclick="showInfo('emergence')" transform="translate(610 560)">
-            <circle r="58"></circle>
-            <text>
-              <tspan x="0" dy="-8">Emergence</tspan>
-              <tspan x="0" dy="20">Tracking</tspan>
-            </text>
-          </g>
+          <button class="node" data-node="prototype">
+            <strong>Prototype Workflows</strong>
+            <span>Small testable corridors before larger systems or claims.</span>
+          </button>
+        </section>
 
-          <g class="node output" onclick="showInfo('outputs')" transform="translate(500 655)">
-            <circle r="54"></circle>
-            <text>
-              <tspan x="0" dy="-8">Outputs /</tspan>
-              <tspan x="0" dy="20">Site</tspan>
-            </text>
-          </g>
+        <section class="layer">
+          <h3>3. Current Research Profile</h3>
+          <p class="layer-label">Active working domains</p>
 
-          <line class="link" x1="500" y1="350" x2="500" y2="655" />
-          <line class="link" x1="390" y1="560" x2="500" y2="655" />
-          <line class="link" x1="610" y1="560" x2="500" y2="655" />
-        </svg>
+          <button class="node" data-node="functional-materials">
+            <strong>Functional Materials</strong>
+            <span>Coatings, nanomaterials, polymers, interfaces, and formulations.</span>
+          </button>
 
-        <div class="legend">
-          <span><i class="dot professional-dot"></i> institutional / professional context</span>
-          <span><i class="dot experimental-dot"></i> experimental R&amp;D contour</span>
-          <span><i class="dot conceptual-dot"></i> AI / reasoning / smysloTalk contour</span>
-          <span><i class="dot output-dot"></i> public outputs</span>
-        </div>
-      </section>
+          <button class="node" data-node="field-assisted">
+            <strong>Field-Assisted Methods</strong>
+            <span>Physical fields as experimental tools for processing and intervention.</span>
+          </button>
 
-      <aside class="info-card">
-        <h2 id="info-title">Graph view</h2>
-        <p id="info-text">
-          Click any node in the graph to see a short description. This page is a first
-          experimental map, not a fixed hierarchy. It shows connections rather than a tree.
+          <button class="node" data-node="plasma-rf-pef">
+            <strong>Plasma / RF / PEF</strong>
+            <span>Plasma-related processes, radio-frequency systems, pulsed electric fields.</span>
+          </button>
+
+          <button class="node" data-node="bio-bridge">
+            <strong>Bio-related Testing Bridge</strong>
+            <span>Connections to fermentation, food-biotech contexts, and biological response.</span>
+          </button>
+
+          <button class="node" data-node="setup-development">
+            <strong>Setup Development</strong>
+            <span>Practical construction, adjustment, measurement, and observation.</span>
+          </button>
+        </section>
+
+        <section class="layer">
+          <h3>4. Emerging Directions</h3>
+          <p class="layer-label">Carefully developing extensions</p>
+
+          <button class="node" data-node="ai-rd">
+            <strong>AI-assisted R&D Structuring</strong>
+            <span>AI as a medium for documentation, hypothesis tracking, and research mapping.</span>
+          </button>
+
+          <button class="node" data-node="trace-documentation">
+            <strong>Trace-based Documentation</strong>
+            <span>Preserving paths, failed attempts, adjustments, and emergence of ideas.</span>
+          </button>
+
+          <button class="node" data-node="modular-systems">
+            <strong>Modular Field-Assisted Systems</strong>
+            <span>Future-oriented thinking around adaptable experimental modules.</span>
+          </button>
+
+          <button class="node" data-node="smyslotalk">
+            <strong>smysloTalk</strong>
+            <span>Exploratory methodological branch on meaning, traces, and dialogue.</span>
+          </button>
+
+          <button class="node" data-node="outputs">
+            <strong>Public Outputs / Site</strong>
+            <span>Structured profile, selected traces, and readable external projection.</span>
+          </button>
+        </section>
+      </div>
+    </section>
+
+    <section class="details">
+      <div class="panel" id="node-details">
+        <h3>Select a node</h3>
+        <p class="tagline">
+          Click any graph node to see how it contributes to the overall research trajectory.
+        </p>
+        <p>
+          The purpose of this page is to show how the profile is assembled: not as a list of isolated skills,
+          but as a trajectory connecting technical foundation, academic anchoring, active experimental domains,
+          and emerging research directions.
+        </p>
+      </div>
+
+      <aside class="panel trajectory">
+        <h3>Trajectory formula</h3>
+        <p>
+          <strong>Before KU Leuven:</strong> technical-materials foundation.
+        </p>
+        <p>
+          <strong>KU Leuven / BioTeC+:</strong> academic and experimental orbit.
+        </p>
+        <p>
+          <strong>Current profile:</strong> functional materials, field-assisted methods, bio-related testing, and setup work.
+        </p>
+        <p>
+          <strong>Emerging layer:</strong> AI-assisted structuring, trace-based documentation, and methodological development.
         </p>
       </aside>
-    </div>
+    </section>
 
     <footer>
-      <p>© 2026 Dmytro Kozak. Experimental graph view of a personal research profile.</p>
+      © 2026 Dmytro Kozak. Biosketch-Graph of a developing academic-professional research profile.
     </footer>
   </main>
 
   <script>
-    const info = {
-      dmytro: {
-        title: "Dmytro Kozak",
-        text: "Personal research profile connecting experimental R&D, applied materials work, field-assisted systems, and AI-assisted reasoning workflows."
+    const descriptions = {
+      "materials": {
+        title: "Materials Engineering",
+        text: "This node represents the technical foundation formed through work with metals, coatings, polymers, nanomaterials, and applied material systems. In the graph, it functions as one of the pre-KU Leuven roots of the current research profile."
       },
-      ku: {
+      "surface": {
+        title: "Surface Modification",
+        text: "Surface modification connects earlier materials work with later surface-related technologies, coatings, antimicrobial interfaces, and process-oriented testing."
+      },
+      "electrodeposition": {
+        title: "Electrodeposition",
+        text: "Electrodeposition represents electrochemical thinking, metallic layer formation, process parameters, and experimental observation. It remains a technical foundation rather than a standalone claim."
+      },
+      "characterization": {
+        title: "Characterization",
+        text: "Characterization includes microscopy and analytical traces such as SEM, XRD, FTIR, UV–Vis, and related methods used to observe and describe material systems."
+      },
+      "troubleshooting": {
+        title: "Experimental Troubleshooting",
+        text: "Troubleshooting is a practical layer of the profile: identifying faults, adjusting setups, testing conditions, and keeping experimental systems functional."
+      },
+      "biotec": {
         title: "BioTeC+ / KU Leuven",
-        text: "Current professional context. The site remains a personal research profile, while this node marks the laboratory and institutional environment where part of the work is situated."
+        text: "This is the central academic and experimental orbit of the current profile. It anchors the transition from earlier technical-materials experience into a BioTeC+ / KU Leuven research environment."
       },
-      rnd: {
+      "research-assistant": {
+        title: "Research Assistant",
+        text: "This node marks the formal current position. It should be read carefully: the profile is grounded in hands-on research assistance, technical contribution, setup work, and experimental support."
+      },
+      "experimental-rd": {
         title: "Experimental R&D",
-        text: "Hands-on research mode: building, testing, adjusting, and extracting minimal working corridors inside complex experimental systems."
+        text: "Experimental R&D is the working contour where materials, setups, physical methods, measurements, and early-stage research questions meet."
       },
-      materials: {
+      "antimicrobial": {
+        title: "Antimicrobial Testing Context",
+        text: "This node connects the profile to bio-related and antimicrobial testing environments. It should be kept factual and cautious, especially when describing contributions inside larger projects."
+      },
+      "prototype": {
+        title: "Prototype Workflows",
+        text: "Prototype workflows describe small, testable experimental corridors: early setups, adjustments, measurements, and iterations before larger claims or final systems."
+      },
+      "functional-materials": {
         title: "Functional Materials",
-        text: "Work with coatings, polymer systems, surface modification, material formulations, and functional material behavior."
+        text: "Functional materials are one of the main current domains: coatings, nanomaterials, polymers, surfaces, formulations, and material responses connected to experimental testing."
       },
-      fields: {
+      "field-assisted": {
+        title: "Field-Assisted Methods",
+        text: "Field-assisted methods include physical fields used as experimental tools: plasma-related processes, RF systems, pulsed fields, and other forms of physical intervention."
+      },
+      "plasma-rf-pef": {
         title: "Plasma / RF / PEF",
-        text: "Experimental work around field-assisted processes, pulsed electric fields, RF systems, plasma-related setups, and process testing."
+        text: "This node connects plasma-related processes, radio-frequency systems, and pulsed electric fields as a practical field-assisted experimental domain."
       },
-      surfaces: {
-        title: "Surface Engineering",
-        text: "A practical layer connecting materials, coatings, antimicrobial applications, and process-driven modification of surfaces."
+      "bio-bridge": {
+        title: "Bio-related Testing Bridge",
+        text: "This bridge connects physical and material methods with biological or food-biotech contexts, including fermentation, antimicrobial testing, and measurable biological response."
       },
-      ai: {
-        title: "AI-assisted Workflows",
-        text: "Use of AI as a structured reasoning medium for early-stage R&D, trace preservation, hypothesis tracking, and language-based clarification."
+      "setup-development": {
+        title: "Setup Development",
+        text: "Setup development covers hands-on construction, adjustment, high-voltage or field-assisted test systems, measurement logic, and experimental observation."
       },
-      smyslo: {
+      "ai-rd": {
+        title: "AI-assisted R&D Structuring",
+        text: "AI-assisted R&D is not presented as automatic discovery. It is used as a structuring medium for documentation, hypothesis tracking, reframing, and preserving research traces."
+      },
+      "trace-documentation": {
+        title: "Trace-based Documentation",
+        text: "Trace-based documentation preserves the path of research: attempts, adjustments, failures, corrections, small observations, and the emergence of working directions."
+      },
+      "modular-systems": {
+        title: "Modular Field-Assisted Systems",
+        text: "This is an emerging direction: thinking toward adaptable experimental modules for field-assisted processing and testing. It should be presented as developing, not finalized."
+      },
+      "smyslotalk": {
         title: "smysloTalk",
-        text: "An exploratory project on trace-based reasoning, emergence tracking, and human–AI dialogue. It is a separate branch of the site, not a claim of institutional affiliation."
+        text: "smysloTalk is an exploratory methodological branch focused on trace-based reasoning, emergence tracking, and human–AI dialogue. It should support the profile without replacing the experimental foundation."
       },
-      trace: {
-        title: "Trace-based Reasoning",
-        text: "A way of preserving how ideas, hypotheses, distinctions, and project directions appear and develop before they become final outputs."
-      },
-      emergence: {
-        title: "Emergence Tracking",
-        text: "Attention to early, fragile, and not-yet-stabilized forms of insight: where a project begins to appear before it becomes a standard result."
-      },
-      outputs: {
-        title: "Outputs / Site",
-        text: "The public-facing layer: profile, project descriptions, documents, publications, notes, and future pages."
+      "outputs": {
+        title: "Public Outputs / Site",
+        text: "This node represents the website itself: a public, selected, and structured projection of the profile rather than a complete archive or social-media stream."
       }
     };
 
-    function showInfo(key) {
-      document.getElementById("info-title").textContent = info[key].title;
-      document.getElementById("info-text").textContent = info[key].text;
-    }
+    const detailBox = document.getElementById("node-details");
+    const nodes = document.querySelectorAll(".node");
+
+    nodes.forEach((node) => {
+      node.addEventListener("click", () => {
+        nodes.forEach((n) => n.classList.remove("active"));
+        node.classList.add("active");
+
+        const key = node.dataset.node;
+        const item = descriptions[key];
+
+        detailBox.innerHTML = `
+          <h3>${item.title}</h3>
+          <p class="tagline">Selected node in the Biosketch-Graph.</p>
+          <p>${item.text}</p>
+        `;
+      });
+    });
   </script>
 </body>
 </html>
