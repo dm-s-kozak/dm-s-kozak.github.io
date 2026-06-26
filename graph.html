@@ -51,7 +51,7 @@
     }
 
     .subtitle {
-      max-width: 900px;
+      max-width: 920px;
       margin: 0;
       font-size: 1.08rem;
       color: var(--muted);
@@ -126,6 +126,10 @@
     }
 
     .graph-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
       margin-bottom: 14px;
     }
 
@@ -139,16 +143,28 @@
       font-size: 0.96rem;
     }
 
-    .graph-canvas {
-      position: relative;
-      height: 720px;
-      min-width: 960px;
-      border-radius: 20px;
-      background:
-        radial-gradient(circle at 42% 50%, rgba(47, 79, 79, 0.10), transparent 28%),
-        linear-gradient(90deg, rgba(238, 241, 245, 0.5), rgba(240, 237, 245, 0.35));
+    .graph-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .small-button {
       border: 1px solid var(--line);
-      overflow: hidden;
+      background: white;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .small-button.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
     }
 
     .scroll-hint {
@@ -163,6 +179,21 @@
       padding-bottom: 8px;
     }
 
+    .graph-canvas {
+      position: relative;
+      height: 700px;
+      min-width: 1040px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(47, 79, 79, 0.16), transparent 22%),
+        radial-gradient(circle at 19% 50%, rgba(238, 241, 245, 0.9), transparent 25%),
+        radial-gradient(circle at 80% 33%, rgba(242, 239, 231, 0.9), transparent 25%),
+        radial-gradient(circle at 78% 75%, rgba(240, 237, 245, 0.9), transparent 25%),
+        linear-gradient(90deg, rgba(238, 241, 245, 0.5), rgba(240, 237, 245, 0.35));
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
     svg.links {
       position: absolute;
       inset: 0;
@@ -170,6 +201,12 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .graph-canvas.expanded svg.links {
+      opacity: 1;
     }
 
     .links line {
@@ -178,11 +215,11 @@
     }
 
     .links line.strong {
-      stroke: rgba(47, 79, 79, 0.58);
+      stroke: rgba(47, 79, 79, 0.62);
       stroke-width: 3;
     }
 
-    .axis-label {
+    .orbit-label {
       position: absolute;
       z-index: 2;
       font-size: 0.78rem;
@@ -190,18 +227,24 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       font-weight: 650;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .label-foundation { left: 28px; top: 18px; }
-    .label-orbit { left: 290px; top: 18px; }
-    .label-current { left: 535px; top: 18px; }
-    .label-emerging { left: 705px; top: 18px; }
+    .graph-canvas.expanded .orbit-label {
+      opacity: 1;
+    }
+
+    .label-foundation { left: 58px; top: 32px; }
+    .label-orbit { left: 410px; top: 94px; }
+    .label-current { left: 755px; top: 32px; }
+    .label-emerging { left: 740px; top: 435px; }
 
     .node {
       position: absolute;
       z-index: 3;
-      width: 170px;
-      min-height: 66px;
+      width: 180px;
+      min-height: 70px;
       border: 1px solid var(--line);
       color: var(--text);
       border-radius: 18px;
@@ -210,7 +253,11 @@
       font: inherit;
       text-align: left;
       box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      transition:
+        transform 0.22s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        opacity 0.3s ease;
     }
 
     .node:hover,
@@ -246,15 +293,71 @@
     .emerging { background: var(--emerging); }
 
     .core {
-      width: 190px;
-      min-height: 82px;
+      left: 420px;
+      top: 300px;
+      width: 210px;
+      min-height: 100px;
       border: 2px solid var(--accent);
       background: var(--accent);
       color: white;
+      text-align: center;
+      padding: 16px 14px;
+      transform: scale(1.08);
     }
 
     .core span {
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .core:hover,
+    .core:focus {
+      transform: scale(1.1) translateY(-3px);
+    }
+
+    .satellite {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.94);
+    }
+
+    .graph-canvas.expanded .satellite {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .hint-ring {
+      position: absolute;
+      left: 382px;
+      top: 262px;
+      width: 286px;
+      height: 178px;
+      border: 1px dashed rgba(47, 79, 79, 0.35);
+      border-radius: 999px;
+      z-index: 0;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .graph-canvas.expanded .hint-ring {
+      opacity: 0;
+    }
+
+    .hint-text {
+      position: absolute;
+      left: 390px;
+      top: 430px;
+      width: 270px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .graph-canvas.expanded .hint-text {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .details-panel {
@@ -342,6 +445,15 @@
         border-radius: 18px;
       }
 
+      .graph-head {
+        display: block;
+      }
+
+      .graph-actions {
+        justify-content: flex-start;
+        margin-top: 12px;
+      }
+
       .details-panel.mobile-open {
         position: fixed;
         left: 12px;
@@ -387,17 +499,16 @@
           different technical, experimental, and research layers connect into one developing academic-professional profile.
         </p>
         <p>
-          Earlier materials and surface-engineering experience formed a technical foundation; this foundation entered
-          the BioTeC+ / KU Leuven experimental research orbit; and it now develops into a profile connecting functional
-          materials, field-assisted processing, antimicrobial and bio-related testing, setup work, and AI-assisted research structuring.
+          The graph starts from a central orbit. Click the core to unfold the trajectory: earlier technical foundation,
+          KU Leuven / BioTeC+ anchoring, current research domains, and emerging directions.
         </p>
       </div>
 
       <aside class="panel">
         <h3>Reading logic</h3>
         <ul class="compact-list">
+          <li><strong>Core:</strong> BioTeC+ / KU Leuven orbit.</li>
           <li><strong>Foundation:</strong> what existed before KU Leuven.</li>
-          <li><strong>Orbit:</strong> where the profile became academically anchored.</li>
           <li><strong>Current profile:</strong> what is active now.</li>
           <li><strong>Emerging directions:</strong> what is being carefully developed.</li>
         </ul>
@@ -407,152 +518,138 @@
     <section class="graph-layout">
       <div class="graph-card">
         <div class="graph-head">
-          <h2>Biosketch-Graph view</h2>
-          <p>
-            Click a node. The description appears on the right side. On mobile, it appears as a bottom panel.
-          </p>
-          <p class="scroll-hint">
-            On a small screen, swipe horizontally to see the full graph.
-          </p>
+          <div>
+            <h2>Interactive Biosketch-Graph</h2>
+            <p>
+              Click the central core to unfold the graph. Then click individual nodes to read their role in the trajectory.
+            </p>
+            <p class="scroll-hint">
+              On a small screen, swipe horizontally to see the full graph.
+            </p>
+          </div>
+
+          <div class="graph-actions">
+            <button class="small-button primary" id="expand-graph">Unfold graph</button>
+            <button class="small-button" id="collapse-graph">Collapse</button>
+          </div>
         </div>
 
         <div class="graph-scroll">
-          <div class="graph-canvas" aria-label="Biosketch graph">
-            <svg class="links" viewBox="0 0 920 720" preserveAspectRatio="none">
-              <!-- Foundation to KU Leuven orbit -->
-              <line x1="145" y1="115" x2="345" y2="335" />
-              <line x1="145" y1="230" x2="345" y2="335" />
-              <line x1="145" y1="345" x2="345" y2="335" class="strong" />
-              <line x1="145" y1="460" x2="345" y2="335" />
-              <line x1="145" y1="575" x2="345" y2="335" />
+          <div class="graph-canvas" id="graph-canvas" aria-label="Biosketch graph">
+            <div class="hint-ring"></div>
+            <div class="hint-text">Click the central core to unfold the Biosketch-Graph.</div>
 
-              <!-- KU Leuven orbit internal / current profile -->
-              <line x1="430" y1="335" x2="585" y2="120" />
-              <line x1="430" y1="335" x2="585" y2="235" class="strong" />
-              <line x1="430" y1="335" x2="585" y2="350" class="strong" />
-              <line x1="430" y1="335" x2="585" y2="465" />
-              <line x1="430" y1="335" x2="585" y2="580" />
+            <svg class="links" viewBox="0 0 1040 700" preserveAspectRatio="none">
+              <!-- Foundation to core -->
+              <line x1="240" y1="135" x2="420" y2="350" />
+              <line x1="240" y1="275" x2="420" y2="350" />
+              <line x1="240" y1="415" x2="420" y2="350" class="strong" />
+              <line x1="240" y1="555" x2="420" y2="350" />
+
+              <!-- Orbit around core -->
+              <line x1="520" y1="300" x2="520" y2="170" />
+              <line x1="420" y1="350" x2="350" y2="350" />
+              <line x1="630" y1="350" x2="710" y2="350" />
+              <line x1="520" y1="400" x2="520" y2="530" />
+
+              <!-- Core to current profile -->
+              <line x1="630" y1="330" x2="800" y2="130" />
+              <line x1="630" y1="350" x2="800" y2="250" class="strong" />
+              <line x1="630" y1="370" x2="800" y2="370" class="strong" />
 
               <!-- Current profile to emerging directions -->
-              <line x1="655" y1="120" x2="760" y2="120" />
-              <line x1="655" y1="235" x2="760" y2="235" />
-              <line x1="655" y1="350" x2="760" y2="350" class="strong" />
-              <line x1="655" y1="465" x2="760" y2="465" />
-              <line x1="655" y1="580" x2="760" y2="580" />
+              <line x1="890" y1="130" x2="890" y2="500" />
+              <line x1="800" y1="250" x2="760" y2="500" />
+              <line x1="800" y1="370" x2="960" y2="500" />
 
-              <!-- Cross-links -->
-              <line x1="145" y1="230" x2="585" y2="120" />
-              <line x1="145" y1="460" x2="585" y2="580" />
-              <line x1="585" y1="235" x2="760" y2="350" />
+              <!-- Emerging connections -->
+              <line x1="710" y1="555" x2="520" y2="400" />
+              <line x1="890" y1="555" x2="630" y2="370" />
             </svg>
 
-            <div class="axis-label label-foundation">Before KU Leuven</div>
-            <div class="axis-label label-orbit">KU Leuven / BioTeC+ Orbit</div>
-            <div class="axis-label label-current">Current Profile</div>
-            <div class="axis-label label-emerging">Emerging Layer</div>
+            <div class="orbit-label label-foundation">Before KU Leuven</div>
+            <div class="orbit-label label-orbit">KU Leuven / BioTeC+ Orbit</div>
+            <div class="orbit-label label-current">Current Profile</div>
+            <div class="orbit-label label-emerging">Emerging Layer</div>
+
+            <!-- Central core -->
+            <button class="node core" data-node="biotec">
+              <strong>BioTeC+ / KU Leuven</strong>
+              <span>Click to unfold the research trajectory.</span>
+            </button>
 
             <!-- Foundation -->
-            <button class="node foundation" style="left: 28px; top: 74px;" data-node="materials">
+            <button class="node satellite foundation" style="left: 60px; top: 95px;" data-node="materials">
               <strong>Materials Engineering</strong>
               <span>Metals, coatings, polymers, applied material systems.</span>
             </button>
 
-            <button class="node foundation" style="left: 28px; top: 189px;" data-node="surface">
+            <button class="node satellite foundation" style="left: 60px; top: 235px;" data-node="surface">
               <strong>Surface Modification</strong>
               <span>Coatings, interfaces, surface-related thinking.</span>
             </button>
 
-            <button class="node foundation" style="left: 28px; top: 304px;" data-node="electrodeposition">
+            <button class="node satellite foundation" style="left: 60px; top: 375px;" data-node="electrodeposition">
               <strong>Electrodeposition</strong>
               <span>Electrochemical routes and metallic layers.</span>
             </button>
 
-            <button class="node foundation" style="left: 28px; top: 419px;" data-node="characterization">
+            <button class="node satellite foundation" style="left: 60px; top: 515px;" data-node="characterization">
               <strong>Characterization</strong>
               <span>SEM, XRD, FTIR, UV–Vis, microscopy traces.</span>
             </button>
 
-            <button class="node foundation" style="left: 28px; top: 534px;" data-node="troubleshooting">
-              <strong>Troubleshooting</strong>
-              <span>Fault finding, setup adjustment, process correction.</span>
-            </button>
-
-            <!-- KU Leuven / orbit -->
-            <button class="node orbit" style="left: 280px; top: 125px;" data-node="research-assistant">
+            <!-- KU Leuven orbit -->
+            <button class="node satellite orbit" style="left: 430px; top: 130px;" data-node="research-assistant">
               <strong>Research Assistant</strong>
               <span>Formal current position in experimental research.</span>
             </button>
 
-            <button class="node orbit" style="left: 280px; top: 235px;" data-node="experimental-rd">
+            <button class="node satellite orbit" style="left: 170px; top: 330px;" data-node="troubleshooting">
+              <strong>Troubleshooting</strong>
+              <span>Fault finding, setup adjustment, process correction.</span>
+            </button>
+
+            <button class="node satellite orbit" style="left: 700px; top: 330px;" data-node="experimental-rd">
               <strong>Experimental R&D</strong>
               <span>Setups, testing, materials, early-stage workflows.</span>
             </button>
 
-            <button class="node core" style="left: 265px; top: 325px;" data-node="biotec">
-              <strong>BioTeC+ / KU Leuven</strong>
-              <span>Central academic and experimental orbit.</span>
-            </button>
-
-            <button class="node orbit" style="left: 280px; top: 430px;" data-node="antimicrobial">
-              <strong>Antimicrobial Context</strong>
-              <span>Bio-related testing environment and materials interface.</span>
-            </button>
-
-            <button class="node orbit" style="left: 280px; top: 540px;" data-node="prototype">
+            <button class="node satellite orbit" style="left: 430px; top: 520px;" data-node="prototype">
               <strong>Prototype Workflows</strong>
               <span>Small testable corridors before larger claims.</span>
             </button>
 
             <!-- Current profile -->
-            <button class="node current" style="left: 525px; top: 74px;" data-node="functional-materials">
+            <button class="node satellite current" style="left: 800px; top: 90px;" data-node="functional-materials">
               <strong>Functional Materials</strong>
               <span>Coatings, nanomaterials, polymers, formulations.</span>
             </button>
 
-            <button class="node current" style="left: 525px; top: 189px;" data-node="field-assisted">
+            <button class="node satellite current" style="left: 800px; top: 210px;" data-node="field-assisted">
               <strong>Field-Assisted Methods</strong>
               <span>Physical fields as experimental tools.</span>
             </button>
 
-            <button class="node current" style="left: 525px; top: 304px;" data-node="plasma-rf-pef">
+            <button class="node satellite current" style="left: 800px; top: 330px;" data-node="plasma-rf-pef">
               <strong>Plasma / RF / PEF</strong>
               <span>Plasma-related processes, RF, pulsed electric fields.</span>
             </button>
 
-            <button class="node current" style="left: 525px; top: 419px;" data-node="bio-bridge">
-              <strong>Bio-related Bridge</strong>
-              <span>Fermentation, food-biotech context, biological response.</span>
-            </button>
-
-            <button class="node current" style="left: 525px; top: 534px;" data-node="setup-development">
-              <strong>Setup Development</strong>
-              <span>Construction, measurement, observation, adjustment.</span>
-            </button>
-
             <!-- Emerging layer -->
-            <button class="node emerging" style="left: 720px; top: 74px;" data-node="ai-rd">
+            <button class="node satellite emerging" style="left: 620px; top: 555px;" data-node="ai-rd">
               <strong>AI-assisted R&D</strong>
               <span>Documentation, hypothesis tracking, research mapping.</span>
             </button>
 
-            <button class="node emerging" style="left: 720px; top: 189px;" data-node="trace-documentation">
+            <button class="node satellite emerging" style="left: 810px; top: 555px;" data-node="trace-documentation">
               <strong>Trace Documentation</strong>
               <span>Attempts, failures, corrections, emergence of ideas.</span>
             </button>
 
-            <button class="node emerging" style="left: 720px; top: 304px;" data-node="modular-systems">
-              <strong>Modular Systems</strong>
-              <span>Adaptable field-assisted experimental modules.</span>
-            </button>
-
-            <button class="node emerging" style="left: 720px; top: 419px;" data-node="smyslotalk">
+            <button class="node satellite emerging" style="left: 430px; top: 610px;" data-node="smyslotalk">
               <strong>smysloTalk</strong>
               <span>Exploratory methodological branch.</span>
-            </button>
-
-            <button class="node emerging" style="left: 720px; top: 534px;" data-node="outputs">
-              <strong>Public Outputs</strong>
-              <span>Website, selected traces, external projection.</span>
             </button>
           </div>
         </div>
@@ -561,13 +658,13 @@
       <aside class="details-panel" id="node-details">
         <button class="close-mobile" id="close-details" aria-label="Close details">×</button>
         <span class="tag">Biosketch-Graph</span>
-        <h2>Select a node</h2>
-        <p class="small">
-          Click any node in the graph. The description will appear here without moving you to the end of the page.
-        </p>
+        <h2>Central orbit</h2>
         <p>
-          The graph shows how the profile is assembled: technical foundation, KU Leuven / BioTeC+ orbit,
-          current experimental domains, and emerging research directions.
+          Click the BioTeC+ / KU Leuven core to unfold the graph. The trajectory will expand from the central academic
+          orbit into foundation, current profile, and emerging directions.
+        </p>
+        <p class="small">
+          This page shows trajectory and connection, not a list of isolated skills.
         </p>
       </aside>
     </section>
@@ -600,29 +697,24 @@
         text: "Characterization includes microscopy and analytical traces such as SEM, XRD, FTIR, UV–Vis, and related methods used to observe and describe material systems."
       },
       "troubleshooting": {
-        tag: "Before KU Leuven",
+        tag: "KU Leuven / BioTeC+ Orbit",
         title: "Experimental Troubleshooting",
         text: "Troubleshooting is a practical layer of the profile: identifying faults, adjusting setups, testing conditions, and keeping experimental systems functional."
       },
       "biotec": {
-        tag: "KU Leuven / BioTeC+ Orbit",
+        tag: "Central Orbit",
         title: "BioTeC+ / KU Leuven",
         text: "This is the central academic and experimental orbit of the current profile. It anchors the transition from earlier technical-materials experience into a BioTeC+ / KU Leuven research environment."
       },
       "research-assistant": {
         tag: "KU Leuven / BioTeC+ Orbit",
         title: "Research Assistant",
-        text: "This node marks the formal current position. It should be read carefully: the profile is grounded in hands-on research assistance, technical contribution, setup work, and experimental support."
+        text: "This node marks the formal current position. The profile is grounded in hands-on research assistance, technical contribution, setup work, and experimental support."
       },
       "experimental-rd": {
         tag: "KU Leuven / BioTeC+ Orbit",
         title: "Experimental R&D",
         text: "Experimental R&D is the working contour where materials, setups, physical methods, measurements, and early-stage research questions meet."
-      },
-      "antimicrobial": {
-        tag: "KU Leuven / BioTeC+ Orbit",
-        title: "Antimicrobial Testing Context",
-        text: "This node connects the profile to bio-related and antimicrobial testing environments. It should be kept factual and cautious, especially when describing contributions inside larger projects."
       },
       "prototype": {
         tag: "KU Leuven / BioTeC+ Orbit",
@@ -644,16 +736,6 @@
         title: "Plasma / RF / PEF",
         text: "This node connects plasma-related processes, radio-frequency systems, and pulsed electric fields as a practical field-assisted experimental domain."
       },
-      "bio-bridge": {
-        tag: "Current Profile",
-        title: "Bio-related Testing Bridge",
-        text: "This bridge connects physical and material methods with biological or food-biotech contexts, including fermentation, antimicrobial testing, and measurable biological response."
-      },
-      "setup-development": {
-        tag: "Current Profile",
-        title: "Setup Development",
-        text: "Setup development covers hands-on construction, adjustment, high-voltage or field-assisted test systems, measurement logic, and experimental observation."
-      },
       "ai-rd": {
         tag: "Emerging Layer",
         title: "AI-assisted R&D Structuring",
@@ -664,26 +746,34 @@
         title: "Trace-based Documentation",
         text: "Trace-based documentation preserves the path of research: attempts, adjustments, failures, corrections, small observations, and the emergence of working directions."
       },
-      "modular-systems": {
-        tag: "Emerging Layer",
-        title: "Modular Field-Assisted Systems",
-        text: "This is an emerging direction: thinking toward adaptable experimental modules for field-assisted processing and testing. It should be presented as developing, not finalized."
-      },
       "smyslotalk": {
         tag: "Emerging Layer",
         title: "smysloTalk",
         text: "smysloTalk is an exploratory methodological branch focused on trace-based reasoning, emergence tracking, and human–AI dialogue. It should support the profile without replacing the experimental foundation."
-      },
-      "outputs": {
-        tag: "Emerging Layer",
-        title: "Public Outputs / Site",
-        text: "This node represents the website itself: a public, selected, and structured projection of the profile rather than a complete archive or social-media stream."
       }
     };
 
+    const canvas = document.getElementById("graph-canvas");
     const detailBox = document.getElementById("node-details");
-    const closeButton = document.getElementById("close-details");
+    const expandButton = document.getElementById("expand-graph");
+    const collapseButton = document.getElementById("collapse-graph");
     const nodes = document.querySelectorAll(".node");
+
+    function expandGraph() {
+      canvas.classList.add("expanded");
+      expandButton.textContent = "Graph unfolded";
+    }
+
+    function collapseGraph() {
+      canvas.classList.remove("expanded");
+      expandButton.textContent = "Unfold graph";
+      nodes.forEach((n) => n.classList.remove("active"));
+      renderDetails({
+        tag: "Biosketch-Graph",
+        title: "Central orbit",
+        text: "Click the BioTeC+ / KU Leuven core to unfold the graph. The trajectory will expand from the central academic orbit into foundation, current profile, and emerging directions."
+      });
+    }
 
     function renderDetails(item) {
       detailBox.innerHTML = `
@@ -696,14 +786,18 @@
         </p>
       `;
 
-      const newCloseButton = document.getElementById("close-details");
-      newCloseButton.addEventListener("click", () => {
+      const closeButton = document.getElementById("close-details");
+      closeButton.addEventListener("click", () => {
         detailBox.classList.remove("mobile-open");
       });
     }
 
     nodes.forEach((node) => {
       node.addEventListener("click", () => {
+        if (!canvas.classList.contains("expanded")) {
+          expandGraph();
+        }
+
         nodes.forEach((n) => n.classList.remove("active"));
         node.classList.add("active");
 
@@ -716,9 +810,8 @@
       });
     });
 
-    closeButton.addEventListener("click", () => {
-      detailBox.classList.remove("mobile-open");
-    });
+    expandButton.addEventListener("click", expandGraph);
+    collapseButton.addEventListener("click", collapseGraph);
   </script>
 </body>
 </html>
