@@ -1126,6 +1126,8 @@ detailsPanel.innerHTML = `
           orbit.summary,
           orbit.crossLinks,
           "This orbit is unfolded in the left field. Related intersections can be activated from the cross-links."
+          node.image || "",
+          node.imageCaption || ""
         );
 
         document.querySelectorAll(".sub-orbit-node").forEach((item) => {
@@ -1153,9 +1155,7 @@ detailsPanel.innerHTML = `
           node.text,
           node.crossLinks,
           "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile.",
-          node.image || "",
-          node.imageCaption || ""
-          );
+                    );
         });
 
         subOrbitLayer.appendChild(button);
