@@ -15,7 +15,7 @@
       --accent: #2f4f4f;
       --accent-soft: #e7eeee;
       --foundation: #eef1f5;
-      --orbit: #e7eeee;
+      --ku: #e7eeee;
       --current: #f2efe7;
       --emerging: #f0edf5;
       --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -34,7 +34,7 @@
     }
 
     .page {
-      max-width: 1180px;
+      max-width: 1220px;
       margin: 0 auto;
       padding: 32px 20px 56px;
     }
@@ -51,7 +51,7 @@
     }
 
     .subtitle {
-      max-width: 920px;
+      max-width: 940px;
       margin: 0;
       font-size: 1.08rem;
       color: var(--muted);
@@ -125,7 +125,7 @@
     }
 
     .graph-head {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .graph-head h2 {
@@ -138,41 +138,205 @@
       font-size: 0.96rem;
     }
 
-    .orbit-map {
+    .focus-field {
       position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1.1fr 1fr;
-      grid-template-rows: auto auto auto;
-      gap: 22px;
-      align-items: center;
-      justify-items: center;
-      min-height: 430px;
-      padding: 32px 18px;
+      min-height: 590px;
       border: 1px solid var(--line);
       border-radius: 22px;
       background:
-        radial-gradient(circle at 50% 50%, rgba(47, 79, 79, 0.13), transparent 22%),
-        linear-gradient(90deg, rgba(238, 241, 245, 0.45), rgba(240, 237, 245, 0.35));
+        radial-gradient(circle at 50% 50%, rgba(47, 79, 79, 0.12), transparent 23%),
+        linear-gradient(90deg, rgba(238, 241, 245, 0.42), rgba(240, 237, 245, 0.35));
       overflow: hidden;
     }
 
-    .orbit-map.expanded::before,
-    .orbit-map.expanded::after {
-      content: "";
+    .orbit-view,
+    .focus-view {
       position: absolute;
-      background: rgba(47, 79, 79, 0.24);
-      z-index: 0;
+      inset: 0;
     }
 
-    .orbit-map.expanded::before {
-      width: 2px;
-      height: 72%;
+    .focus-view {
+      display: none;
+      padding: 18px;
+    }
+
+    .focus-field[data-mode="focus"] .orbit-view {
+      display: none;
+    }
+
+    .focus-field[data-mode="focus"] .focus-view {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .core-node,
+    .orbit-node,
+    .mini-core,
+    .active-orbit,
+    .node-card,
+    .orbit-tab {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.2s ease;
+    }
+
+    .core-node:hover,
+    .orbit-node:hover,
+    .mini-core:hover,
+    .active-orbit:hover,
+    .node-card:hover,
+    .orbit-tab:hover,
+    .core-node:focus,
+    .orbit-node:focus,
+    .mini-core:focus,
+    .active-orbit:focus,
+    .node-card:focus,
+    .orbit-tab:focus {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
+    }
+
+    .core-node strong,
+    .orbit-node strong,
+    .mini-core strong,
+    .active-orbit strong,
+    .node-card strong,
+    .orbit-tab strong {
+      display: block;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .core-node span,
+    .orbit-node span,
+    .mini-core span,
+    .active-orbit span,
+    .node-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.3;
+    }
+
+    .core-node {
+      position: absolute;
       left: 50%;
-      top: 14%;
+      top: 50%;
+      width: min(280px, 70%);
+      padding: 24px 20px;
+      transform: translate(-50%, -50%);
+      background: var(--accent);
+      color: white;
+      border: 2px solid var(--accent);
+      text-align: center;
+      z-index: 5;
+    }
+
+    .core-node:hover,
+    .core-node:focus {
+      transform: translate(-50%, -52%);
+    }
+
+    .core-node span {
+      color: rgba(255, 255, 255, 0.84);
+    }
+
+    .orbit-node {
+      position: absolute;
+      width: 230px;
+      min-height: 92px;
+      padding: 14px 16px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .focus-field[data-mode="orbit"] .orbit-node {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .orbit-node.foundation {
+      left: 50%;
+      top: 52px;
+      transform: translateX(-50%);
+      background: var(--foundation);
+    }
+
+    .orbit-node.ku {
+      left: 54px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--ku);
+    }
+
+    .orbit-node.current {
+      right: 54px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--current);
+    }
+
+    .orbit-node.emerging {
+      left: 50%;
+      bottom: 52px;
+      transform: translateX(-50%);
+      background: var(--emerging);
+    }
+
+    .orbit-node.foundation:hover,
+    .orbit-node.foundation:focus {
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    .orbit-node.ku:hover,
+    .orbit-node.ku:focus,
+    .orbit-node.current:hover,
+    .orbit-node.current:focus {
+      transform: translateY(calc(-50% - 3px));
+    }
+
+    .orbit-node.emerging:hover,
+    .orbit-node.emerging:focus {
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    .orbit-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .focus-field[data-mode="orbit"] .orbit-lines {
+      opacity: 1;
+    }
+
+    .orbit-lines::before,
+    .orbit-lines::after {
+      content: "";
+      position: absolute;
+      background: rgba(47, 79, 79, 0.22);
+      z-index: 1;
+    }
+
+    .orbit-lines::before {
+      width: 2px;
+      height: 70%;
+      left: 50%;
+      top: 15%;
       transform: translateX(-50%);
     }
 
-    .orbit-map.expanded::after {
+    .orbit-lines::after {
       height: 2px;
       width: 72%;
       left: 14%;
@@ -180,192 +344,100 @@
       transform: translateY(-50%);
     }
 
-    .core-button,
-    .orbit-button,
-    .node-button {
-      position: relative;
-      z-index: 2;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 14px 16px;
-      font: inherit;
-      text-align: left;
-      cursor: pointer;
-      box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
-      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.25s ease;
-    }
-
-    .core-button:hover,
-    .orbit-button:hover,
-    .node-button:hover,
-    .core-button:focus,
-    .orbit-button:focus,
-    .node-button:focus {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      outline: none;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
-    }
-
-    .core-button {
-      grid-column: 2;
-      grid-row: 2;
-      width: min(260px, 100%);
-      background: var(--accent);
-      color: white;
-      border: 2px solid var(--accent);
-      text-align: center;
-      padding: 22px 18px;
-    }
-
-    .core-button span {
-      color: rgba(255, 255, 255, 0.84);
-    }
-
-    .orbit-button {
-      width: min(230px, 100%);
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .orbit-map.expanded .orbit-button {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .orbit-button.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(47, 79, 79, 0.18), 0 8px 24px rgba(0, 0, 0, 0.14);
-    }
-
-    .orbit-button strong,
-    .core-button strong,
-    .node-button strong {
-      display: block;
-      line-height: 1.2;
-      margin-bottom: 5px;
-    }
-
-    .orbit-button span,
-    .core-button span,
-    .node-button span {
-      display: block;
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.3;
-    }
-
-    .core-button span {
-      color: rgba(255, 255, 255, 0.84);
-    }
-
-    .before-orbit {
-      grid-column: 2;
-      grid-row: 1;
-      background: var(--foundation);
-    }
-
-    .ku-orbit {
-      grid-column: 1;
-      grid-row: 2;
-      background: var(--orbit);
-    }
-
-    .current-orbit {
-      grid-column: 3;
-      grid-row: 2;
-      background: var(--current);
-    }
-
-    .emerging-orbit {
-      grid-column: 2;
-      grid-row: 3;
-      background: var(--emerging);
-    }
-
-    .hint {
+    .field-hint {
       position: absolute;
-      bottom: 18px;
       left: 20px;
       right: 20px;
+      bottom: 18px;
       text-align: center;
       color: var(--muted);
       font-size: 0.92rem;
-      z-index: 1;
+      opacity: 1;
       transition: opacity 0.2s ease;
     }
 
-    .orbit-map.expanded .hint {
+    .focus-field[data-mode="orbit"] .field-hint,
+    .focus-field[data-mode="focus"] .field-hint {
       opacity: 0;
     }
 
-    .selected-orbit {
-      margin-top: 22px;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 20px;
-      background: #fff;
-      display: none;
-    }
-
-    .selected-orbit.visible {
-      display: block;
-    }
-
-    .selected-orbit h3 {
-      margin: 0 0 6px;
-    }
-
-    .selected-orbit p {
-      margin-top: 0;
-      color: var(--muted);
-    }
-
-    .node-graph {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 18px;
-      align-items: stretch;
-      margin-top: 18px;
-    }
-
-    .orbit-hub {
-      border: 2px solid var(--accent);
-      background: var(--accent-soft);
-      border-radius: 20px;
-      padding: 18px;
+    .focus-toolbar {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 180px;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-start;
     }
 
-    .orbit-hub strong {
-      display: block;
-      margin-bottom: 8px;
+    .orbit-tab {
+      background: #fff;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+      border-radius: 999px;
     }
 
-    .orbit-hub span {
-      color: var(--muted);
-      font-size: 0.92rem;
+    .orbit-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
     }
 
-    .nodes-list {
-      position: relative;
+    .focus-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 210px 38px 230px 38px minmax(220px, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-height: 0;
+    }
+
+    .mini-core {
+      background: var(--accent);
+      color: white;
+      border: 2px solid var(--accent);
+      padding: 18px 16px;
+      text-align: center;
+      min-height: 128px;
+    }
+
+    .mini-core span {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .active-orbit {
+      padding: 18px 16px;
+      min-height: 160px;
+      background: var(--accent-soft);
+      border: 2px solid var(--accent);
+    }
+
+    .focus-arrow {
+      text-align: center;
+      color: rgba(47, 79, 79, 0.55);
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    .nodes-area {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+      align-content: center;
+      max-height: 470px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
-    .node-button {
+    .node-card {
       background: white;
-      width: 100%;
+      padding: 13px 14px;
+      min-height: 94px;
     }
 
-    .node-button.active {
+    .node-card.active {
       border-color: var(--accent);
       background: var(--accent-soft);
+      box-shadow: 0 0 0 3px rgba(47, 79, 79, 0.14), 0 8px 20px rgba(0, 0, 0, 0.11);
     }
 
     .details-panel {
@@ -411,7 +483,7 @@
       padding-top: 20px;
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1050px) {
       .intro,
       .graph-layout {
         grid-template-columns: 1fr;
@@ -422,64 +494,92 @@
       }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 760px) {
       .page {
-        padding: 24px 14px 42px;
+        padding: 22px 14px 42px;
       }
 
-      .orbit-map {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        min-height: auto;
-        gap: 14px;
+      h1 {
+        font-size: 2rem;
       }
 
-      .orbit-map.expanded::before,
-      .orbit-map.expanded::after {
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .panel,
+      .graph-card,
+      .details-panel {
+        border-radius: 16px;
+      }
+
+      .focus-field {
+        min-height: 650px;
+      }
+
+      .orbit-lines {
         display: none;
       }
 
-      .core-button,
-      .before-orbit,
-      .ku-orbit,
-      .current-orbit,
-      .emerging-orbit {
-        grid-column: auto;
-        grid-row: auto;
-        width: 100%;
+      .core-node {
+        width: calc(100% - 36px);
+        top: 50%;
       }
 
-      .core-button {
-        order: 1;
+      .orbit-node {
+        position: absolute;
+        left: 18px !important;
+        right: 18px !important;
+        width: auto;
+        min-height: 78px;
+        transform: none !important;
       }
 
-      .before-orbit {
-        order: 2;
+      .orbit-node.foundation {
+        top: 28px;
       }
 
-      .ku-orbit {
-        order: 3;
+      .orbit-node.ku {
+        top: 126px;
       }
 
-      .current-orbit {
-        order: 4;
+      .orbit-node.current {
+        top: 224px;
       }
 
-      .emerging-orbit {
-        order: 5;
+      .orbit-node.emerging {
+        top: 322px;
+        bottom: auto;
       }
 
-      .hint {
-        position: static;
-        margin-top: 10px;
-      }
-
-      .node-graph {
+      .focus-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+        overflow-y: auto;
       }
 
-      .nodes-list {
+      .focus-arrow {
+        display: none;
+      }
+
+      .mini-core,
+      .active-orbit {
+        min-height: auto;
+      }
+
+      .nodes-area {
         grid-template-columns: 1fr;
+        max-height: none;
+        overflow-y: visible;
+      }
+
+      .focus-view {
+        overflow-y: auto;
+      }
+
+      nav a {
+        font-size: 0.9rem;
+        padding: 7px 11px;
       }
     }
   </style>
@@ -508,20 +608,22 @@
       <div class="panel">
         <h2>What this graph shows</h2>
         <p>
-          This Biosketch-Graph is not a full biography and not a fixed hierarchy. It is a structured map of how
-          different technical, experimental, and research layers connect into one developing academic-professional profile.
+          This Biosketch-Graph is not a full biography and not a fixed hierarchy. It is a focus-preserving graph:
+          the profile unfolds inside one field of attention instead of expanding into a long page.
         </p>
         <p>
-          The graph opens in three steps: central orbit, profile orbits, and then selected nodes inside each orbit.
+          The central BioTeC+ / KU Leuven orbit opens four profile orbits. Selecting one orbit folds the others back
+          into the navigation layer and unfolds only the chosen orbit inside the same graph field.
         </p>
       </div>
 
       <aside class="panel">
         <h3>Reading logic</h3>
         <ul class="compact-list">
-          <li><strong>Step 1:</strong> click the central BioTeC+ / KU Leuven core.</li>
+          <li><strong>Step 1:</strong> click the central core.</li>
           <li><strong>Step 2:</strong> choose one orbit.</li>
-          <li><strong>Step 3:</strong> read the nodes inside that orbit.</li>
+          <li><strong>Step 3:</strong> read its nodes in the same field.</li>
+          <li><strong>Return:</strong> click the center again.</li>
         </ul>
       </aside>
     </section>
@@ -531,50 +633,64 @@
         <div class="graph-head">
           <h2>Orbital Biosketch-Graph</h2>
           <p>
-            Click the center first. Then select an orbit to unfold its internal nodes.
+            Center → orbits → selected orbit → nodes. The graph remains inside one field of attention.
           </p>
         </div>
 
-        <div class="orbit-map" id="orbit-map">
-          <button class="core-button" id="core-button" data-kind="core">
-            <strong>BioTeC+ / KU Leuven</strong>
-            <span>Central academic and experimental orbit. Click to reveal profile orbits.</span>
-          </button>
+        <div class="focus-field" id="focus-field" data-mode="core">
+          <div class="orbit-view">
+            <div class="orbit-lines"></div>
 
-          <button class="orbit-button before-orbit" data-orbit="foundation">
-            <strong>Before KU Leuven</strong>
-            <span>Technical and materials-engineering foundation.</span>
-          </button>
+            <button class="core-node" id="core-node">
+              <strong>BioTeC+ / KU Leuven</strong>
+              <span>Central academic and experimental orbit. Click to reveal profile orbits.</span>
+            </button>
 
-          <button class="orbit-button ku-orbit" data-orbit="ku">
-            <strong>KU Leuven / BioTeC+ Orbit</strong>
-            <span>Formal role, experimental R&D, prototype workflows.</span>
-          </button>
+            <button class="orbit-node foundation" data-orbit="foundation">
+              <strong>Before KU Leuven</strong>
+              <span>Technical and materials-engineering foundation.</span>
+            </button>
 
-          <button class="orbit-button current-orbit" data-orbit="current">
-            <strong>Current Research Profile</strong>
-            <span>Functional materials, field-assisted methods, bio-related testing.</span>
-          </button>
+            <button class="orbit-node ku" data-orbit="ku">
+              <strong>KU Leuven / BioTeC+ Orbit</strong>
+              <span>Formal role, experimental R&D, prototype workflows.</span>
+            </button>
 
-          <button class="orbit-button emerging-orbit" data-orbit="emerging">
-            <strong>Emerging Directions</strong>
-            <span>AI-assisted R&D, trace documentation, methodological branches.</span>
-          </button>
+            <button class="orbit-node current" data-orbit="current">
+              <strong>Current Research Profile</strong>
+              <span>Functional materials, field-assisted methods, bio-related testing.</span>
+            </button>
 
-          <div class="hint">Click the central core to reveal the four profile orbits.</div>
-        </div>
+            <button class="orbit-node emerging" data-orbit="emerging">
+              <strong>Emerging Directions</strong>
+              <span>AI-assisted structuring, trace documentation, methodological branch.</span>
+            </button>
 
-        <div class="selected-orbit" id="selected-orbit">
-          <h3 id="orbit-title">Select an orbit</h3>
-          <p id="orbit-summary">The selected orbit will unfold here.</p>
-
-          <div class="node-graph">
-            <div class="orbit-hub">
-              <strong id="orbit-hub-title">Orbit</strong>
-              <span id="orbit-hub-text">This hub connects the selected orbit to its internal nodes.</span>
+            <div class="field-hint">
+              Click the central core to reveal the four profile orbits.
             </div>
+          </div>
 
-            <div class="nodes-list" id="nodes-list"></div>
+          <div class="focus-view">
+            <div class="focus-toolbar" id="focus-toolbar"></div>
+
+            <div class="focus-grid">
+              <button class="mini-core" id="mini-core">
+                <strong>BioTeC+ / KU Leuven</strong>
+                <span>Click to return to orbit view.</span>
+              </button>
+
+              <div class="focus-arrow">→</div>
+
+              <button class="active-orbit" id="active-orbit">
+                <strong>Selected orbit</strong>
+                <span>Choose an orbit to unfold its internal nodes.</span>
+              </button>
+
+              <div class="focus-arrow">→</div>
+
+              <div class="nodes-area" id="nodes-area"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -583,10 +699,10 @@
         <span class="tag">Biosketch-Graph</span>
         <h2>Central orbit</h2>
         <p>
-          Click the BioTeC+ / KU Leuven core to reveal the profile orbits. Then select one orbit to unfold its internal nodes.
+          Click the BioTeC+ / KU Leuven core to reveal the profile orbits.
         </p>
         <p class="small">
-          This page shows trajectory and connection, not isolated skills.
+          The right panel explains the selected orbit or node. The graph itself stays inside one field.
         </p>
       </aside>
     </section>
@@ -597,24 +713,22 @@
   </main>
 
   <script>
-    const orbitMap = document.getElementById("orbit-map");
-    const coreButton = document.getElementById("core-button");
-    const orbitButtons = document.querySelectorAll(".orbit-button");
-    const selectedOrbit = document.getElementById("selected-orbit");
-    const orbitTitle = document.getElementById("orbit-title");
-    const orbitSummary = document.getElementById("orbit-summary");
-    const orbitHubTitle = document.getElementById("orbit-hub-title");
-    const orbitHubText = document.getElementById("orbit-hub-text");
-    const nodesList = document.getElementById("nodes-list");
+    const focusField = document.getElementById("focus-field");
+    const coreNode = document.getElementById("core-node");
+    const miniCore = document.getElementById("mini-core");
+    const orbitButtons = document.querySelectorAll(".orbit-node");
+    const toolbar = document.getElementById("focus-toolbar");
+    const activeOrbit = document.getElementById("active-orbit");
+    const nodesArea = document.getElementById("nodes-area");
     const detailsPanel = document.getElementById("details-panel");
 
     const orbits = {
       foundation: {
         tag: "Before KU Leuven",
         title: "Before KU Leuven",
-        summary: "Technical and materials-engineering foundation before entering the BioTeC+ / KU Leuven research orbit.",
-        hub: "Foundation layer",
-        hubText: "This layer shows what existed before KU Leuven and later became transferable into the current research profile.",
+        colorClass: "foundation",
+        short: "Technical and materials-engineering foundation.",
+        summary: "This orbit shows the technical and materials-engineering foundation that existed before entering the BioTeC+ / KU Leuven research orbit.",
         nodes: [
           {
             title: "Materials Engineering",
@@ -647,9 +761,9 @@
       ku: {
         tag: "KU Leuven / BioTeC+ Orbit",
         title: "KU Leuven / BioTeC+ Orbit",
-        summary: "The academic and experimental orbit where earlier technical experience became anchored in the current research environment.",
-        hub: "Academic anchoring",
-        hubText: "This layer connects the formal position, experimental R&D work, and prototype-level workflows inside the current institutional context.",
+        colorClass: "ku",
+        short: "Formal role, experimental R&D, prototype workflows.",
+        summary: "This orbit is the academic and experimental anchoring layer where earlier technical experience becomes connected to the current research environment.",
         nodes: [
           {
             title: "Research Assistant",
@@ -677,9 +791,9 @@
       current: {
         tag: "Current Research Profile",
         title: "Current Research Profile",
-        summary: "Active working domains connecting functional materials, field-assisted methods, bio-related testing, and setup development.",
-        hub: "Current profile",
-        hubText: "This layer shows the active profile as a bridge between materials, physical fields, biological response, and practical setup work.",
+        colorClass: "current",
+        short: "Functional materials, field-assisted methods, bio-related testing.",
+        summary: "This orbit shows the active working profile connecting functional materials, physical fields, bio-related testing, and setup development.",
         nodes: [
           {
             title: "Functional Materials",
@@ -712,9 +826,9 @@
       emerging: {
         tag: "Emerging Directions",
         title: "Emerging Directions",
-        summary: "Carefully developing extensions of the profile: AI-assisted structuring, trace documentation, modular systems, and methodological branches.",
-        hub: "Emerging layer",
-        hubText: "This layer should be read as developing and exploratory, not as a list of finalized products or completed systems.",
+        colorClass: "emerging",
+        short: "AI-assisted structuring, trace documentation, methodological branch.",
+        summary: "This orbit shows carefully developing extensions of the profile. It should be read as exploratory and in-progress, not as a list of finalized products.",
         nodes: [
           {
             title: "AI-assisted R&D Structuring",
@@ -745,89 +859,114 @@
       }
     };
 
-    function showCoreDetails() {
+    function setDetails(tag, title, text, smallText) {
       detailsPanel.innerHTML = `
-        <span class="tag">Central orbit</span>
-        <h2>BioTeC+ / KU Leuven</h2>
-        <p>
-          This is the central academic and experimental orbit of the current profile.
-          It anchors the transition from earlier technical-materials experience into the current research environment.
-        </p>
-        <p class="small">
-          Next step: choose one orbit to unfold its internal nodes.
-        </p>
+        <span class="tag">${tag}</span>
+        <h2>${title}</h2>
+        <p>${text}</p>
+        <p class="small">${smallText}</p>
       `;
     }
 
-    function showOrbitDetails(orbitKey) {
-      const orbit = orbits[orbitKey];
-
-      detailsPanel.innerHTML = `
-        <span class="tag">${orbit.tag}</span>
-        <h2>${orbit.title}</h2>
-        <p>${orbit.summary}</p>
-        <p class="small">
-          Click one of the nodes in this orbit to read a more specific description.
-        </p>
-      `;
+    function showOrbitMode() {
+      focusField.dataset.mode = "orbit";
+      setDetails(
+        "Orbit view",
+        "Profile orbits",
+        "The central BioTeC+ / KU Leuven orbit has opened four profile orbits. Select one orbit to unfold its nodes inside the same graph field.",
+        "Click the center again at any time to return to this orbit view."
+      );
     }
 
-    function showNodeDetails(orbitKey, node) {
-      const orbit = orbits[orbitKey];
+    function buildToolbar(activeKey) {
+      toolbar.innerHTML = "";
 
-      detailsPanel.innerHTML = `
-        <span class="tag">${orbit.tag}</span>
-        <h2>${node.title}</h2>
-        <p>${node.text}</p>
-        <p class="small">
-          This node belongs to the selected orbit and contributes to the overall Biosketch-Graph trajectory.
-        </p>
-      `;
+      Object.keys(orbits).forEach((key) => {
+        const orbit = orbits[key];
+        const button = document.createElement("button");
+        button.className = "orbit-tab" + (key === activeKey ? " active" : "");
+        button.textContent = orbit.title;
+
+        button.addEventListener("click", () => {
+          showFocusMode(key);
+        });
+
+        toolbar.appendChild(button);
+      });
     }
 
-    function renderOrbit(orbitKey) {
+    function showFocusMode(orbitKey) {
       const orbit = orbits[orbitKey];
 
-      orbitTitle.textContent = orbit.title;
-      orbitSummary.textContent = orbit.summary;
-      orbitHubTitle.textContent = orbit.hub;
-      orbitHubText.textContent = orbit.hubText;
-      nodesList.innerHTML = "";
+      focusField.dataset.mode = "focus";
+      buildToolbar(orbitKey);
+
+      activeOrbit.className = "active-orbit";
+      activeOrbit.innerHTML = `
+        <strong>${orbit.title}</strong>
+        <span>${orbit.short}</span>
+      `;
+
+      activeOrbit.onclick = () => {
+        setDetails(
+          orbit.tag,
+          orbit.title,
+          orbit.summary,
+          "Select a node on the right side of the same field to read a more specific description."
+        );
+      };
+
+      nodesArea.innerHTML = "";
 
       orbit.nodes.forEach((node) => {
         const button = document.createElement("button");
-        button.className = "node-button";
+        button.className = "node-card";
         button.innerHTML = `
           <strong>${node.title}</strong>
           <span>${node.short}</span>
         `;
 
         button.addEventListener("click", () => {
-          document.querySelectorAll(".node-button").forEach((b) => b.classList.remove("active"));
+          document.querySelectorAll(".node-card").forEach((item) => {
+            item.classList.remove("active");
+          });
+
           button.classList.add("active");
-          showNodeDetails(orbitKey, node);
+
+          setDetails(
+            orbit.tag,
+            node.title,
+            node.text,
+            "This node belongs to the selected orbit and contributes to the overall Biosketch-Graph trajectory."
+          );
         });
 
-        nodesList.appendChild(button);
+        nodesArea.appendChild(button);
       });
 
-      selectedOrbit.classList.add("visible");
-      showOrbitDetails(orbitKey);
+      setDetails(
+        orbit.tag,
+        orbit.title,
+        orbit.summary,
+        "The selected orbit is unfolded inside the same graph field. Other orbits remain available as compact switches."
+      );
     }
 
-    coreButton.addEventListener("click", () => {
-      orbitMap.classList.add("expanded");
-      showCoreDetails();
+    coreNode.addEventListener("click", () => {
+      if (focusField.dataset.mode === "core") {
+        showOrbitMode();
+      } else {
+        showOrbitMode();
+      }
+    });
+
+    miniCore.addEventListener("click", () => {
+      showOrbitMode();
     });
 
     orbitButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        orbitMap.classList.add("expanded");
-
-        orbitButtons.forEach((b) => b.classList.remove("active"));
-        button.classList.add("active");
-
-        renderOrbit(button.dataset.orbit);
+        showFocusMode(button.dataset.orbit);
       });
     });
   </script>
