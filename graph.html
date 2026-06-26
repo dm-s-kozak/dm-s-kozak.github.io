@@ -480,21 +480,23 @@
       color: var(--muted);
       font-size: 0.94rem;
     }
-.visual-block {
-  margin-top: 16px;
-  margin-bottom: 12px;
-}
 
-.detail-image {
-  width: 100%;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  display: block;
-}
+    .visual-block {
+      margin-top: 16px;
+      margin-bottom: 12px;
+    }
 
-.image-caption {
-  margin-top: 8px;
-}
+    .detail-image {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      display: block;
+    }
+
+    .image-caption {
+      margin-top: 8px;
+    }
+
     .crosslinks {
       margin-top: 18px;
       padding-top: 16px;
@@ -664,7 +666,7 @@
         <h2>What this graph shows</h2>
         <p>
           This Biosketch-Graph is a focus-preserving graph. The left field keeps the orbital structure compact,
-          while the right field explains the selected orbit, sub-orbit, and cross-links.
+          while the right field explains the selected orbit, sub-orbit, visual basis, and cross-links.
         </p>
       </div>
 
@@ -674,7 +676,7 @@
           <li><strong>Center:</strong> BioTeC+ / KU Leuven.</li>
           <li><strong>Orbits:</strong> four profile layers.</li>
           <li><strong>Sub-orbits:</strong> satellites of the selected orbit.</li>
-          <li><strong>Right panel:</strong> meaning, intersections, cross-links.</li>
+          <li><strong>Right panel:</strong> meaning, visual basis, intersections.</li>
         </ul>
       </aside>
     </section>
@@ -773,7 +775,7 @@
         summary: "This orbit gathers the technical and materials-engineering foundation that existed before the BioTeC+ / KU Leuven period.",
         crossLinks: [
           { label: "Functional Materials", orbit: "current", node: "functional-materials" },
-          { label: "Surface-related Technologies", orbit: "ku", node: "antimicrobial-context" },
+          { label: "Antimicrobial Context", orbit: "ku", node: "antimicrobial-context" },
           { label: "Setup Development", orbit: "current", node: "setup-development" },
           { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" }
         ],
@@ -1003,6 +1005,15 @@
     };
 
     function setDetails(tag, title, text, crossLinks = [], smallText = "", image = "", imageCaption = "") {
+      const imageHtml = image
+        ? `
+          <div class="visual-block">
+            <img src="${image}" alt="${title}" class="detail-image">
+            ${imageCaption ? `<p class="small image-caption">${imageCaption}</p>` : ""}
+          </div>
+        `
+        : "";
+
       const crossLinksHtml = crossLinks.length
         ? `
           <div class="crosslinks">
@@ -1018,23 +1029,15 @@
         `
         : "";
 
-      const imageHtml = image
-  ? `
-    <div class="visual-block">
-      <img src="${image}" alt="${title}" class="detail-image">
-      ${imageCaption ? `<p class="small image-caption">${imageCaption}</p>` : ""}
-    </div>
-  `
-  : "";
+      detailsPanel.innerHTML = `
+        <span class="tag">${tag}</span>
+        <h2>${title}</h2>
+        <p>${text}</p>
+        ${smallText ? `<p class="small">${smallText}</p>` : ""}
+        ${imageHtml}
+        ${crossLinksHtml}
+      `;
 
-detailsPanel.innerHTML = `
-  <span class="tag">${tag}</span>
-  <h2>${title}</h2>
-  <p>${text}</p>
-  ${smallText ? `<p class="small">${smallText}</p>` : ""}
-  ${imageHtml}
-  ${crossLinksHtml}
-`;
       document.querySelectorAll(".crosslink-button").forEach((button) => {
         button.addEventListener("click", () => {
           const orbitKey = button.dataset.orbit;
@@ -1126,7 +1129,6 @@ detailsPanel.innerHTML = `
           orbit.summary,
           orbit.crossLinks,
           "This orbit is unfolded in the left field. Related intersections can be activated from the cross-links."
-         
         );
 
         document.querySelectorAll(".sub-orbit-node").forEach((item) => {
@@ -1149,13 +1151,13 @@ detailsPanel.innerHTML = `
           button.classList.add("active");
 
           setDetails(
-          orbit.tag,
-           node.title,
-          node.text,
-          node.crossLinks,
-          "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile.",
-          node.image || "",
-          node.imageCaption || ""
+            orbit.tag,
+            node.title,
+            node.text,
+            node.crossLinks,
+            "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile.",
+            node.image || "",
+            node.imageCaption || ""
           );
         });
 
@@ -1170,7 +1172,9 @@ detailsPanel.innerHTML = `
             selectedNode.title,
             selectedNode.text,
             selectedNode.crossLinks,
-            "This sub-orbit was activated through a cross-link."
+            "This sub-orbit was activated through a cross-link.",
+            selectedNode.image || "",
+            selectedNode.imageCaption || ""
           );
         }
       } else {
@@ -1180,8 +1184,6 @@ detailsPanel.innerHTML = `
           orbit.summary,
           orbit.crossLinks,
           "The selected orbit unfolds its sub-orbits around itself inside the same graph field."
-          node.image || "",
-          node.imageCaption || ""
         );
       }
 
