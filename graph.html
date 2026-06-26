@@ -480,7 +480,21 @@
       color: var(--muted);
       font-size: 0.94rem;
     }
+.visual-block {
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
 
+.detail-image {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.image-caption {
+  margin-top: 8px;
+}
     .crosslinks {
       margin-top: 18px;
       padding-top: 16px;
@@ -896,6 +910,8 @@
             id: "plasma-rf-pef",
             title: "Plasma / RF / PEF",
             text: "Practical field-assisted domain connecting plasma-related processes, radio-frequency systems, and pulsed electric fields.",
+            image: "images/Image_1.png",
+            imageCaption: "AI-assisted conceptual workflow: idea → setup → treatment interaction → response → before/after analysis.",
             crossLinks: [
               { label: "Field-Assisted Methods", orbit: "current", node: "field-assisted-methods" },
               { label: "Bio-related Bridge", orbit: "current", node: "bio-related-bridge" },
@@ -986,7 +1002,7 @@
       }
     };
 
-    function setDetails(tag, title, text, crossLinks = [], smallText = "") {
+    function setDetails(tag, title, text, crossLinks = [], smallText = "", image = "", imageCaption = "") {
       const crossLinksHtml = crossLinks.length
         ? `
           <div class="crosslinks">
@@ -1002,14 +1018,23 @@
         `
         : "";
 
-      detailsPanel.innerHTML = `
-        <span class="tag">${tag}</span>
-        <h2>${title}</h2>
-        <p>${text}</p>
-        ${smallText ? `<p class="small">${smallText}</p>` : ""}
-        ${crossLinksHtml}
-      `;
+      const imageHtml = image
+  ? `
+    <div class="visual-block">
+      <img src="${image}" alt="${title}" class="detail-image">
+      ${imageCaption ? `<p class="small image-caption">${imageCaption}</p>` : ""}
+    </div>
+  `
+  : "";
 
+detailsPanel.innerHTML = `
+  <span class="tag">${tag}</span>
+  <h2>${title}</h2>
+  <p>${text}</p>
+  ${smallText ? `<p class="small">${smallText}</p>` : ""}
+  ${imageHtml}
+  ${crossLinksHtml}
+`;
       document.querySelectorAll(".crosslink-button").forEach((button) => {
         button.addEventListener("click", () => {
           const orbitKey = button.dataset.orbit;
@@ -1123,11 +1148,13 @@
           button.classList.add("active");
 
           setDetails(
-            orbit.tag,
-            node.title,
-            node.text,
-            node.crossLinks,
-            "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile."
+          orbit.tag,
+           node.title,
+          node.text,
+          node.crossLinks,
+          "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile.",
+          node.image || "",
+          node.imageCaption || ""
           );
         });
 
