@@ -111,7 +111,7 @@
 
     .graph-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 340px;
+      grid-template-columns: minmax(0, 1fr) 360px;
       gap: 22px;
       align-items: start;
     }
@@ -140,7 +140,7 @@
 
     .focus-field {
       position: relative;
-      min-height: 590px;
+      min-height: 560px;
       border: 1px solid var(--line);
       border-radius: 22px;
       background:
@@ -180,7 +180,7 @@
       border-radius: 20px;
       font: inherit;
       cursor: pointer;
-      text-align: left;
+      text-align: center;
       box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
       transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, opacity 0.2s ease;
     }
@@ -211,18 +211,6 @@
     .orbit-tab strong {
       display: block;
       line-height: 1.2;
-      margin-bottom: 5px;
-    }
-
-    .core-node span,
-    .orbit-node span,
-    .mini-core span,
-    .active-orbit span,
-    .node-card span {
-      display: block;
-      color: var(--muted);
-      font-size: 0.82rem;
-      line-height: 1.3;
     }
 
     .core-node {
@@ -230,12 +218,11 @@
       left: 50%;
       top: 50%;
       width: min(280px, 70%);
-      padding: 24px 20px;
+      padding: 26px 20px;
       transform: translate(-50%, -50%);
       background: var(--accent);
       color: white;
       border: 2px solid var(--accent);
-      text-align: center;
       z-index: 5;
     }
 
@@ -244,15 +231,11 @@
       transform: translate(-50%, -52%);
     }
 
-    .core-node span {
-      color: rgba(255, 255, 255, 0.84);
-    }
-
     .orbit-node {
       position: absolute;
       width: 230px;
-      min-height: 92px;
-      padding: 14px 16px;
+      min-height: 82px;
+      padding: 16px;
       opacity: 0;
       pointer-events: none;
       z-index: 3;
@@ -289,23 +272,6 @@
       bottom: 52px;
       transform: translateX(-50%);
       background: var(--emerging);
-    }
-
-    .orbit-node.foundation:hover,
-    .orbit-node.foundation:focus {
-      transform: translateX(-50%) translateY(-3px);
-    }
-
-    .orbit-node.ku:hover,
-    .orbit-node.ku:focus,
-    .orbit-node.current:hover,
-    .orbit-node.current:focus {
-      transform: translateY(calc(-50% - 3px));
-    }
-
-    .orbit-node.emerging:hover,
-    .orbit-node.emerging:focus {
-      transform: translateX(-50%) translateY(-3px);
     }
 
     .orbit-lines {
@@ -372,7 +338,7 @@
     .orbit-tab {
       background: #fff;
       padding: 8px 11px;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       border-radius: 999px;
     }
 
@@ -385,7 +351,7 @@
     .focus-grid {
       flex: 1;
       display: grid;
-      grid-template-columns: 210px 38px 230px 38px minmax(220px, 1fr);
+      grid-template-columns: 190px 32px 210px 32px minmax(220px, 1fr);
       gap: 10px;
       align-items: center;
       min-height: 0;
@@ -396,17 +362,12 @@
       color: white;
       border: 2px solid var(--accent);
       padding: 18px 16px;
-      text-align: center;
-      min-height: 128px;
-    }
-
-    .mini-core span {
-      color: rgba(255, 255, 255, 0.82);
+      min-height: 120px;
     }
 
     .active-orbit {
       padding: 18px 16px;
-      min-height: 160px;
+      min-height: 140px;
       background: var(--accent-soft);
       border: 2px solid var(--accent);
     }
@@ -423,15 +384,15 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
       align-content: center;
-      max-height: 470px;
+      max-height: 430px;
       overflow-y: auto;
       padding-right: 4px;
     }
 
     .node-card {
       background: white;
-      padding: 13px 14px;
-      min-height: 94px;
+      padding: 14px 12px;
+      min-height: 78px;
     }
 
     .node-card.active {
@@ -448,7 +409,7 @@
       border-radius: 24px;
       padding: 22px;
       box-shadow: var(--shadow);
-      min-height: 360px;
+      min-height: 420px;
     }
 
     .details-panel h2 {
@@ -473,6 +434,41 @@
     .details-panel .small {
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .crosslinks {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .crosslinks h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .crosslink-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .crosslink-button {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font: inherit;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    .crosslink-button:hover,
+    .crosslink-button:focus {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      outline: none;
     }
 
     footer {
@@ -514,7 +510,7 @@
       }
 
       .focus-field {
-        min-height: 650px;
+        min-height: 620px;
       }
 
       .orbit-lines {
@@ -523,7 +519,6 @@
 
       .core-node {
         width: calc(100% - 36px);
-        top: 50%;
       }
 
       .orbit-node {
@@ -531,24 +526,24 @@
         left: 18px !important;
         right: 18px !important;
         width: auto;
-        min-height: 78px;
+        min-height: 68px;
         transform: none !important;
       }
 
       .orbit-node.foundation {
-        top: 28px;
+        top: 26px;
       }
 
       .orbit-node.ku {
-        top: 126px;
+        top: 108px;
       }
 
       .orbit-node.current {
-        top: 224px;
+        top: 190px;
       }
 
       .orbit-node.emerging {
-        top: 322px;
+        top: 272px;
         bottom: auto;
       }
 
@@ -591,8 +586,7 @@
       <h1>Dmytro Kozak — Biosketch-Graph</h1>
       <p class="subtitle">
         A trajectory map of my research profile: from earlier materials-engineering and technical experience,
-        through the BioTeC+ / KU Leuven research orbit, toward a current academic-professional profile connecting
-        functional materials, field-assisted methods, bio-related testing, and AI-assisted R&D structuring.
+        through the BioTeC+ / KU Leuven research orbit, toward a current academic-professional profile.
       </p>
     </header>
 
@@ -608,22 +602,18 @@
       <div class="panel">
         <h2>What this graph shows</h2>
         <p>
-          This Biosketch-Graph is not a full biography and not a fixed hierarchy. It is a focus-preserving graph:
-          the profile unfolds inside one field of attention instead of expanding into a long page.
-        </p>
-        <p>
-          The central BioTeC+ / KU Leuven orbit opens four profile orbits. Selecting one orbit folds the others back
-          into the navigation layer and unfolds only the chosen orbit inside the same graph field.
+          This Biosketch-Graph is a focus-preserving graph. The left field keeps the orbital structure compact,
+          while the right field explains the selected orbit, sub-orbit, and cross-links.
         </p>
       </div>
 
       <aside class="panel">
         <h3>Reading logic</h3>
         <ul class="compact-list">
-          <li><strong>Step 1:</strong> click the central core.</li>
-          <li><strong>Step 2:</strong> choose one orbit.</li>
-          <li><strong>Step 3:</strong> read its nodes in the same field.</li>
-          <li><strong>Return:</strong> click the center again.</li>
+          <li><strong>Center:</strong> BioTeC+ / KU Leuven.</li>
+          <li><strong>Orbits:</strong> four profile layers.</li>
+          <li><strong>Sub-orbits:</strong> short nodes inside the selected orbit.</li>
+          <li><strong>Right panel:</strong> meaning, intersections, cross-links.</li>
         </ul>
       </aside>
     </section>
@@ -633,7 +623,7 @@
         <div class="graph-head">
           <h2>Orbital Biosketch-Graph</h2>
           <p>
-            Center → orbits → selected orbit → nodes. The graph remains inside one field of attention.
+            Center → orbits → sub-orbits. The right panel carries the explanation and cross-linking.
           </p>
         </div>
 
@@ -643,27 +633,22 @@
 
             <button class="core-node" id="core-node">
               <strong>BioTeC+ / KU Leuven</strong>
-              <span>Central academic and experimental orbit. Click to reveal profile orbits.</span>
             </button>
 
             <button class="orbit-node foundation" data-orbit="foundation">
               <strong>Before KU Leuven</strong>
-              <span>Technical and materials-engineering foundation.</span>
             </button>
 
             <button class="orbit-node ku" data-orbit="ku">
               <strong>KU Leuven / BioTeC+ Orbit</strong>
-              <span>Formal role, experimental R&D, prototype workflows.</span>
             </button>
 
             <button class="orbit-node current" data-orbit="current">
               <strong>Current Research Profile</strong>
-              <span>Functional materials, field-assisted methods, bio-related testing.</span>
             </button>
 
             <button class="orbit-node emerging" data-orbit="emerging">
               <strong>Emerging Directions</strong>
-              <span>AI-assisted structuring, trace documentation, methodological branch.</span>
             </button>
 
             <div class="field-hint">
@@ -677,14 +662,12 @@
             <div class="focus-grid">
               <button class="mini-core" id="mini-core">
                 <strong>BioTeC+ / KU Leuven</strong>
-                <span>Click to return to orbit view.</span>
               </button>
 
               <div class="focus-arrow">→</div>
 
               <button class="active-orbit" id="active-orbit">
                 <strong>Selected orbit</strong>
-                <span>Choose an orbit to unfold its internal nodes.</span>
               </button>
 
               <div class="focus-arrow">→</div>
@@ -699,10 +682,10 @@
         <span class="tag">Biosketch-Graph</span>
         <h2>Central orbit</h2>
         <p>
-          Click the BioTeC+ / KU Leuven core to reveal the profile orbits.
+          Click the BioTeC+ / KU Leuven core to reveal the four profile orbits.
         </p>
         <p class="small">
-          The right panel explains the selected orbit or node. The graph itself stays inside one field.
+          The right panel explains selected elements and allows cross-link navigation.
         </p>
       </aside>
     </section>
@@ -726,34 +709,58 @@
       foundation: {
         tag: "Before KU Leuven",
         title: "Before KU Leuven",
-        colorClass: "foundation",
-        short: "Technical and materials-engineering foundation.",
-        summary: "This orbit shows the technical and materials-engineering foundation that existed before entering the BioTeC+ / KU Leuven research orbit.",
+        summary: "This orbit gathers the technical and materials-engineering foundation that existed before the BioTeC+ / KU Leuven period.",
+        crossLinks: [
+          { label: "Functional Materials", orbit: "current", node: "functional-materials" },
+          { label: "Surface-related Technologies", orbit: "ku", node: "antimicrobial-context" },
+          { label: "Setup Development", orbit: "current", node: "setup-development" },
+          { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" }
+        ],
         nodes: [
           {
+            id: "materials-engineering",
             title: "Materials Engineering",
-            short: "Metals, coatings, polymers, applied material systems.",
-            text: "This node represents the technical foundation formed through work with metals, coatings, polymers, nanomaterials, and applied material systems."
+            text: "Technical foundation in metals, coatings, polymers, nanomaterials, and applied material systems.",
+            crossLinks: [
+              { label: "Functional Materials", orbit: "current", node: "functional-materials" },
+              { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" }
+            ]
           },
           {
+            id: "surface-modification",
             title: "Surface Modification",
-            short: "Coatings, interfaces, surface-related thinking.",
-            text: "Surface modification connects earlier materials work with later surface-related technologies, coatings, antimicrobial interfaces, and process-oriented testing."
+            text: "Earlier surface-related work connecting coatings, interfaces, antimicrobial surfaces, and later KU Leuven/BioTeC+ contexts.",
+            crossLinks: [
+              { label: "Functional Materials", orbit: "current", node: "functional-materials" },
+              { label: "Antimicrobial Context", orbit: "ku", node: "antimicrobial-context" }
+            ]
           },
           {
+            id: "electrodeposition",
             title: "Electrodeposition",
-            short: "Electrochemical routes and metallic layers.",
-            text: "Electrodeposition represents electrochemical thinking, metallic layer formation, process parameters, and experimental observation."
+            text: "Electrochemical routes, metallic layers, process parameters, and practical observation of material formation.",
+            crossLinks: [
+              { label: "Materials Engineering", orbit: "foundation", node: "materials-engineering" },
+              { label: "Functional Materials", orbit: "current", node: "functional-materials" }
+            ]
           },
           {
+            id: "characterization",
             title: "Characterization",
-            short: "SEM, XRD, FTIR, UV–Vis, microscopy traces.",
-            text: "Characterization includes microscopy and analytical traces used to observe and describe material systems."
+            text: "Microscopy and analytical traces used to observe and describe material systems: SEM, XRD, FTIR, UV–Vis and related methods.",
+            crossLinks: [
+              { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" },
+              { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" }
+            ]
           },
           {
-            title: "Experimental Troubleshooting",
-            short: "Fault finding, setup adjustment, process correction.",
-            text: "Troubleshooting is a practical layer of the profile: identifying faults, adjusting setups, testing conditions, and keeping experimental systems functional."
+            id: "troubleshooting",
+            title: "Troubleshooting",
+            text: "Fault finding, setup adjustment, experimental correction, and keeping unstable experimental systems functional.",
+            crossLinks: [
+              { label: "Setup Development", orbit: "current", node: "setup-development" },
+              { label: "Prototype Workflows", orbit: "ku", node: "prototype-workflows" }
+            ]
           }
         ]
       },
@@ -761,29 +768,49 @@
       ku: {
         tag: "KU Leuven / BioTeC+ Orbit",
         title: "KU Leuven / BioTeC+ Orbit",
-        colorClass: "ku",
-        short: "Formal role, experimental R&D, prototype workflows.",
-        summary: "This orbit is the academic and experimental anchoring layer where earlier technical experience becomes connected to the current research environment.",
+        summary: "This orbit anchors the profile in the current academic and experimental environment.",
+        crossLinks: [
+          { label: "Before KU Leuven", orbit: "foundation" },
+          { label: "Current Research Profile", orbit: "current" },
+          { label: "AI-assisted R&D", orbit: "emerging", node: "ai-rd" }
+        ],
         nodes: [
           {
+            id: "research-assistant",
             title: "Research Assistant",
-            short: "Formal current position in experimental research.",
-            text: "This node marks the formal current position. The profile is grounded in hands-on research assistance, technical contribution, setup work, and experimental support."
+            text: "Formal current position, grounded in hands-on research assistance, technical contribution, setup work, and experimental support.",
+            crossLinks: [
+              { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" },
+              { label: "Setup Development", orbit: "current", node: "setup-development" }
+            ]
           },
           {
+            id: "experimental-rd",
             title: "Experimental R&D",
-            short: "Setups, testing, materials, early-stage workflows.",
-            text: "Experimental R&D is the working contour where materials, setups, physical methods, measurements, and early-stage research questions meet."
+            text: "Working contour where materials, setups, physical methods, measurements, and early-stage research questions meet.",
+            crossLinks: [
+              { label: "Functional Materials", orbit: "current", node: "functional-materials" },
+              { label: "Field-Assisted Methods", orbit: "current", node: "field-assisted-methods" },
+              { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" }
+            ]
           },
           {
-            title: "Antimicrobial Testing Context",
-            short: "Bio-related testing environment and materials interface.",
-            text: "This node connects the profile to bio-related and antimicrobial testing environments. It should be read as contextual and contribution-based, not as overclaiming."
+            id: "antimicrobial-context",
+            title: "Antimicrobial Context",
+            text: "Bio-related and antimicrobial testing environment connected to material interfaces and process-oriented experimental work.",
+            crossLinks: [
+              { label: "Bio-related Bridge", orbit: "current", node: "bio-related-bridge" },
+              { label: "Surface Modification", orbit: "foundation", node: "surface-modification" }
+            ]
           },
           {
+            id: "prototype-workflows",
             title: "Prototype Workflows",
-            short: "Small testable corridors before larger claims.",
-            text: "Prototype workflows describe small, testable experimental corridors: early setups, adjustments, measurements, and iterations before larger claims or final systems."
+            text: "Small testable experimental corridors: early setups, adjustments, measurements, and iterations before larger claims.",
+            crossLinks: [
+              { label: "Setup Development", orbit: "current", node: "setup-development" },
+              { label: "Modular Systems", orbit: "emerging", node: "modular-systems" }
+            ]
           }
         ]
       },
@@ -791,34 +818,61 @@
       current: {
         tag: "Current Research Profile",
         title: "Current Research Profile",
-        colorClass: "current",
-        short: "Functional materials, field-assisted methods, bio-related testing.",
-        summary: "This orbit shows the active working profile connecting functional materials, physical fields, bio-related testing, and setup development.",
+        summary: "This orbit gathers the active profile: functional materials, field-assisted methods, bio-related testing, and setup development.",
+        crossLinks: [
+          { label: "KU Leuven / BioTeC+ Orbit", orbit: "ku" },
+          { label: "Before KU Leuven", orbit: "foundation" },
+          { label: "Emerging Directions", orbit: "emerging" }
+        ],
         nodes: [
           {
+            id: "functional-materials",
             title: "Functional Materials",
-            short: "Coatings, nanomaterials, polymers, formulations.",
-            text: "Functional materials are one of the main current domains: coatings, nanomaterials, polymers, surfaces, formulations, and material responses connected to experimental testing."
+            text: "Coatings, nanomaterials, polymers, surfaces, formulations, and material responses connected to experimental testing.",
+            crossLinks: [
+              { label: "Materials Engineering", orbit: "foundation", node: "materials-engineering" },
+              { label: "Surface Modification", orbit: "foundation", node: "surface-modification" },
+              { label: "Antimicrobial Context", orbit: "ku", node: "antimicrobial-context" }
+            ]
           },
           {
+            id: "field-assisted-methods",
             title: "Field-Assisted Methods",
-            short: "Physical fields as experimental tools.",
-            text: "Field-assisted methods include physical fields used as experimental tools: plasma-related processes, RF systems, pulsed fields, and other forms of physical intervention."
+            text: "Physical fields used as experimental tools: plasma-related processes, RF systems, pulsed fields, and other physical interventions.",
+            crossLinks: [
+              { label: "Plasma / RF / PEF", orbit: "current", node: "plasma-rf-pef" },
+              { label: "Setup Development", orbit: "current", node: "setup-development" },
+              { label: "Modular Systems", orbit: "emerging", node: "modular-systems" }
+            ]
           },
           {
+            id: "plasma-rf-pef",
             title: "Plasma / RF / PEF",
-            short: "Plasma-related processes, RF, pulsed electric fields.",
-            text: "This node connects plasma-related processes, radio-frequency systems, and pulsed electric fields as a practical field-assisted experimental domain."
+            text: "Practical field-assisted domain connecting plasma-related processes, radio-frequency systems, and pulsed electric fields.",
+            crossLinks: [
+              { label: "Field-Assisted Methods", orbit: "current", node: "field-assisted-methods" },
+              { label: "Bio-related Bridge", orbit: "current", node: "bio-related-bridge" },
+              { label: "Setup Development", orbit: "current", node: "setup-development" }
+            ]
           },
           {
-            title: "Bio-related Testing Bridge",
-            short: "Fermentation, food-biotech context, biological response.",
-            text: "This bridge connects physical and material methods with biological or food-biotech contexts, including fermentation, antimicrobial testing, and measurable biological response."
+            id: "bio-related-bridge",
+            title: "Bio-related Bridge",
+            text: "Connection between physical/material methods and biological or food-biotech contexts, including antimicrobial testing and measurable biological response.",
+            crossLinks: [
+              { label: "Antimicrobial Context", orbit: "ku", node: "antimicrobial-context" },
+              { label: "Plasma / RF / PEF", orbit: "current", node: "plasma-rf-pef" }
+            ]
           },
           {
+            id: "setup-development",
             title: "Setup Development",
-            short: "Construction, measurement, observation, adjustment.",
-            text: "Setup development covers hands-on construction, adjustment, field-assisted test systems, measurement logic, and experimental observation."
+            text: "Hands-on construction, adjustment, field-assisted test systems, measurement logic, and experimental observation.",
+            crossLinks: [
+              { label: "Troubleshooting", orbit: "foundation", node: "troubleshooting" },
+              { label: "Prototype Workflows", orbit: "ku", node: "prototype-workflows" },
+              { label: "Modular Systems", orbit: "emerging", node: "modular-systems" }
+            ]
           }
         ]
       },
@@ -826,46 +880,96 @@
       emerging: {
         tag: "Emerging Directions",
         title: "Emerging Directions",
-        colorClass: "emerging",
-        short: "AI-assisted structuring, trace documentation, methodological branch.",
-        summary: "This orbit shows carefully developing extensions of the profile. It should be read as exploratory and in-progress, not as a list of finalized products.",
+        summary: "This orbit gathers developing extensions of the profile: AI-assisted structuring, trace documentation, modular systems, and methodological branches.",
+        crossLinks: [
+          { label: "Current Research Profile", orbit: "current" },
+          { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" },
+          { label: "Public Outputs / Site", orbit: "emerging", node: "public-outputs" }
+        ],
         nodes: [
           {
-            title: "AI-assisted R&D Structuring",
-            short: "Documentation, hypothesis tracking, research mapping.",
-            text: "AI-assisted R&D is not presented as automatic discovery. It is used as a structuring medium for documentation, hypothesis tracking, reframing, and preserving research traces."
+            id: "ai-rd",
+            title: "AI-assisted R&D",
+            text: "AI used as a structuring medium for documentation, hypothesis tracking, reframing, and preserving research traces.",
+            crossLinks: [
+              { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" },
+              { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" },
+              { label: "Public Outputs / Site", orbit: "emerging", node: "public-outputs" }
+            ]
           },
           {
-            title: "Trace-based Documentation",
-            short: "Attempts, failures, corrections, emergence of ideas.",
-            text: "Trace-based documentation preserves the path of research: attempts, adjustments, failures, corrections, small observations, and the emergence of working directions."
+            id: "trace-documentation",
+            title: "Trace Documentation",
+            text: "Preserving research paths: attempts, adjustments, failures, corrections, small observations, and emergence of working directions.",
+            crossLinks: [
+              { label: "Characterization", orbit: "foundation", node: "characterization" },
+              { label: "AI-assisted R&D", orbit: "emerging", node: "ai-rd" },
+              { label: "Experimental R&D", orbit: "ku", node: "experimental-rd" }
+            ]
           },
           {
-            title: "Modular Field-Assisted Systems",
-            short: "Adaptable field-assisted experimental modules.",
-            text: "This is an emerging direction: thinking toward adaptable experimental modules for field-assisted processing and testing. It should be presented as developing, not finalized."
+            id: "modular-systems",
+            title: "Modular Systems",
+            text: "Developing direction toward adaptable field-assisted experimental modules for processing and testing.",
+            crossLinks: [
+              { label: "Field-Assisted Methods", orbit: "current", node: "field-assisted-methods" },
+              { label: "Setup Development", orbit: "current", node: "setup-development" },
+              { label: "Prototype Workflows", orbit: "ku", node: "prototype-workflows" }
+            ]
           },
           {
+            id: "smyslotalk",
             title: "smysloTalk",
-            short: "Exploratory methodological branch.",
-            text: "smysloTalk is an exploratory methodological branch focused on trace-based reasoning, emergence tracking, and human–AI dialogue. It should support the profile without replacing the experimental foundation."
+            text: "Exploratory methodological branch focused on trace-based reasoning, emergence tracking, and human–AI dialogue.",
+            crossLinks: [
+              { label: "AI-assisted R&D", orbit: "emerging", node: "ai-rd" },
+              { label: "Trace Documentation", orbit: "emerging", node: "trace-documentation" }
+            ]
           },
           {
+            id: "public-outputs",
             title: "Public Outputs / Site",
-            short: "Website, selected traces, external projection.",
-            text: "This node represents the website itself: a public, selected, and structured projection of the profile rather than a complete archive or social-media stream."
+            text: "Public, selected, and structured projection of the profile rather than a complete archive or social-media stream.",
+            crossLinks: [
+              { label: "AI-assisted R&D", orbit: "emerging", node: "ai-rd" },
+              { label: "Current Research Profile", orbit: "current" }
+            ]
           }
         ]
       }
     };
 
-    function setDetails(tag, title, text, smallText) {
+    function setDetails(tag, title, text, crossLinks = [], smallText = "") {
+      const crossLinksHtml = crossLinks.length
+        ? `
+          <div class="crosslinks">
+            <h3>Cross-links</h3>
+            <div class="crosslink-list">
+              ${crossLinks.map((link) => `
+                <button class="crosslink-button" data-orbit="${link.orbit}" data-node="${link.node || ""}">
+                  ${link.label}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `
+        : "";
+
       detailsPanel.innerHTML = `
         <span class="tag">${tag}</span>
         <h2>${title}</h2>
         <p>${text}</p>
-        <p class="small">${smallText}</p>
+        ${smallText ? `<p class="small">${smallText}</p>` : ""}
+        ${crossLinksHtml}
       `;
+
+      document.querySelectorAll(".crosslink-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const orbitKey = button.dataset.orbit;
+          const nodeId = button.dataset.node || null;
+          showFocusMode(orbitKey, nodeId);
+        });
+      });
     }
 
     function showOrbitMode() {
@@ -873,8 +977,14 @@
       setDetails(
         "Orbit view",
         "Profile orbits",
-        "The central BioTeC+ / KU Leuven orbit has opened four profile orbits. Select one orbit to unfold its nodes inside the same graph field.",
-        "Click the center again at any time to return to this orbit view."
+        "The central BioTeC+ / KU Leuven orbit has opened four profile orbits. Select one orbit to unfold its sub-orbits inside the same graph field.",
+        [
+          { label: "Before KU Leuven", orbit: "foundation" },
+          { label: "KU Leuven / BioTeC+ Orbit", orbit: "ku" },
+          { label: "Current Research Profile", orbit: "current" },
+          { label: "Emerging Directions", orbit: "emerging" }
+        ],
+        "The left field keeps the orbital form; the right field carries explanation and intersections."
       );
     }
 
@@ -895,24 +1005,20 @@
       });
     }
 
-    function showFocusMode(orbitKey) {
+    function showFocusMode(orbitKey, nodeId = null) {
       const orbit = orbits[orbitKey];
 
       focusField.dataset.mode = "focus";
       buildToolbar(orbitKey);
 
-      activeOrbit.className = "active-orbit";
-      activeOrbit.innerHTML = `
-        <strong>${orbit.title}</strong>
-        <span>${orbit.short}</span>
-      `;
-
+      activeOrbit.innerHTML = `<strong>${orbit.title}</strong>`;
       activeOrbit.onclick = () => {
         setDetails(
           orbit.tag,
           orbit.title,
           orbit.summary,
-          "Select a node on the right side of the same field to read a more specific description."
+          orbit.crossLinks,
+          "This orbit is unfolded in the left field. Related intersections can be activated from the cross-links."
         );
       };
 
@@ -920,11 +1026,8 @@
 
       orbit.nodes.forEach((node) => {
         const button = document.createElement("button");
-        button.className = "node-card";
-        button.innerHTML = `
-          <strong>${node.title}</strong>
-          <span>${node.short}</span>
-        `;
+        button.className = "node-card" + (node.id === nodeId ? " active" : "");
+        button.innerHTML = `<strong>${node.title}</strong>`;
 
         button.addEventListener("click", () => {
           document.querySelectorAll(".node-card").forEach((item) => {
@@ -937,32 +1040,38 @@
             orbit.tag,
             node.title,
             node.text,
-            "This node belongs to the selected orbit and contributes to the overall Biosketch-Graph trajectory."
+            node.crossLinks,
+            "This sub-orbit belongs to the selected orbit and may intersect with other parts of the profile."
           );
         });
 
         nodesArea.appendChild(button);
       });
 
-      setDetails(
-        orbit.tag,
-        orbit.title,
-        orbit.summary,
-        "The selected orbit is unfolded inside the same graph field. Other orbits remain available as compact switches."
-      );
+      if (nodeId) {
+        const selectedNode = orbit.nodes.find((node) => node.id === nodeId);
+        if (selectedNode) {
+          setDetails(
+            orbit.tag,
+            selectedNode.title,
+            selectedNode.text,
+            selectedNode.crossLinks,
+            "This sub-orbit was activated through a cross-link."
+          );
+        }
+      } else {
+        setDetails(
+          orbit.tag,
+          orbit.title,
+          orbit.summary,
+          orbit.crossLinks,
+          "The selected orbit is unfolded inside the same graph field. Cross-links can activate related orbits and sub-orbits."
+        );
+      }
     }
 
-    coreNode.addEventListener("click", () => {
-      if (focusField.dataset.mode === "core") {
-        showOrbitMode();
-      } else {
-        showOrbitMode();
-      }
-    });
-
-    miniCore.addEventListener("click", () => {
-      showOrbitMode();
-    });
+    coreNode.addEventListener("click", showOrbitMode);
+    miniCore.addEventListener("click", showOrbitMode);
 
     orbitButtons.forEach((button) => {
       button.addEventListener("click", () => {
