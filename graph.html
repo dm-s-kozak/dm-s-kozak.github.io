@@ -492,7 +492,17 @@
       border: 1px solid var(--line);
       display: block;
     }
+     .image-link {
+      display: block;
+      cursor: zoom-in;
+}
 
+    .image-link:hover .detail-image,
+   .image-link:focus .detail-image {
+  border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+}
+    
     .image-caption {
       margin-top: 8px;
     }
@@ -1008,8 +1018,10 @@
       const imageHtml = image
         ? `
           <div class="visual-block">
-            <img src="${image}" alt="${title}" class="detail-image">
-            ${imageCaption ? `<p class="small image-caption">${imageCaption}</p>` : ""}
+           <a href="${image}" target="_blank" rel="noopener" class="image-link">
+        <img src="${image}" alt="${title}" class="detail-image"> </a>
+        ${imageCaption ? `<p class="small image-caption">${imageCaption}</p>` : ""}
+        <p class="small image-caption">Click image to open larger view.</p>
           </div>
         `
         : "";
