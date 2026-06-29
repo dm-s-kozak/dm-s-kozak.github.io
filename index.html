@@ -91,6 +91,51 @@
       font-weight: 600;
       color: #374151;
     }
+    .trace-panel {
+  margin-top: 28px;
+}
+
+.trace-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.trace-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  background: var(--card);
+}
+
+.trace-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.trace-card p {
+  margin-top: 0;
+}
+
+.trace-card a {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--accent);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.trace-card a:hover,
+.trace-card a:focus {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .trace-grid {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
@@ -169,7 +214,47 @@
         </div>
       </div>
     </section>
+<section class="panel trace-panel">
+  <h2>Prototype-Level Research Traces</h2>
 
+  <p>
+    My research profile is also shaped by prototype-level traces: early setups,
+    experimental corridors, material/process observations, and methodological
+    adjustments that can be adopted, adapted, and extended into broader research directions.
+  </p>
+
+  <div class="trace-grid">
+    <article class="trace-card">
+      <h3>Malta Atmospheric-Plasma Setup Trace</h3>
+      <p>
+        An earlier field-assisted trace connected with atmospheric-plasma setup
+        development, plasma–water interaction, and bio-related treatment contexts.
+      </p>
+      <a href="field-assisted-methods.html">See Field-Assisted Methods</a>
+    </article>
+
+    <article class="trace-card">
+      <h3>Non-Cyanide Brass-Like Coating Development</h3>
+      <p>
+        An independent materials-development line focused on Cu–Zn brass-like
+        electrodeposition, surface colour formation, electrolyte development,
+        and coating appearance without cyanide-based systems.
+      </p>
+      <a href="functional-materials.html">See Functional Materials</a>
+    </article>
+
+    <article class="trace-card">
+      <h3>Field-Assisted Bioresponse Workflow</h3>
+      <p>
+        A current working corridor connecting plasma/RF/PEF concepts,
+        material interfaces, treatment conditions, and measurable biological
+        or antimicrobial response.
+      </p>
+      <a href="field-assisted-methods.html">See Experimental Workflow</a>
+    </article>
+  </div>
+</section>
+    
     <section id="smyslotalk">
       <h2>smysloTalk</h2>
       <p>
