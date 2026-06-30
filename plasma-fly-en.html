@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plasma Fly — Experimental Easter Egg</title>
+  <style>
+    :root {
+      --bg: #0e1117;
+      --text: #eef2ff;
+      --muted: rgba(238,242,255,0.72);
+      --accent: #7dd3fc;
+      --pulse: #c084fc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(125,211,252,.13), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(192,132,252,.13), transparent 35%),
+        linear-gradient(135deg, #0b0f19, #111827 55%, #0f172a);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    .grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      opacity: .65;
+    }
+    .info {
+      position: absolute; top: 22px; left: 22px;
+      width: min(420px, calc(100vw - 44px));
+      padding: 18px 20px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      background: rgba(15,23,42,.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 70px rgba(0,0,0,.35);
+      z-index: 5;
+    }
+    .info h1 { margin: 0 0 8px; font-size: 1.25rem; letter-spacing: .02em; }
+    .info p { margin: 0; color: var(--muted); line-height: 1.45; font-size: .95rem; }
+    .control {
+      margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(255,255,255,.16); border-radius: 999px;
+      background: rgba(255,255,255,.06); color: var(--text);
+      padding: 9px 13px; cursor: pointer; font-size: .9rem;
+    }
+    .control:hover { background: rgba(255,255,255,.11); }
+    .treatment-zone {
+      position: absolute; right: min(9vw, 90px); bottom: min(14vh, 120px);
+      width: min(360px, 46vw); height: 180px;
+      border: 1px solid rgba(125,211,252,.32); border-radius: 24px;
+      background: radial-gradient(circle at 50% 50%, rgba(125,211,252,.13), transparent 60%), rgba(255,255,255,.04);
+      box-shadow: inset 0 0 30px rgba(125,211,252,.12), 0 0 40px rgba(125,211,252,.08);
+      display: grid; place-items: center;
+      color: rgba(238,242,255,.55); letter-spacing: .08em; text-transform: uppercase; font-size: .72rem;
+      z-index: 1;
+    }
+    .electrode {
+      position: absolute; width: 18px; height: 130px; top: 25px; border-radius: 999px;
+      background: linear-gradient(#e5e7eb, #64748b); opacity: .85;
+      box-shadow: 0 0 16px rgba(255,255,255,.18);
+    }
+    .electrode.left { left: 54px; }
+    .electrode.right { right: 54px; }
+    .fly {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      font-size: 34px; width: 54px; height: 54px;
+      display: grid; place-items: center; z-index: 6;
+      transition: left 1.4s cubic-bezier(.2,.8,.2,1), top 1.4s cubic-bezier(.2,.8,.2,1), transform 1.4s ease, filter .4s ease;
+      filter: drop-shadow(0 10px 13px rgba(0,0,0,.45));
+      user-select: none;
+    }
+    .fly::before { content: "🪰"; display: block; transform-origin: center; animation: flyLegs .32s infinite alternate ease-in-out; }
+    @keyframes flyLegs { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-1px) rotate(3deg); } }
+    .fly.changed {
+      filter: hue-rotate(145deg) saturate(2.2) drop-shadow(0 0 14px rgba(125,211,252,.75)) drop-shadow(0 10px 13px rgba(0,0,0,.45));
+    }
+    .fly.weird {
+      transition: left 650ms cubic-bezier(.7,-.4,.3,1.5), top 650ms cubic-bezier(.7,-.4,.3,1.5), transform 650ms ease, filter .3s ease;
+      filter: hue-rotate(250deg) saturate(3) contrast(1.15) drop-shadow(0 0 18px rgba(251,113,133,.95)) drop-shadow(0 10px 13px rgba(0,0,0,.45));
+    }
+    .plasma-flash {
+      position: absolute; width: 170px; height: 170px; border-radius: 50%;
+      transform: translate(-50%, -50%) scale(.4);
+      background: radial-gradient(circle, rgba(255,255,255,1) 0 4%, rgba(125,211,252,.98) 9%, rgba(192,132,252,.78) 20%, rgba(59,130,246,.18) 43%, transparent 68%);
+      opacity: 0; pointer-events: none; z-index: 3;
+    }
+    .plasma-flash.active { animation: plasmaPop 720ms ease-out forwards; }
+    @keyframes plasmaPop {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(0deg); filter: blur(0); }
+      18% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(20deg); filter: blur(.2px); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(2.3) rotate(90deg); filter: blur(4px); }
+    }
+    .spark {
+      position: absolute; width: 7px; height: 7px; border-radius: 50%; background: white;
+      box-shadow: 0 0 14px var(--accent), 0 0 25px var(--pulse);
+      opacity: 0; z-index: 4; pointer-events: none;
+    }
+    .spark.active { animation: sparkMove 550ms ease-out forwards; }
+    @keyframes sparkMove {
+      0% { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2); }
+    }
+    .pulse-line {
+      position: absolute; left: 0; right: 0; height: 2px; top: 50%;
+      background: linear-gradient(90deg, transparent, rgba(125,211,252,.8), rgba(192,132,252,.9), transparent);
+      opacity: 0; z-index: 2; transform: scaleX(0); transform-origin: left center;
+    }
+    .pulse-line.active { animation: pulseLine 900ms ease-out forwards; }
+    @keyframes pulseLine {
+      0% { opacity: 0; transform: scaleX(0); }
+      25% { opacity: 1; transform: scaleX(.45); }
+      100% { opacity: 0; transform: scaleX(1); }
+    }
+    .speech {
+      position: absolute; max-width: min(360px, calc(100vw - 44px));
+      padding: 16px 18px; border-radius: 18px 18px 18px 4px;
+      background: rgba(255,255,255,.94); color: #111827; font-weight: 650; line-height: 1.35;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      opacity: 0; transform: translateY(12px) scale(.96);
+      transition: opacity 450ms ease, transform 450ms ease;
+      z-index: 7; pointer-events: none;
+    }
+    .speech.show { opacity: 1; transform: translateY(0) scale(1); }
+    .speech small { display: block; margin-top: 8px; font-weight: 500; color: #475569; }
+    .status {
+      position: absolute; left: 22px; bottom: 22px; z-index: 5;
+      padding: 12px 14px; border-radius: 14px;
+      background: rgba(15,23,42,.66); border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted); font-size: .88rem;
+    }
+    @media (max-width: 720px) {
+      .info { top: 14px; left: 14px; width: calc(100vw - 28px); }
+      .treatment-zone { width: 78vw; right: 11vw; bottom: 80px; height: 150px; }
+      .status { left: 14px; bottom: 14px; right: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <div class="grid"></div>
+    <section class="info">
+      <h1>Plasma Fly</h1>
+      <p>Experimental easter egg: муха ползает, ловит импульс, меняет режим — и внезапно начинает говорить.</p>
+      <button class="control" id="restartBtn" type="button">↻ Restart</button>
+    </section>
+    <div class="treatment-zone">
+      <div class="electrode left"></div>
+      <div class="electrode right"></div>
+      Treatment zone
+    </div>
+    <div class="pulse-line" id="pulseLine"></div>
+    <div class="plasma-flash" id="plasmaFlash"></div>
+    <div class="fly" id="fly" aria-label="fly"></div>
+    <div class="speech" id="speech">
+      Солнышко, я знаю, что ты экспериментатор…<br />может, на сегодня достаточно?
+      <small>— treated fly</small>
+    </div>
+    <div class="status" id="status">Status: random walking...</div>
+  </main>
+  <script>
+    const stage = document.getElementById("stage");
+    const fly = document.getElementById("fly");
+    const flash = document.getElementById("plasmaFlash");
+    const speech = document.getElementById("speech");
+    const statusBox = document.getElementById("status");
+    const restartBtn = document.getElementById("restartBtn");
+    const pulseLine = document.getElementById("pulseLine");
+    let walkTimer = null;
+    let sequenceTimers = [];
+    let currentX = window.innerWidth * 0.52;
+    let currentY = window.innerHeight * 0.48;
+    let weirdMode = false;
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+    function setFlyPosition(x, y) {
+      const maxX = window.innerWidth - 70;
+      const maxY = window.innerHeight - 70;
+      const nextX = clamp(x, 40, maxX);
+      const nextY = clamp(y, 90, maxY);
+      const dx = nextX - currentX;
+      const dy = nextY - currentY;
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+      currentX = nextX; currentY = nextY;
+      fly.style.left = currentX + "px";
+      fly.style.top = currentY + "px";
+      const wobble = weirdMode ? Math.sin(Date.now() / 160) * 55 : 0;
+      fly.style.transform = `translate(-50%, -50%) rotate(${angle + wobble}deg)`;
+      positionSpeech();
+    }
+    function randomWalk() {
+      const step = weirdMode ? 170 : 120;
+      const jitter = weirdMode ? 120 : 70;
+      const x = currentX + (Math.random() - 0.5) * step + (weirdMode ? Math.sin(Date.now() / 300) * jitter : 0);
+      const y = currentY + (Math.random() - 0.5) * step + (weirdMode ? Math.cos(Date.now() / 260) * jitter : 0);
+      setFlyPosition(x, y);
+    }
+    function startWalk(interval) {
+      clearInterval(walkTimer);
+      walkTimer = setInterval(randomWalk, interval);
+    }
+    function clearSequence() {
+      sequenceTimers.forEach(t => clearTimeout(t));
+      sequenceTimers = [];
+    }
+    function addTimer(fn, delay) {
+      const timer = setTimeout(fn, delay);
+      sequenceTimers.push(timer);
+    }
+    function makeSparks(x, y) {
+      for (let i = 0; i < 16; i++) {
+        const spark = document.createElement("span");
+        spark.className = "spark active";
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 50 + Math.random() * 110;
+        spark.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        spark.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        stage.appendChild(spark);
+        setTimeout(() => spark.remove(), 700);
+      }
+    }
+    function plasmaAtFly(label) {
+      const x = currentX + (Math.random() - 0.5) * 40;
+      const y = currentY + (Math.random() - 0.5) * 40;
+      flash.style.left = x + "px";
+      flash.style.top = y + "px";
+      flash.classList.remove("active");
+      void flash.offsetWidth;
+      flash.classList.add("active");
+      pulseLine.style.top = y + "px";
+      pulseLine.classList.remove("active");
+      void pulseLine.offsetWidth;
+      pulseLine.classList.add("active");
+      makeSparks(x, y);
+      statusBox.textContent = "Status: " + label;
+    }
+    function positionSpeech() {
+      const speechWidth = Math.min(360, window.innerWidth - 44);
+      let x = currentX + 36;
+      let y = currentY - 84;
+      if (x + speechWidth > window.innerWidth - 18) x = currentX - speechWidth - 30;
+      if (x < 18) x = 18;
+      if (y < 18) y = currentY + 40;
+      speech.style.left = x + "px";
+      speech.style.top = y + "px";
+    }
+    function resetScene() {
+      clearSequence();
+      clearInterval(walkTimer);
+      weirdMode = false;
+      fly.classList.remove("changed", "weird");
+      speech.classList.remove("show");
+      statusBox.textContent = "Status: random walking...";
+      currentX = window.innerWidth * 0.52;
+      currentY = window.innerHeight * 0.48;
+      setFlyPosition(currentX, currentY);
+      startWalk(1450);
+      addTimer(() => {
+        plasmaAtFly("first plasma exposure");
+        fly.classList.add("changed");
+        statusBox.textContent = "Status: fly changed color...";
+      }, 4200);
+      addTimer(() => {
+        plasmaAtFly("second impulse");
+        weirdMode = true;
+        fly.classList.add("weird");
+        startWalk(720);
+        statusBox.textContent = "Status: walking pattern altered...";
+      }, 7700);
+      addTimer(() => {
+        plasmaAtFly("unexpected bio-response");
+        statusBox.textContent = "Status: communication detected...";
+      }, 10800);
+      addTimer(() => {
+        positionSpeech();
+        speech.classList.add("show");
+        statusBox.textContent = "Status: the fly has spoken.";
+      }, 11600);
+    }
+    restartBtn.addEventListener("click", resetScene);
+    window.addEventListener("resize", () => { setFlyPosition(currentX, currentY); positionSpeech(); });
+    resetScene();
+  </script>
+</body>
+</html>
