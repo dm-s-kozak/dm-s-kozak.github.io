@@ -1,2 +1,4 @@
 # github.io
-Personal research profile and project site of Dmytro Kozak
+Selected public research profile connecting functional materials, electrochemistry,
+plasma / RF / PEF systems, antimicrobial and bio-related testing,
+and AI-assisted R&D structuring.
