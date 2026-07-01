@@ -268,7 +268,7 @@
       user-select: none;
       pointer-events: none;
       filter: drop-shadow(0 8px 10px rgba(0,0,0,0.14));
-      transition: left 1.1s cubic-bezier(.22,.9,.26,1), top 1.1s cubic-bezier(.22,.9,.26,1), transform 1.1s ease, filter 350ms ease;
+      transition: left 2.1s cubic-bezier(.22,.78,.24,1), top 2.1s cubic-bezier(.22,.78,.24,1), transform 2.1s ease, filter 450ms ease;
     }
 
     .fly-svg {
@@ -285,7 +285,7 @@
     .fly-svg .wing {
       transform-box: fill-box;
       transform-origin: 18% 88%;
-      animation: wing-flick 170ms ease-in-out infinite alternate;
+      animation: wing-flick 260ms ease-in-out infinite alternate;
     }
 
     .fly-svg .wing path {
@@ -567,11 +567,12 @@
     <div class="pulse-ring" id="pulseRing"></div>
 
     <div class="status" id="status">
-      <strong>Status:</strong> moving through symbolic traces.
+      <strong>Status:</strong> laboratory mode: assembling traces returned from pages.
     </div>
   </main>
 
   <script>
+    /* Lab Fly v0.10 slow presence: slower movement, quieter distinction. */
     const fly = document.getElementById("fly");
     const speech = document.getElementById("speech");
     const statusBox = document.getElementById("status");
@@ -594,6 +595,7 @@
     const assembly = [];
     let x = window.innerWidth * 0.58;
     let y = window.innerHeight * 0.52;
+    let direction = 1;
     let walkTimer;
     let hideSpeechTimer;
 
@@ -601,15 +603,20 @@
       return Math.max(min, Math.min(max, value));
     }
 
-    function placeFly(nextX, nextY) {
+    function placeFly(nextX, nextY, mode = 'crawl') {
       const previousX = x;
       const previousY = y;
       x = clamp(nextX, 34, window.innerWidth - 64);
       y = clamp(nextY, 80, window.innerHeight - 64);
-      const angle = Math.atan2(y - previousY, x - previousX) * 180 / Math.PI + 90;
+      const dx = x - previousX;
+      const dy = y - previousY;
+      if (Math.abs(dx) > 3) direction = dx < 0 ? -1 : 1;
+      const tilt = clamp(dy / 18, -7, 7) * (mode === 'fly' ? 1 : 0.42);
+      fly.classList.toggle("is-flying", mode === 'fly');
+      fly.classList.toggle("is-crawling", mode !== 'fly');
       fly.style.left = `${x}px`;
       fly.style.top = `${y}px`;
-      fly.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+      fly.style.transform = `translate(-50%, -50%) scaleX(${direction}) rotate(${tilt}deg)`;
       positionSpeech();
     }
 
@@ -629,14 +636,14 @@
       speech.innerHTML = `${text}<small>${small}</small>`;
       positionSpeech();
       speech.classList.add("show");
-      hideSpeechTimer = setTimeout(() => speech.classList.remove("show"), 3600);
+      hideSpeechTimer = setTimeout(() => speech.classList.remove("show"), 5600);
     }
 
     function randomWalk() {
-      const step = 140;
+      const step = 48;
       const driftX = (Math.random() - 0.5) * step;
-      const driftY = (Math.random() - 0.5) * step;
-      placeFly(x + driftX, y + driftY);
+      const driftY = (Math.random() - 0.5) * step * 0.72;
+      placeFly(x + driftX, y + driftY, 'crawl');
     }
 
     function updateAssembly() {
@@ -663,22 +670,25 @@
       const targetX = rect.left + rect.width / 2;
       const targetY = rect.top + rect.height / 2;
 
-      placeFly(targetX, targetY);
-      fly.classList.add("carrying");
-      target.classList.add("is-found");
-
-      const traceName = target.dataset.trace;
-      const meaning = target.dataset.meaning;
-      if (!assembly.includes(traceName)) assembly.push(traceName);
-      updateAssembly();
-
-      statusBox.innerHTML = `<strong>Status:</strong> inspected ${traceName}.`;
-      say(meaning);
+      placeFly(targetX, targetY, 'crawl');
 
       setTimeout(() => {
-        fly.classList.remove("carrying");
-        target.classList.remove("is-found");
-      }, 1800);
+        fly.classList.add("carrying");
+        target.classList.add("is-found");
+
+        const traceName = target.dataset.trace;
+        const meaning = target.dataset.meaning;
+        if (!assembly.includes(traceName)) assembly.push(traceName);
+        updateAssembly();
+
+        statusBox.innerHTML = `<strong>Status:</strong> distinguished ${traceName}.`;
+        say(meaning);
+
+        setTimeout(() => {
+          fly.classList.remove("carrying");
+          target.classList.remove("is-found");
+        }, 5200);
+      }, 3100);
     }
 
     function abstractPulse() {
@@ -696,28 +706,28 @@
       statusBox.innerHTML = `<strong>Status:</strong> abstract pulse released; no technical setup is disclosed.`;
       say(outcome, "— non-instructional pulse");
 
-      setTimeout(() => fly.classList.remove("pulsed"), 1200);
+      setTimeout(() => fly.classList.remove("pulsed"), 1800);
     }
 
     function reset() {
       assembly.length = 0;
       traces.forEach(trace => trace.classList.remove("is-found"));
       updateAssembly();
-      placeFly(window.innerWidth * 0.58, window.innerHeight * 0.52);
-      statusBox.innerHTML = `<strong>Status:</strong> moving through symbolic traces.`;
+      placeFly(window.innerWidth * 0.58, window.innerHeight * 0.52, 'crawl');
+      statusBox.innerHTML = `<strong>Status:</strong> laboratory mode: assembling traces returned from pages.`;
       say("smysloFly entered the page.", "— playful trace operator");
     }
 
     function start() {
       clearInterval(walkTimer);
-      placeFly(x, y);
+      placeFly(x, y, 'crawl');
       say("smysloFly entered the page.", "— playful trace operator");
       walkTimer = setInterval(() => {
         const action = Math.random();
         if (action < 0.62) randomWalk();
-        else if (action < 0.88) inspectTrace();
+        else if (action < 0.94) inspectTrace();
         else abstractPulse();
-      }, 3600);
+      }, 11200);
     }
 
     inspectBtn.addEventListener("click", inspectTrace);
@@ -781,7 +791,7 @@
       note.style.color = 'var(--text)';
       note.style.fontSize = '0.9rem';
       note.style.lineHeight = '1.42';
-      note.innerHTML = '<strong>Returned trace:</strong> ' + (returnedAssembly || returnedTrace || 'page trace') + '<br><span style="color: var(--muted);">The trace returns as a question of attention: why, for what, so that what?</span>';
+      note.innerHTML = '<strong>Returned trace:</strong> ' + (returnedAssembly || returnedTrace || 'page trace') + '<br><span style="color: var(--muted);">The page layer stayed quiet; the trace returns here for assembly: why, for what, so that what?</span>';
       document.querySelector('.stage')?.appendChild(note);
 
       try {

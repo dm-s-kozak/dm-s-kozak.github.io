@@ -229,46 +229,40 @@
       <p>© 2026 Dmytro Kozak. AI-assisted R&amp;D Workflows.</p>
     </footer>
   </main>
-
   <style>
+
     .labfly-guide-fly {
+      --fly-speed: 8.5s;
       position: fixed;
       z-index: 9999;
-      left: -90px;
-      top: 92px;
-      width: 82px;
-      height: 48px;
+      left: -110px;
+      top: 104px;
+      width: 72px;
+      height: 42px;
       pointer-events: none;
       opacity: 0;
-      transform: translate(-50%, -50%) rotate(0deg) scale(0.94);
-      transition: left 1.15s cubic-bezier(.22,.9,.26,1), top 1.15s cubic-bezier(.22,.9,.26,1), opacity .35s ease, transform 1.15s ease, filter .25s ease;
-      filter: drop-shadow(0 8px 12px rgba(31,41,51,0.20));
+      transform: translate(-50%, -50%) scaleX(1);
+      transition:
+        left var(--fly-speed) cubic-bezier(.22,.74,.18,1),
+        top var(--fly-speed) cubic-bezier(.22,.74,.18,1),
+        opacity 1.2s ease,
+        transform .9s ease,
+        filter .8s ease;
+      filter: drop-shadow(0 7px 10px rgba(31,41,51,0.13));
+      will-change: left, top, transform;
     }
 
     .labfly-guide-fly.is-visible {
-      opacity: 1;
+      opacity: 0.72;
     }
 
-    .labfly-guide-fly.has-tool::after {
-      content: "why?";
-      position: absolute;
-      left: -30px;
-      top: 27px;
-      min-width: 28px;
-      padding: 2px 5px;
-      border: 1px solid rgba(31,41,51,0.24);
-      border-radius: 6px;
-      background: rgba(255,252,246,0.96);
-      color: #1f2933;
-      font-size: 9px;
-      line-height: 1.1;
-      font-weight: 700;
-      box-shadow: 0 5px 12px rgba(31,41,51,0.14);
-      transform: rotate(4deg);
+    .labfly-guide-fly.is-crawling {
+      --fly-speed: 9.2s;
     }
 
-    .labfly-guide-fly.is-working {
-      filter: saturate(1.15) drop-shadow(0 0 12px rgba(154,143,122,0.38)) drop-shadow(0 8px 12px rgba(31,41,51,0.18));
+    .labfly-guide-fly.is-distinguishing {
+      opacity: 0.86;
+      filter: drop-shadow(0 0 8px rgba(154,143,122,0.18)) drop-shadow(0 7px 10px rgba(31,41,51,0.12));
     }
 
     .labfly-svg {
@@ -278,73 +272,50 @@
       display: block;
     }
 
-    .labfly-svg .shadow { fill: rgba(31,41,51,0.15); }
+    .labfly-svg .shadow { fill: rgba(31,41,51,0.10); }
     .labfly-svg .wing {
       transform-box: fill-box;
       transform-origin: 18% 88%;
-      animation: labflyGuideWing 170ms ease-in-out infinite alternate;
+      animation: labflyGuideWingCrawl 2.8s ease-in-out infinite alternate;
     }
     .labfly-svg .wing path {
-      fill: rgba(255,255,255,0.78);
-      stroke: rgba(31,41,51,0.18);
-      stroke-width: 1.2;
+      fill: rgba(255,255,255,0.64);
+      stroke: rgba(31,41,51,0.13);
+      stroke-width: 1.1;
     }
-    .labfly-svg .wing-back {
-      opacity: 0.54;
-      animation-delay: 50ms;
-    }
+    .labfly-svg .wing-back { opacity: 0.42; animation-delay: 110ms; }
     .labfly-svg .leg {
       fill: none;
-      stroke: rgba(31,41,51,0.72);
-      stroke-width: 1.7;
+      stroke: rgba(31,41,51,0.56);
+      stroke-width: 1.55;
       stroke-linecap: round;
+      transform-box: fill-box;
+      transform-origin: 50% 20%;
+      animation: labflyLegStep 1.9s ease-in-out infinite alternate;
     }
-    .labfly-svg .leg.back { opacity: 0.62; }
-    .labfly-svg .abdomen { fill: #1c232b; }
-    .labfly-svg .band { fill: #b89662; opacity: 0.95; }
-    .labfly-svg .thorax { fill: #29323d; }
-    .labfly-svg .head { fill: #151b22; }
-    .labfly-svg .eye { fill: #f4ecda; opacity: 0.92; }
+    .labfly-svg .leg:nth-child(2),
+    .labfly-svg .leg:nth-child(4) { animation-delay: .85s; }
+    .labfly-svg .leg.back { opacity: 0.45; }
+    .labfly-svg .abdomen { fill: #1c232b; opacity: .88; }
+    .labfly-svg .band { fill: #b89662; opacity: .78; }
+    .labfly-svg .thorax { fill: #29323d; opacity: .88; }
+    .labfly-svg .head { fill: #151b22; opacity: .88; }
+    .labfly-svg .eye { fill: #f4ecda; opacity: .60; }
     .labfly-svg .antenna {
       fill: none;
-      stroke: rgba(31,41,51,0.8);
-      stroke-width: 1.3;
+      stroke: rgba(31,41,51,0.56);
+      stroke-width: 1.2;
       stroke-linecap: round;
     }
 
-    @keyframes labflyGuideWing {
+    @keyframes labflyGuideWingCrawl {
       from { transform: rotate(0deg) translateY(0); }
-      to { transform: rotate(-11deg) translateY(-1px); }
+      to { transform: rotate(-2deg) translateY(-0.2px); }
     }
 
-    .labfly-guide-bubble {
-      position: fixed;
-      z-index: 9998;
-      max-width: min(310px, calc(100vw - 44px));
-      padding: 10px 12px;
-      border: 1px solid rgba(31,41,51,0.12);
-      border-radius: 15px 15px 15px 5px;
-      background: rgba(255,252,246,0.94);
-      color: #1f2933;
-      box-shadow: 0 14px 34px rgba(31,41,51,0.11);
-      font-size: 13px;
-      line-height: 1.42;
-      pointer-events: none;
-      opacity: 0;
-      transform: translateY(8px) scale(0.98);
-      transition: opacity .25s ease, transform .25s ease;
-    }
-
-    .labfly-guide-bubble.is-visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .labfly-guide-bubble small {
-      display: block;
-      margin-top: 6px;
-      color: #6b7280;
-      font-weight: 500;
+    @keyframes labflyLegStep {
+      from { transform: rotate(-3deg); }
+      to { transform: rotate(4deg); }
     }
 
     .labfly-return-pill {
@@ -356,60 +327,76 @@
       align-items: center;
       gap: 8px;
       max-width: calc(100vw - 28px);
-      padding: 7px 10px;
-      border: 1px solid rgba(31,41,51,0.12);
+      padding: 6px 9px;
+      border: 1px solid rgba(31,41,51,0.10);
       border-radius: 999px;
-      background: rgba(255,252,246,0.88);
+      background: rgba(255,252,246,0.78);
       color: #6b7280;
-      box-shadow: 0 10px 28px rgba(31,41,51,0.10);
+      box-shadow: 0 8px 22px rgba(31,41,51,0.08);
       backdrop-filter: blur(8px);
-      font-size: 12px;
+      font-size: 11.5px;
       line-height: 1.2;
-      opacity: 0.76;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    .labfly-return-pill.is-visible {
+      opacity: 0.58;
+      transform: translateY(0);
     }
 
     .labfly-return-pill:hover,
     .labfly-return-pill:focus-within {
-      opacity: 1;
+      opacity: 0.98;
     }
 
-    .labfly-return-pill span {
-      white-space: nowrap;
-    }
+    .labfly-return-pill span { white-space: nowrap; }
 
     .labfly-return-pill a {
       color: #1f2933;
       font-weight: 650;
       text-decoration: none;
-      border-bottom: 1px solid rgba(31,41,51,0.38);
+      border-bottom: 1px solid rgba(31,41,51,0.30);
     }
 
     .labfly-question-mark {
       position: fixed;
       z-index: 9996;
-      max-width: min(280px, calc(100vw - 36px));
-      padding: 8px 10px;
-      border: 1px dashed rgba(31,41,51,0.16);
-      border-radius: 14px;
-      background: rgba(246,244,239,0.88);
-      color: #374151;
-      box-shadow: 0 12px 30px rgba(31,41,51,0.08);
-      font-size: 12px;
-      line-height: 1.38;
+      max-width: min(230px, calc(100vw - 36px));
+      padding: 6px 8px;
+      border: 1px dashed rgba(31,41,51,0.11);
+      border-radius: 999px;
+      background: rgba(246,244,239,0.72);
+      color: rgba(55,65,81,0.82);
+      box-shadow: 0 8px 22px rgba(31,41,51,0.06);
+      font-size: 11.5px;
+      line-height: 1.25;
       opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .3s ease, transform .3s ease;
+      transform: translateY(5px);
+      transition: opacity .55s ease, transform .55s ease;
       pointer-events: none;
     }
 
     .labfly-question-mark.is-visible {
-      opacity: 1;
+      opacity: 0.78;
       transform: translateY(0);
+    }
+
+    .labfly-trace-glow {
+      position: relative;
+      outline: 1px solid rgba(154,143,122,0.20);
+      outline-offset: 5px;
+      box-shadow: 0 0 0 6px rgba(154,143,122,0.035), 0 12px 30px rgba(31,41,51,0.045);
+      border-radius: 16px;
+      transition: outline-color 1.4s ease, box-shadow 1.4s ease;
     }
 
   </style>
 
+
   <script>
+    /* Lab Fly v0.12 ambient mode: quiet crawl on the page, assembly returns to the lab. */
     (function () {
       const config = {"key": "ai-assisted-rd", "title": "AI-assisted R&D", "trace": "AI-assisted R&D trace", "intro": "AI-assisted trace detected. The fly reads how fragments become structure.", "panel": "This layer looks at AI not as a magic author, but as a tool for ordering traces, questions and experimental corridors.", "tool": "structure tool", "assembly": "An AI-assisted trace asks: what did the model help structure, and what remains grounded in the experiment?", "questions": ["Why does AI help here: ordering, testing, wording, or seeing gaps?", "For what experimental corridor is the model being used?", "So that what human decision becomes clearer?", "What remains a real trace, not generated decoration?"]};
       const params = new URLSearchParams(window.location.search);
@@ -465,29 +452,24 @@
 </svg>`;
       fly.setAttribute('aria-hidden', 'true');
 
-      const bubble = document.createElement('div');
-      bubble.className = 'labfly-guide-bubble';
-
       const returnPill = document.createElement('div');
       returnPill.className = 'labfly-return-pill';
-      returnPill.innerHTML = `<span>Lab Fly layer · ${config.title}</span><a href="smyslotalk-fly.html?returned=${encodeURIComponent(config.key)}" data-labfly-return>return</a>`;
+      returnPill.innerHTML = `<span>Lab Fly layer · ${config.title}</span><a href="smyslotalk-fly.html?returned=${encodeURIComponent(config.key)}" data-labfly-return>return with traces</a>`;
 
       const questionMark = document.createElement('div');
       questionMark.className = 'labfly-question-mark';
 
       document.body.appendChild(fly);
-      document.body.appendChild(bubble);
       document.body.appendChild(returnPill);
       document.body.appendChild(questionMark);
 
       const returnLink = returnPill.querySelector('[data-labfly-return]');
-
       const collected = [];
-      let x = 82;
-      let y = Math.min(132, window.innerHeight - 80);
-      let hideTimer;
-      let walkTimer;
+      let x = -110;
+      let y = Math.min(116, window.innerHeight - 90);
+      let direction = 1;
       let highlighted = null;
+      let loopTimer = null;
 
       function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
@@ -495,44 +477,20 @@
 
       function placeFly(nextX, nextY) {
         const previousX = x;
-        const previousY = y;
-        x = clamp(nextX, 34, window.innerWidth - 44);
-        y = clamp(nextY, 70, window.innerHeight - 68);
-        const angle = Math.atan2(y - previousY, x - previousX) * 180 / Math.PI;
+        x = clamp(nextX, -110, window.innerWidth + 90);
+        y = clamp(nextY, 76, window.innerHeight - 74);
+        const dx = x - previousX;
+        if (Math.abs(dx) > 18) direction = dx < 0 ? -1 : 1;
+        fly.classList.add('is-crawling');
         fly.style.left = `${x}px`;
         fly.style.top = `${y}px`;
-        fly.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-        positionBubble();
-      }
-
-      function positionBubble() {
-        const bubbleWidth = Math.min(310, window.innerWidth - 44);
-        let bx = x + 34;
-        let by = y - 86;
-        if (bx + bubbleWidth > window.innerWidth - 18) bx = x - bubbleWidth - 28;
-        if (bx < 18) bx = 18;
-        if (by < 18) by = y + 42;
-        bubble.style.left = `${bx}px`;
-        bubble.style.top = `${by}px`;
-      }
-
-      function say(text, small = '— smysloFly') {
-        clearTimeout(hideTimer);
-        bubble.innerHTML = `${text}<small>${small}</small>`;
-        positionBubble();
-        bubble.classList.add('is-visible');
-        hideTimer = setTimeout(() => bubble.classList.remove('is-visible'), 4300);
-      }
-
-      function updateChips() {
-        // The page layer should stay quiet: traces are carried internally,
-        // not displayed as a bot-like control panel.
+        fly.style.transform = `translate(-50%, -50%) scaleX(${direction})`;
       }
 
       function getCandidates() {
         return Array.from(document.querySelectorAll('section, article, .card, .trace-card, img, h2, h3'))
           .filter(el => {
-            if (el.closest('.labfly-return-pill') || el.closest('.labfly-guide-bubble') || el.closest('.labfly-question-mark')) return false;
+            if (el.closest('.labfly-return-pill') || el.closest('.labfly-question-mark')) return false;
             const r = el.getBoundingClientRect();
             return r.width > 80 && r.height > 24 && r.bottom > 92 && r.top < window.innerHeight - 130;
           });
@@ -551,76 +509,52 @@
         highlighted = null;
       }
 
-      function inspectTrace() {
+      function crawlQuietly() {
+        const stepX = 55 + Math.random() * 90;
+        const stepY = (Math.random() - 0.5) * 54;
+        const edge = x > window.innerWidth - 80;
+        const nextX = edge ? x - stepX : x + (direction > 0 ? stepX : -stepX);
+        const nextY = y + stepY;
+        if (nextX < 28 || nextX > window.innerWidth - 28) direction *= -1;
+        placeFly(clamp(nextX, 38, window.innerWidth - 38), nextY);
+      }
+
+      function distinguishQuietly() {
         const candidates = getCandidates();
         const target = candidates[Math.floor(Math.random() * candidates.length)];
-        if (!target) {
-          randomWalk();
-          say(config.questions[0], '— no visible trace selected');
-          return;
-        }
-
-        clearHighlight();
-        highlighted = target;
-        highlighted.classList.add('labfly-trace-glow');
+        if (!target) return crawlQuietly();
 
         const rect = target.getBoundingClientRect();
-        const targetX = rect.left + Math.min(rect.width * 0.62, rect.width - 20);
-        const targetY = rect.top + Math.min(rect.height * 0.48, rect.height - 20);
+        const targetX = rect.left + Math.min(rect.width * 0.58, rect.width - 24);
+        const targetY = rect.top + Math.min(rect.height * 0.52, rect.height - 20);
         placeFly(targetX, targetY);
 
-        const label = labelFor(target);
-        if (!collected.includes(label)) collected.push(label);
-        updateChips();
+        window.setTimeout(() => {
+          clearHighlight();
+          highlighted = target;
+          highlighted.classList.add('labfly-trace-glow');
+          fly.classList.add('is-distinguishing');
 
-        const question = config.questions[Math.floor(Math.random() * config.questions.length)];
-        say(question, `— trace: ${label}`);
+          const label = labelFor(target);
+          if (!collected.includes(label)) collected.push(label);
 
-        setTimeout(clearHighlight, 2600);
+          const question = config.questions[Math.floor(Math.random() * config.questions.length)] || 'why / for what / so that what?';
+          questionMark.textContent = question;
+          questionMark.style.left = `${Math.max(18, Math.min(targetX - 78, window.innerWidth - 248))}px`;
+          questionMark.style.top = `${Math.max(72, Math.min(targetY + 28, window.innerHeight - 82))}px`;
+          questionMark.classList.add('is-visible');
+
+          window.setTimeout(() => questionMark.classList.remove('is-visible'), 5200);
+          window.setTimeout(() => fly.classList.remove('is-distinguishing'), 6200);
+          window.setTimeout(clearHighlight, 8200);
+        }, 8600);
       }
 
-      function randomWalk() {
-        const step = 160;
-        placeFly(x + (Math.random() - 0.5) * step, y + (Math.random() - 0.5) * step);
-      }
-
-      function bringTool() {
-        // A rare ambient event: not a command, not a bot action.
-        fly.classList.remove('has-tool');
-        const edgeY = clamp(y + (Math.random() - 0.5) * 90, 90, window.innerHeight - 90);
-        placeFly(window.innerWidth + 80, edgeY);
-
-        setTimeout(() => {
-          fly.style.transition = 'none';
-          fly.style.left = '-90px';
-          fly.style.top = `${edgeY}px`;
-          fly.offsetHeight;
-          fly.style.transition = '';
-
-          setTimeout(() => {
-            placeFly(Math.min(window.innerWidth * 0.52, window.innerWidth - 150), edgeY + 22);
-            fly.classList.add('is-working');
-            const fragment = config.tool;
-            if (!collected.includes(fragment)) collected.push(fragment);
-            updateChips();
-
-            questionMark.innerHTML = `<strong>question-tool:</strong> ${config.trace} → why / for what / so that what?`;
-            questionMark.style.left = `${Math.max(18, Math.min(x - 116, window.innerWidth - 298))}px`;
-            questionMark.style.top = `${Math.max(72, Math.min(y + 28, window.innerHeight - 96))}px`;
-            questionMark.classList.add('is-visible');
-            say(config.assembly, '— attention mark');
-
-            setTimeout(() => fly.classList.remove('is-working'), 1500);
-            setTimeout(() => questionMark.classList.remove('is-visible'), 5600);
-          }, 80);
-        }, 1100);
-      }
-
-      function returnToLab(event) {
+      function returnToLab() {
         try {
           sessionStorage.setItem('smysloLabFlyReturned', config.key);
           sessionStorage.setItem('smysloLabFlyReturnedTrace', config.trace);
-          sessionStorage.setItem('smysloLabFlyReturnedAssembly', collected.slice(-4).join(' → ') || config.trace);
+          sessionStorage.setItem('smysloLabFlyReturnedAssembly', collected.slice(-5).join(' → ') || config.trace);
         } catch (error) {
           // URL parameter still carries the return.
         }
@@ -629,21 +563,21 @@
       returnLink.addEventListener('click', returnToLab);
       window.addEventListener('resize', () => placeFly(x, y));
 
-      updateChips();
-      requestAnimationFrame(() => {
-        fly.classList.add('is-visible');
-        placeFly(92, Math.min(132, window.innerHeight - 80));
-      });
+      // Soft entry: crawl in from outside the page; no speech bubble, no bot panel.
+      fly.style.left = '-110px';
+      fly.style.top = `${y}px`;
+      fly.offsetHeight;
 
-      setTimeout(() => say(config.intro, '— page-reading mode'), 700);
-      setTimeout(inspectTrace, 1900);
+      window.setTimeout(() => fly.classList.add('is-visible', 'is-crawling'), 800);
+      window.setTimeout(() => placeFly(46, y + 8), 1500);
+      window.setTimeout(() => returnPill.classList.add('is-visible'), 5400);
+      window.setTimeout(() => distinguishQuietly(), 13500);
 
-      walkTimer = setInterval(() => {
+      loopTimer = window.setInterval(() => {
         const action = Math.random();
-        if (action < 0.56) randomWalk();
-        else if (action < 0.92) inspectTrace();
-        else bringTool();
-      }, 5200);
+        if (action < 0.78) crawlQuietly();
+        else distinguishQuietly();
+      }, 23500);
     })();
   </script>
 
