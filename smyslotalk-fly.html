@@ -262,91 +262,96 @@
       position: absolute;
       left: 50vw;
       top: 52vh;
-      width: 64px;
+      width: 84px;
       height: 48px;
       z-index: 20;
       user-select: none;
       pointer-events: none;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.16));
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.14));
       transition: left 1.1s cubic-bezier(.22,.9,.26,1), top 1.1s cubic-bezier(.22,.9,.26,1), transform 1.1s ease, filter 350ms ease;
     }
 
-    .fly-wing {
-      position: absolute;
-      top: 4px;
-      width: 28px;
-      height: 21px;
-      border: 1px solid rgba(31,41,51,0.18);
-      border-radius: 70% 45% 70% 45%;
-      background: rgba(255,255,255,0.78);
-      transform-origin: 100% 100%;
-      animation: wing 220ms ease-in-out infinite alternate;
+    .fly-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      display: block;
     }
 
-    .fly-wing.left { left: 7px; transform: rotate(-24deg); }
-    .fly-wing.right { right: 7px; transform: scaleX(-1) rotate(-24deg); }
-
-    .fly-body {
-      position: absolute;
-      left: 24px;
-      top: 15px;
-      width: 19px;
-      height: 27px;
-      border-radius: 56% 56% 64% 64%;
-      background: linear-gradient(180deg, #1f2933 0 42%, #b89662 43% 54%, #1f2933 55% 100%);
-      box-shadow: inset 0 -4px 0 rgba(255,255,255,0.08);
+    .fly-svg .shadow {
+      fill: rgba(31,41,51,0.15);
     }
 
-    .fly-head {
-      position: absolute;
-      left: 25px;
-      top: 7px;
-      width: 17px;
-      height: 16px;
-      border-radius: 50%;
-      background: #1f2933;
+    .fly-svg .wing {
+      transform-box: fill-box;
+      transform-origin: 18% 88%;
+      animation: wing-flick 170ms ease-in-out infinite alternate;
     }
 
-    .fly-head::before,
-    .fly-head::after {
-      content: "";
-      position: absolute;
-      top: 5px;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: #fff8e9;
-      opacity: 0.9;
+    .fly-svg .wing path {
+      fill: rgba(255,255,255,0.78);
+      stroke: rgba(31,41,51,0.18);
+      stroke-width: 1.2;
     }
 
-    .fly-head::before { left: 4px; }
-    .fly-head::after { right: 4px; }
-
-    .fly-leg {
-      position: absolute;
-      width: 17px;
-      height: 1px;
-      background: rgba(31,41,51,0.72);
-      transform-origin: center;
+    .fly-svg .wing-back {
+      opacity: 0.54;
+      animation-delay: 50ms;
     }
 
-    .fly-leg.l1 { left: 11px; top: 25px; transform: rotate(26deg); }
-    .fly-leg.l2 { left: 10px; top: 33px; transform: rotate(-16deg); }
-    .fly-leg.r1 { right: 9px; top: 25px; transform: rotate(-26deg); }
-    .fly-leg.r2 { right: 8px; top: 33px; transform: rotate(16deg); }
+    .fly-svg .leg {
+      fill: none;
+      stroke: rgba(31,41,51,0.72);
+      stroke-width: 1.7;
+      stroke-linecap: round;
+    }
+
+    .fly-svg .leg.back {
+      opacity: 0.62;
+    }
+
+    .fly-svg .abdomen {
+      fill: #1c232b;
+    }
+
+    .fly-svg .band {
+      fill: #b89662;
+      opacity: 0.95;
+    }
+
+    .fly-svg .thorax {
+      fill: #29323d;
+    }
+
+    .fly-svg .head {
+      fill: #151b22;
+    }
+
+    .fly-svg .eye {
+      fill: #f4ecda;
+      opacity: 0.92;
+    }
+
+    .fly-svg .antenna {
+      fill: none;
+      stroke: rgba(31,41,51,0.8);
+      stroke-width: 1.3;
+      stroke-linecap: round;
+    }
 
     .fly.carrying {
-      filter: drop-shadow(0 0 12px rgba(154,143,122,0.34)) drop-shadow(0 8px 10px rgba(0,0,0,0.16));
+      filter: drop-shadow(0 0 12px rgba(154,143,122,0.34)) drop-shadow(0 8px 10px rgba(0,0,0,0.14));
     }
 
     .fly.pulsed {
-      filter: saturate(1.15) drop-shadow(0 0 14px rgba(107,114,128,0.42)) drop-shadow(0 8px 10px rgba(0,0,0,0.16));
+      filter: saturate(1.15) drop-shadow(0 0 14px rgba(107,114,128,0.42)) drop-shadow(0 8px 10px rgba(0,0,0,0.14));
     }
 
-    @keyframes wing {
-      from { opacity: 0.62; margin-top: 0; }
-      to { opacity: 0.92; margin-top: -2px; }
+    @keyframes wing-flick {
+      from { transform: rotate(0deg) translateY(0); }
+      to { transform: rotate(-11deg) translateY(-1px); }
     }
+
 
     .speech {
       position: absolute;
@@ -480,10 +485,10 @@
       </p>
       <div class="nav" aria-label="Main profile links">
         <a href="index.html?labfly=1" data-labfly-link="profile">Profile</a>
-        <a href="graph.html">Biosketch-Graph</a>
+        <a href="graph.html?labfly=1" data-labfly-link="biosketch-graph">Biosketch-Graph</a>
         <a href="functional-materials.html?labfly=1" data-labfly-link="functional-materials">Functional Materials</a>
-        <a href="field-assisted-methods.html">Field-Assisted Methods</a>
-        <a href="ai-assisted-rd.html">AI-assisted R&amp;D</a>
+        <a href="field-assisted-methods.html?labfly=1" data-labfly-link="field-assisted-methods">Field-Assisted Methods</a>
+        <a href="ai-assisted-rd.html?labfly=1" data-labfly-link="ai-assisted-rd">AI-assisted R&amp;D</a>
         <a href="plasma-fly-en.html">Earlier Plasma Fly</a>
       </div>
       <div class="fly-controls" aria-label="Lab Fly controls">
@@ -535,12 +540,34 @@
       </div>
     </section>
 
-    <div class="fly" id="fly" aria-hidden="true"><span class="fly-wing left"></span><span class="fly-wing right"></span><span class="fly-leg l1"></span><span class="fly-leg l2"></span><span class="fly-leg r1"></span><span class="fly-leg r2"></span><span class="fly-body"></span><span class="fly-head"></span></div>
+    <div class="fly" id="fly" aria-hidden="true"><svg class="fly-svg" viewBox="0 0 96 56" aria-hidden="true" focusable="false">
+  <ellipse class="shadow" cx="42" cy="45" rx="24" ry="4.5"></ellipse>
+  <g class="wing wing-back">
+    <path d="M37 23 C22 6, 43 2, 60 17 C54 22, 45 24, 37 23 Z"></path>
+  </g>
+  <g class="wing wing-front">
+    <path d="M42 19 C39 3, 69 4, 64 24 C57 26, 48 24, 42 19 Z"></path>
+  </g>
+  <g class="legs">
+    <path class="leg" d="M36 33 L29 42"></path>
+    <path class="leg" d="M44 34 L40 44"></path>
+    <path class="leg" d="M51 33 L54 43"></path>
+    <path class="leg back" d="M39 28 L30 24"></path>
+    <path class="leg back" d="M48 27 L42 20"></path>
+  </g>
+  <path class="abdomen" d="M20 29 C20 22, 27 17, 36 17 C44 17, 49 20, 52 24 C54 28, 51 33, 44 36 C34 39, 24 37, 20 29 Z"></path>
+  <ellipse class="band" cx="31" cy="27" rx="2.8" ry="9"></ellipse>
+  <ellipse class="thorax" cx="50" cy="25" rx="10" ry="8"></ellipse>
+  <circle class="head" cx="63.5" cy="23" r="7"></circle>
+  <circle class="eye" cx="66.5" cy="21.6" r="1.5"></circle>
+  <path class="antenna" d="M66 17 Q71 13 76 13"></path>
+  <path class="antenna" d="M63.5 16 Q67 10 72 8"></path>
+</svg></div>
     <div class="speech" id="speech">smysloFly entered the page.<small>— playful trace operator</small></div>
     <div class="pulse-ring" id="pulseRing"></div>
 
     <div class="status" id="status">
-      <strong>Status:</strong> random walking through symbolic traces.
+      <strong>Status:</strong> moving through symbolic traces.
     </div>
   </main>
 
@@ -677,7 +704,7 @@
       traces.forEach(trace => trace.classList.remove("is-found"));
       updateAssembly();
       placeFly(window.innerWidth * 0.58, window.innerHeight * 0.52);
-      statusBox.innerHTML = `<strong>Status:</strong> random walking through symbolic traces.`;
+      statusBox.innerHTML = `<strong>Status:</strong> moving through symbolic traces.`;
       say("smysloFly entered the page.", "— playful trace operator");
     }
 
@@ -701,7 +728,73 @@
     start();
   </script>
 
+  
   <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const returnedKey = params.get('returned');
+      let returnedTrace = '';
+      let returnedAssembly = '';
+
+      try {
+        returnedTrace = sessionStorage.getItem('smysloLabFlyReturnedTrace') || '';
+        returnedAssembly = sessionStorage.getItem('smysloLabFlyReturnedAssembly') || '';
+        if (!returnedTrace && returnedKey) returnedTrace = returnedKey.replace(/-/g, ' ') + ' trace';
+      } catch (error) {
+        if (returnedKey) returnedTrace = returnedKey.replace(/-/g, ' ') + ' trace';
+      }
+
+      if (!returnedKey && !returnedTrace) return;
+
+      if (returnedKey && window.history && window.history.replaceState) {
+        params.delete('returned');
+        const cleanQuery = params.toString();
+        const cleanUrl = window.location.pathname + (cleanQuery ? '?' + cleanQuery : '') + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      const assemblyItems = document.getElementById('assemblyItems');
+      const statusBox = document.getElementById('status');
+
+      if (assemblyItems) {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = 'returned: ' + (returnedTrace || 'page trace');
+        assemblyItems.appendChild(chip);
+      }
+
+      if (statusBox) {
+        statusBox.innerHTML = '<strong>Status:</strong> returned from page with ' + (returnedTrace || 'page trace') + '.';
+      }
+
+      const note = document.createElement('div');
+      note.style.position = 'absolute';
+      note.style.left = '22px';
+      note.style.bottom = '82px';
+      note.style.zIndex = '30';
+      note.style.maxWidth = 'min(420px, calc(100vw - 44px))';
+      note.style.padding = '12px 14px';
+      note.style.border = '1px solid var(--line)';
+      note.style.borderRadius = '16px';
+      note.style.background = 'rgba(255,255,255,0.94)';
+      note.style.boxShadow = 'var(--shadow)';
+      note.style.color = 'var(--text)';
+      note.style.fontSize = '0.9rem';
+      note.style.lineHeight = '1.42';
+      note.innerHTML = '<strong>Returned trace:</strong> ' + (returnedAssembly || returnedTrace || 'page trace') + '<br><span style="color: var(--muted);">The trace returns as a question of attention: why, for what, so that what?</span>';
+      document.querySelector('.stage')?.appendChild(note);
+
+      try {
+        sessionStorage.removeItem('smysloLabFlyReturned');
+        sessionStorage.removeItem('smysloLabFlyReturnedTrace');
+        sessionStorage.removeItem('smysloLabFlyReturnedAssembly');
+      } catch (error) {
+        // Nothing to clear.
+      }
+    })();
+  </script>
+
+<script>
     (function () {
       const bridgeLinks = document.querySelectorAll('[data-labfly-link]');
       bridgeLinks.forEach(link => {

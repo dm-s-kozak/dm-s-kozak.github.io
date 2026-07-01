@@ -229,5 +229,423 @@
       <p>© 2026 Dmytro Kozak. AI-assisted R&amp;D Workflows.</p>
     </footer>
   </main>
+
+  <style>
+    .labfly-guide-fly {
+      position: fixed;
+      z-index: 9999;
+      left: -90px;
+      top: 92px;
+      width: 82px;
+      height: 48px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(0deg) scale(0.94);
+      transition: left 1.15s cubic-bezier(.22,.9,.26,1), top 1.15s cubic-bezier(.22,.9,.26,1), opacity .35s ease, transform 1.15s ease, filter .25s ease;
+      filter: drop-shadow(0 8px 12px rgba(31,41,51,0.20));
+    }
+
+    .labfly-guide-fly.is-visible {
+      opacity: 1;
+    }
+
+    .labfly-guide-fly.has-tool::after {
+      content: "why?";
+      position: absolute;
+      left: -30px;
+      top: 27px;
+      min-width: 28px;
+      padding: 2px 5px;
+      border: 1px solid rgba(31,41,51,0.24);
+      border-radius: 6px;
+      background: rgba(255,252,246,0.96);
+      color: #1f2933;
+      font-size: 9px;
+      line-height: 1.1;
+      font-weight: 700;
+      box-shadow: 0 5px 12px rgba(31,41,51,0.14);
+      transform: rotate(4deg);
+    }
+
+    .labfly-guide-fly.is-working {
+      filter: saturate(1.15) drop-shadow(0 0 12px rgba(154,143,122,0.38)) drop-shadow(0 8px 12px rgba(31,41,51,0.18));
+    }
+
+    .labfly-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      display: block;
+    }
+
+    .labfly-svg .shadow { fill: rgba(31,41,51,0.15); }
+    .labfly-svg .wing {
+      transform-box: fill-box;
+      transform-origin: 18% 88%;
+      animation: labflyGuideWing 170ms ease-in-out infinite alternate;
+    }
+    .labfly-svg .wing path {
+      fill: rgba(255,255,255,0.78);
+      stroke: rgba(31,41,51,0.18);
+      stroke-width: 1.2;
+    }
+    .labfly-svg .wing-back {
+      opacity: 0.54;
+      animation-delay: 50ms;
+    }
+    .labfly-svg .leg {
+      fill: none;
+      stroke: rgba(31,41,51,0.72);
+      stroke-width: 1.7;
+      stroke-linecap: round;
+    }
+    .labfly-svg .leg.back { opacity: 0.62; }
+    .labfly-svg .abdomen { fill: #1c232b; }
+    .labfly-svg .band { fill: #b89662; opacity: 0.95; }
+    .labfly-svg .thorax { fill: #29323d; }
+    .labfly-svg .head { fill: #151b22; }
+    .labfly-svg .eye { fill: #f4ecda; opacity: 0.92; }
+    .labfly-svg .antenna {
+      fill: none;
+      stroke: rgba(31,41,51,0.8);
+      stroke-width: 1.3;
+      stroke-linecap: round;
+    }
+
+    @keyframes labflyGuideWing {
+      from { transform: rotate(0deg) translateY(0); }
+      to { transform: rotate(-11deg) translateY(-1px); }
+    }
+
+    .labfly-guide-bubble {
+      position: fixed;
+      z-index: 9998;
+      max-width: min(310px, calc(100vw - 44px));
+      padding: 10px 12px;
+      border: 1px solid rgba(31,41,51,0.12);
+      border-radius: 15px 15px 15px 5px;
+      background: rgba(255,252,246,0.94);
+      color: #1f2933;
+      box-shadow: 0 14px 34px rgba(31,41,51,0.11);
+      font-size: 13px;
+      line-height: 1.42;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .labfly-guide-bubble.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .labfly-guide-bubble small {
+      display: block;
+      margin-top: 6px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .labfly-return-pill {
+      position: fixed;
+      z-index: 9997;
+      right: 14px;
+      bottom: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: calc(100vw - 28px);
+      padding: 7px 10px;
+      border: 1px solid rgba(31,41,51,0.12);
+      border-radius: 999px;
+      background: rgba(255,252,246,0.88);
+      color: #6b7280;
+      box-shadow: 0 10px 28px rgba(31,41,51,0.10);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      line-height: 1.2;
+      opacity: 0.76;
+    }
+
+    .labfly-return-pill:hover,
+    .labfly-return-pill:focus-within {
+      opacity: 1;
+    }
+
+    .labfly-return-pill span {
+      white-space: nowrap;
+    }
+
+    .labfly-return-pill a {
+      color: #1f2933;
+      font-weight: 650;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(31,41,51,0.38);
+    }
+
+    .labfly-question-mark {
+      position: fixed;
+      z-index: 9996;
+      max-width: min(280px, calc(100vw - 36px));
+      padding: 8px 10px;
+      border: 1px dashed rgba(31,41,51,0.16);
+      border-radius: 14px;
+      background: rgba(246,244,239,0.88);
+      color: #374151;
+      box-shadow: 0 12px 30px rgba(31,41,51,0.08);
+      font-size: 12px;
+      line-height: 1.38;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .3s ease, transform .3s ease;
+      pointer-events: none;
+    }
+
+    .labfly-question-mark.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+
+  <script>
+    (function () {
+      const config = {"key": "ai-assisted-rd", "title": "AI-assisted R&D", "trace": "AI-assisted R&D trace", "intro": "AI-assisted trace detected. The fly reads how fragments become structure.", "panel": "This layer looks at AI not as a magic author, but as a tool for ordering traces, questions and experimental corridors.", "tool": "structure tool", "assembly": "An AI-assisted trace asks: what did the model help structure, and what remains grounded in the experiment?", "questions": ["Why does AI help here: ordering, testing, wording, or seeing gaps?", "For what experimental corridor is the model being used?", "So that what human decision becomes clearer?", "What remains a real trace, not generated decoration?"]};
+      const params = new URLSearchParams(window.location.search);
+      const cameByParam = params.get('labfly') === '1';
+      let cameBySession = false;
+
+      try {
+        cameBySession = sessionStorage.getItem('smysloLabFlyBridge') === 'active';
+      } catch (error) {
+        cameBySession = false;
+      }
+
+      if (!cameByParam && !cameBySession) return;
+
+      if (cameByParam && window.history && window.history.replaceState) {
+        params.delete('labfly');
+        const cleanQuery = params.toString();
+        const cleanUrl = window.location.pathname + (cleanQuery ? '?' + cleanQuery : '') + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      try {
+        sessionStorage.removeItem('smysloLabFlyBridge');
+        sessionStorage.setItem('smysloLabFlyCurrentTrace', config.trace);
+      } catch (error) {
+        // Storage is optional.
+      }
+
+      const fly = document.createElement('div');
+      fly.className = 'labfly-guide-fly';
+      fly.innerHTML = `<svg class="labfly-svg" viewBox="0 0 96 56" aria-hidden="true" focusable="false">
+  <ellipse class="shadow" cx="42" cy="45" rx="24" ry="4.5"></ellipse>
+  <g class="wing wing-back">
+    <path d="M37 23 C22 6, 43 2, 60 17 C54 22, 45 24, 37 23 Z"></path>
+  </g>
+  <g class="wing wing-front">
+    <path d="M42 19 C39 3, 69 4, 64 24 C57 26, 48 24, 42 19 Z"></path>
+  </g>
+  <g class="legs">
+    <path class="leg" d="M36 33 L29 42"></path>
+    <path class="leg" d="M44 34 L40 44"></path>
+    <path class="leg" d="M51 33 L54 43"></path>
+    <path class="leg back" d="M39 28 L30 24"></path>
+    <path class="leg back" d="M48 27 L42 20"></path>
+  </g>
+  <path class="abdomen" d="M20 29 C20 22, 27 17, 36 17 C44 17, 49 20, 52 24 C54 28, 51 33, 44 36 C34 39, 24 37, 20 29 Z"></path>
+  <ellipse class="band" cx="31" cy="27" rx="2.8" ry="9"></ellipse>
+  <ellipse class="thorax" cx="50" cy="25" rx="10" ry="8"></ellipse>
+  <circle class="head" cx="63.5" cy="23" r="7"></circle>
+  <circle class="eye" cx="66.5" cy="21.6" r="1.5"></circle>
+  <path class="antenna" d="M66 17 Q71 13 76 13"></path>
+  <path class="antenna" d="M63.5 16 Q67 10 72 8"></path>
+</svg>`;
+      fly.setAttribute('aria-hidden', 'true');
+
+      const bubble = document.createElement('div');
+      bubble.className = 'labfly-guide-bubble';
+
+      const returnPill = document.createElement('div');
+      returnPill.className = 'labfly-return-pill';
+      returnPill.innerHTML = `<span>Lab Fly layer · ${config.title}</span><a href="smyslotalk-fly.html?returned=${encodeURIComponent(config.key)}" data-labfly-return>return</a>`;
+
+      const questionMark = document.createElement('div');
+      questionMark.className = 'labfly-question-mark';
+
+      document.body.appendChild(fly);
+      document.body.appendChild(bubble);
+      document.body.appendChild(returnPill);
+      document.body.appendChild(questionMark);
+
+      const returnLink = returnPill.querySelector('[data-labfly-return]');
+
+      const collected = [];
+      let x = 82;
+      let y = Math.min(132, window.innerHeight - 80);
+      let hideTimer;
+      let walkTimer;
+      let highlighted = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function placeFly(nextX, nextY) {
+        const previousX = x;
+        const previousY = y;
+        x = clamp(nextX, 34, window.innerWidth - 44);
+        y = clamp(nextY, 70, window.innerHeight - 68);
+        const angle = Math.atan2(y - previousY, x - previousX) * 180 / Math.PI;
+        fly.style.left = `${x}px`;
+        fly.style.top = `${y}px`;
+        fly.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+        positionBubble();
+      }
+
+      function positionBubble() {
+        const bubbleWidth = Math.min(310, window.innerWidth - 44);
+        let bx = x + 34;
+        let by = y - 86;
+        if (bx + bubbleWidth > window.innerWidth - 18) bx = x - bubbleWidth - 28;
+        if (bx < 18) bx = 18;
+        if (by < 18) by = y + 42;
+        bubble.style.left = `${bx}px`;
+        bubble.style.top = `${by}px`;
+      }
+
+      function say(text, small = '— smysloFly') {
+        clearTimeout(hideTimer);
+        bubble.innerHTML = `${text}<small>${small}</small>`;
+        positionBubble();
+        bubble.classList.add('is-visible');
+        hideTimer = setTimeout(() => bubble.classList.remove('is-visible'), 4300);
+      }
+
+      function updateChips() {
+        // The page layer should stay quiet: traces are carried internally,
+        // not displayed as a bot-like control panel.
+      }
+
+      function getCandidates() {
+        return Array.from(document.querySelectorAll('section, article, .card, .trace-card, img, h2, h3'))
+          .filter(el => {
+            if (el.closest('.labfly-return-pill') || el.closest('.labfly-guide-bubble') || el.closest('.labfly-question-mark')) return false;
+            const r = el.getBoundingClientRect();
+            return r.width > 80 && r.height > 24 && r.bottom > 92 && r.top < window.innerHeight - 130;
+          });
+      }
+
+      function labelFor(el) {
+        const explicit = el.getAttribute('data-fly-trace') || el.getAttribute('data-trace');
+        if (explicit) return explicit.trim().slice(0, 42);
+        const heading = el.querySelector && el.querySelector('h2, h3, strong');
+        const text = (heading ? heading.textContent : el.textContent || el.alt || '').replace(/\s+/g, ' ').trim();
+        return (text || config.trace).slice(0, 42);
+      }
+
+      function clearHighlight() {
+        if (highlighted) highlighted.classList.remove('labfly-trace-glow');
+        highlighted = null;
+      }
+
+      function inspectTrace() {
+        const candidates = getCandidates();
+        const target = candidates[Math.floor(Math.random() * candidates.length)];
+        if (!target) {
+          randomWalk();
+          say(config.questions[0], '— no visible trace selected');
+          return;
+        }
+
+        clearHighlight();
+        highlighted = target;
+        highlighted.classList.add('labfly-trace-glow');
+
+        const rect = target.getBoundingClientRect();
+        const targetX = rect.left + Math.min(rect.width * 0.62, rect.width - 20);
+        const targetY = rect.top + Math.min(rect.height * 0.48, rect.height - 20);
+        placeFly(targetX, targetY);
+
+        const label = labelFor(target);
+        if (!collected.includes(label)) collected.push(label);
+        updateChips();
+
+        const question = config.questions[Math.floor(Math.random() * config.questions.length)];
+        say(question, `— trace: ${label}`);
+
+        setTimeout(clearHighlight, 2600);
+      }
+
+      function randomWalk() {
+        const step = 160;
+        placeFly(x + (Math.random() - 0.5) * step, y + (Math.random() - 0.5) * step);
+      }
+
+      function bringTool() {
+        // A rare ambient event: not a command, not a bot action.
+        fly.classList.remove('has-tool');
+        const edgeY = clamp(y + (Math.random() - 0.5) * 90, 90, window.innerHeight - 90);
+        placeFly(window.innerWidth + 80, edgeY);
+
+        setTimeout(() => {
+          fly.style.transition = 'none';
+          fly.style.left = '-90px';
+          fly.style.top = `${edgeY}px`;
+          fly.offsetHeight;
+          fly.style.transition = '';
+
+          setTimeout(() => {
+            placeFly(Math.min(window.innerWidth * 0.52, window.innerWidth - 150), edgeY + 22);
+            fly.classList.add('is-working');
+            const fragment = config.tool;
+            if (!collected.includes(fragment)) collected.push(fragment);
+            updateChips();
+
+            questionMark.innerHTML = `<strong>question-tool:</strong> ${config.trace} → why / for what / so that what?`;
+            questionMark.style.left = `${Math.max(18, Math.min(x - 116, window.innerWidth - 298))}px`;
+            questionMark.style.top = `${Math.max(72, Math.min(y + 28, window.innerHeight - 96))}px`;
+            questionMark.classList.add('is-visible');
+            say(config.assembly, '— attention mark');
+
+            setTimeout(() => fly.classList.remove('is-working'), 1500);
+            setTimeout(() => questionMark.classList.remove('is-visible'), 5600);
+          }, 80);
+        }, 1100);
+      }
+
+      function returnToLab(event) {
+        try {
+          sessionStorage.setItem('smysloLabFlyReturned', config.key);
+          sessionStorage.setItem('smysloLabFlyReturnedTrace', config.trace);
+          sessionStorage.setItem('smysloLabFlyReturnedAssembly', collected.slice(-4).join(' → ') || config.trace);
+        } catch (error) {
+          // URL parameter still carries the return.
+        }
+      }
+
+      returnLink.addEventListener('click', returnToLab);
+      window.addEventListener('resize', () => placeFly(x, y));
+
+      updateChips();
+      requestAnimationFrame(() => {
+        fly.classList.add('is-visible');
+        placeFly(92, Math.min(132, window.innerHeight - 80));
+      });
+
+      setTimeout(() => say(config.intro, '— page-reading mode'), 700);
+      setTimeout(inspectTrace, 1900);
+
+      walkTimer = setInterval(() => {
+        const action = Math.random();
+        if (action < 0.56) randomWalk();
+        else if (action < 0.92) inspectTrace();
+        else bringTool();
+      }, 5200);
+    })();
+  </script>
+
 </body>
 </html>
