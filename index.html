@@ -369,51 +369,105 @@
     .labfly-arrival {
       position: fixed;
       z-index: 9999;
-      left: -48px;
+      left: -72px;
       top: 72px;
-      width: 28px;
-      height: 28px;
+      width: 56px;
+      height: 42px;
       pointer-events: none;
       opacity: 0;
-      transform: rotate(-18deg);
+      transform: rotate(-18deg) scale(0.92);
       transition: left 1.25s ease, top 1.25s ease, opacity 0.4s ease, transform 1.25s ease;
       filter: drop-shadow(0 8px 12px rgba(31, 41, 51, 0.22));
     }
 
-    .labfly-arrival::before {
-      content: "✦";
+    .labfly-wing {
       position: absolute;
-      left: 2px;
-      top: -1px;
-      color: #1f2933;
-      font-size: 22px;
-      line-height: 1;
+      top: 3px;
+      width: 24px;
+      height: 18px;
+      border: 1px solid rgba(31, 41, 51, 0.18);
+      border-radius: 70% 45% 70% 45%;
+      background: rgba(255, 255, 255, 0.78);
+      transform-origin: 100% 100%;
+      animation: labflyWing 220ms ease-in-out infinite alternate;
     }
 
-    .labfly-arrival::after {
+    .labfly-wing.left {
+      left: 6px;
+      transform: rotate(-24deg);
+    }
+
+    .labfly-wing.right {
+      right: 6px;
+      transform: scaleX(-1) rotate(-24deg);
+    }
+
+    .labfly-body {
+      position: absolute;
+      left: 21px;
+      top: 13px;
+      width: 17px;
+      height: 24px;
+      border-radius: 56% 56% 64% 64%;
+      background: linear-gradient(180deg, #1f2933 0 42%, #b89662 43% 54%, #1f2933 55% 100%);
+      box-shadow: inset 0 -4px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .labfly-head {
+      position: absolute;
+      left: 22px;
+      top: 6px;
+      width: 15px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1f2933;
+    }
+
+    .labfly-head::before,
+    .labfly-head::after {
       content: "";
       position: absolute;
-      left: 10px;
-      top: 10px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #b89662;
-      box-shadow: 8px 2px 0 rgba(31, 41, 51, 0.24), -6px 2px 0 rgba(31, 41, 51, 0.16);
+      top: 4px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #fff8e9;
+      opacity: 0.9;
     }
+
+    .labfly-head::before { left: 3px; }
+    .labfly-head::after { right: 3px; }
+
+    .labfly-leg {
+      position: absolute;
+      width: 15px;
+      height: 1px;
+      background: rgba(31, 41, 51, 0.72);
+      transform-origin: center;
+    }
+
+    .labfly-leg.l1 { left: 10px; top: 22px; transform: rotate(26deg); }
+    .labfly-leg.l2 { left: 9px; top: 29px; transform: rotate(-16deg); }
+    .labfly-leg.r1 { right: 8px; top: 22px; transform: rotate(-26deg); }
+    .labfly-leg.r2 { right: 7px; top: 29px; transform: rotate(16deg); }
 
     .labfly-arrival.is-visible {
       opacity: 1;
       left: min(72vw, 760px);
       top: 122px;
-      transform: rotate(11deg);
+      transform: rotate(11deg) scale(1);
     }
 
     .labfly-arrival.is-settled {
-      left: 26px;
-      top: calc(100vh - 64px);
-      transform: rotate(-8deg) scale(0.86);
-      opacity: 0.64;
+      left: 24px;
+      top: calc(100vh - 74px);
+      transform: rotate(-8deg) scale(0.72);
+      opacity: 0.72;
+    }
+
+    @keyframes labflyWing {
+      from { opacity: 0.62; margin-top: 0; }
+      to { opacity: 0.92; margin-top: -2px; }
     }
 
     .labfly-arrival-note {
@@ -476,9 +530,16 @@
         window.history.replaceState({}, document.title, cleanUrl);
       }
 
+      try {
+        sessionStorage.removeItem('smysloLabFlyBridge');
+      } catch (error) {
+        // Nothing to clear if storage is unavailable.
+      }
+
       const fly = document.createElement('div');
       fly.className = 'labfly-arrival';
       fly.setAttribute('aria-hidden', 'true');
+      fly.innerHTML = '<span class="labfly-wing left"></span><span class="labfly-wing right"></span><span class="labfly-leg l1"></span><span class="labfly-leg l2"></span><span class="labfly-leg r1"></span><span class="labfly-leg r2"></span><span class="labfly-body"></span><span class="labfly-head"></span>';
 
       const note = document.createElement('div');
       note.className = 'labfly-arrival-note';
