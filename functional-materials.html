@@ -491,5 +491,145 @@
       <p>© 2026 Dmytro Kozak. Functional Materials & Nanomaterial Systems.</p>
     </footer>
   </main>
+
+  <style>
+    .labfly-arrival {
+      position: fixed;
+      z-index: 9999;
+      left: -48px;
+      top: 72px;
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+      opacity: 0;
+      transform: rotate(-18deg);
+      transition: left 1.25s ease, top 1.25s ease, opacity 0.4s ease, transform 1.25s ease;
+      filter: drop-shadow(0 8px 12px rgba(31, 41, 51, 0.22));
+    }
+
+    .labfly-arrival::before {
+      content: "✦";
+      position: absolute;
+      left: 2px;
+      top: -1px;
+      color: #1f2933;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .labfly-arrival::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #b89662;
+      box-shadow: 8px 2px 0 rgba(31, 41, 51, 0.24), -6px 2px 0 rgba(31, 41, 51, 0.16);
+    }
+
+    .labfly-arrival.is-visible {
+      opacity: 1;
+      left: min(72vw, 760px);
+      top: 122px;
+      transform: rotate(11deg);
+    }
+
+    .labfly-arrival.is-settled {
+      left: 26px;
+      top: calc(100vh - 64px);
+      transform: rotate(-8deg) scale(0.86);
+      opacity: 0.64;
+    }
+
+    .labfly-arrival-note {
+      position: fixed;
+      z-index: 9998;
+      left: 24px;
+      bottom: 84px;
+      max-width: 280px;
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 41, 51, 0.14);
+      border-radius: 14px;
+      background: rgba(255, 252, 246, 0.94);
+      color: #1f2933;
+      box-shadow: 0 16px 36px rgba(31, 41, 51, 0.14);
+      font-size: 13px;
+      line-height: 1.45;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .labfly-arrival-note strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7a6240;
+    }
+
+    .labfly-arrival-note.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .labfly-arrival,
+      .labfly-arrival-note { transition: none; }
+    }
+  </style>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const cameByParam = params.get('labfly') === '1';
+      let cameBySession = false;
+
+      try {
+        cameBySession = sessionStorage.getItem('smysloLabFlyBridge') === 'active';
+      } catch (error) {
+        cameBySession = false;
+      }
+
+      if (!cameByParam && !cameBySession) return;
+
+      if (cameByParam && window.history && window.history.replaceState) {
+        params.delete('labfly');
+        const cleanQuery = params.toString();
+        const cleanUrl = window.location.pathname + (cleanQuery ? '?' + cleanQuery : '') + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+
+      const fly = document.createElement('div');
+      fly.className = 'labfly-arrival';
+      fly.setAttribute('aria-hidden', 'true');
+
+      const note = document.createElement('div');
+      note.className = 'labfly-arrival-note';
+      note.innerHTML = '<strong>Lab Fly bridge</strong>' + 'The fly crossed from the trace field and is inspecting this page as a research trace.';
+
+      document.body.appendChild(fly);
+      document.body.appendChild(note);
+
+      window.requestAnimationFrame(() => {
+        fly.classList.add('is-visible');
+      });
+
+      window.setTimeout(() => {
+        note.classList.add('is-visible');
+      }, 900);
+
+      window.setTimeout(() => {
+        fly.classList.add('is-settled');
+      }, 3600);
+
+      window.setTimeout(() => {
+        note.classList.remove('is-visible');
+      }, 7600);
+    })();
+  </script>
 </body>
 </html>

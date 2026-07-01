@@ -425,9 +425,9 @@
         Hidden experimental page: playful, non-instructional, and separate from the main professional profile.
       </p>
       <div class="nav" aria-label="Main profile links">
-        <a href="index.html">Profile</a>
+        <a href="index.html?labfly=1" data-labfly-link="profile">Profile</a>
         <a href="graph.html">Biosketch-Graph</a>
-        <a href="functional-materials.html">Functional Materials</a>
+        <a href="functional-materials.html?labfly=1" data-labfly-link="functional-materials">Functional Materials</a>
         <a href="field-assisted-methods.html">Field-Assisted Methods</a>
         <a href="ai-assisted-rd.html">AI-assisted R&amp;D</a>
         <a href="plasma-fly-en.html">Earlier Plasma Fly</a>
@@ -645,6 +645,23 @@
     window.addEventListener("resize", () => placeFly(x, y));
 
     start();
+  </script>
+
+  <script>
+    (function () {
+      const bridgeLinks = document.querySelectorAll('[data-labfly-link]');
+      bridgeLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          try {
+            sessionStorage.setItem('smysloLabFlyBridge', 'active');
+            sessionStorage.setItem('smysloLabFlyFrom', 'smyslotalk-fly');
+            sessionStorage.setItem('smysloLabFlyTarget', link.getAttribute('data-labfly-link') || 'profile');
+          } catch (error) {
+            // If storage is unavailable, the URL parameter still carries the bridge.
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>
