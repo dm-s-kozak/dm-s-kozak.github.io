@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>smysloTalk — Lab Fly</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --panel: rgba(255,255,255,0.075);
+      --panel-strong: rgba(255,255,255,0.12);
+      --text: #eef2ff;
+      --muted: rgba(238,242,255,0.72);
+      --soft: rgba(238,242,255,0.50);
+      --line: rgba(255,255,255,0.16);
+      --trace: #a7f3d0;
+      --pulse: #93c5fd;
+      --warning: #fcd34d;
+      --error: #fca5a5;
+      --meaning: #c4b5fd;
+      --shadow: 0 24px 80px rgba(0,0,0,0.42);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 16% 16%, rgba(167,243,208,0.12), transparent 28%),
+        radial-gradient(circle at 84% 20%, rgba(147,197,253,0.12), transparent 30%),
+        radial-gradient(circle at 58% 92%, rgba(196,181,253,0.14), transparent 34%),
+        linear-gradient(140deg, #0b0f19, #111827 52%, #12131b);
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black, transparent 82%);
+      opacity: 0.7;
+      z-index: -3;
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: conic-gradient(from 160deg, transparent, rgba(147,197,253,0.06), transparent, rgba(196,181,253,0.07), transparent);
+      animation: slow-turn 24s linear infinite;
+      z-index: -4;
+    }
+
+    @keyframes slow-turn {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .intro {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      width: min(470px, calc(100vw - 44px));
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(15,23,42,0.72);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      z-index: 10;
+    }
+
+    .intro h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.35rem, 3vw, 1.95rem);
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.48;
+      font-size: 0.96rem;
+    }
+
+    .intro .note {
+      margin-top: 10px;
+      color: var(--soft);
+      font-size: 0.86rem;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .nav a,
+    .control {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      text-decoration: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .nav a:hover,
+    .control:hover {
+      background: rgba(255,255,255,0.11);
+    }
+
+    .lab-field {
+      position: absolute;
+      right: min(7vw, 82px);
+      bottom: min(10vh, 88px);
+      width: min(610px, 58vw);
+      min-height: 390px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255,255,255,0.055);
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 0 50px rgba(147,197,253,0.06), var(--shadow);
+      z-index: 2;
+    }
+
+    .lab-field h2 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--soft);
+    }
+
+    .lab-field p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .traces {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .trace {
+      position: relative;
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+
+    .trace::after {
+      content: "";
+      position: absolute;
+      inset: auto -30px -46px auto;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--trace), transparent 66%);
+      opacity: 0.10;
+      transition: opacity 240ms ease, transform 240ms ease;
+    }
+
+    .trace.is-found::after {
+      opacity: 0.28;
+      transform: scale(1.25);
+    }
+
+    .trace strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .trace span {
+      color: var(--soft);
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .assembly {
+      margin-top: 16px;
+      min-height: 74px;
+      padding: 12px;
+      border: 1px dashed rgba(255,255,255,0.24);
+      border-radius: 18px;
+      background: rgba(0,0,0,0.15);
+    }
+
+    .assembly-label {
+      margin-bottom: 9px;
+      color: var(--soft);
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .assembly-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+
+    .fly {
+      position: absolute;
+      left: 50vw;
+      top: 52vh;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      z-index: 20;
+      user-select: none;
+      pointer-events: none;
+      filter: drop-shadow(0 12px 12px rgba(0,0,0,0.55));
+      transition: left 1.1s cubic-bezier(.22,.9,.26,1), top 1.1s cubic-bezier(.22,.9,.26,1), transform 1.1s ease, filter 350ms ease;
+    }
+
+    .fly::before {
+      content: "🪰";
+      display: block;
+      transform-origin: center;
+      animation: wing 260ms ease-in-out infinite alternate;
+    }
+
+    .fly.carrying {
+      filter: drop-shadow(0 0 14px rgba(167,243,208,0.65)) drop-shadow(0 12px 12px rgba(0,0,0,0.55));
+    }
+
+    .fly.pulsed {
+      filter: hue-rotate(210deg) saturate(2.1) drop-shadow(0 0 18px rgba(147,197,253,0.85)) drop-shadow(0 12px 12px rgba(0,0,0,0.55));
+    }
+
+    @keyframes wing {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-2px) rotate(3deg); }
+    }
+
+    .speech {
+      position: absolute;
+      max-width: min(340px, calc(100vw - 44px));
+      padding: 14px 16px;
+      border-radius: 18px 18px 18px 5px;
+      background: rgba(255,255,255,0.94);
+      color: #111827;
+      box-shadow: var(--shadow);
+      font-weight: 650;
+      line-height: 1.35;
+      z-index: 21;
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      transition: opacity 260ms ease, transform 260ms ease;
+      pointer-events: none;
+    }
+
+    .speech.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .speech small {
+      display: block;
+      margin-top: 7px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .pulse-ring {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0.25);
+      background: radial-gradient(circle, rgba(255,255,255,0.82) 0 3%, rgba(147,197,253,0.62) 10%, rgba(196,181,253,0.35) 29%, transparent 68%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .pulse-ring.active {
+      animation: pulse 760ms ease-out forwards;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.18); filter: blur(0); }
+      18% { opacity: 1; transform: translate(-50%, -50%) scale(0.95); filter: blur(0.2px); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.85); filter: blur(5px); }
+    }
+
+    .status {
+      position: absolute;
+      left: 22px;
+      bottom: 22px;
+      max-width: min(600px, calc(100vw - 44px));
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(15,23,42,0.70);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      font-size: 0.9rem;
+    }
+
+    .status strong { color: var(--text); }
+
+    .floating-word {
+      position: absolute;
+      color: rgba(238,242,255,0.20);
+      font-size: clamp(1.2rem, 3vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      pointer-events: none;
+      z-index: -1;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .floating-word:nth-of-type(1) { left: 8vw; bottom: 22vh; animation-delay: -5s; }
+    .floating-word:nth-of-type(2) { right: 12vw; top: 17vh; animation-delay: -9s; }
+    .floating-word:nth-of-type(3) { left: 42vw; top: 62vh; animation-delay: -2s; }
+
+    @keyframes drift {
+      from { transform: translate3d(0,0,0) rotate(-3deg); }
+      to { transform: translate3d(18px,-22px,0) rotate(3deg); }
+    }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .stage { min-height: 100vh; height: auto; overflow: hidden; padding: 22px; }
+      .intro,
+      .lab-field,
+      .status {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        max-width: none;
+        margin: 0 0 18px;
+      }
+      .lab-field { min-height: 0; }
+      .traces { grid-template-columns: 1fr; }
+      .fly,
+      .speech,
+      .pulse-ring { position: fixed; }
+      .fly { left: 72vw; top: 74vh; }
+      .floating-word { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <span class="floating-word">trace</span>
+    <span class="floating-word">question</span>
+    <span class="floating-word">meaning</span>
+
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">smysloTalk / Lab Fly</h1>
+      <p>
+        A small playful trace-operator. The fly does not explain the laboratory setup;
+        it moves through traces, mistakes, questions, and weak signals until a small
+        meaning begins to hold.
+      </p>
+      <p class="note">
+        Hidden experimental page: playful, non-instructional, and separate from the main professional profile.
+      </p>
+      <div class="nav">
+        <a href="index.html">Back to Profile</a>
+        <a href="ai-assisted-rd.html">AI-assisted R&amp;D</a>
+        <a href="plasma-fly-en.html">Earlier Plasma Fly</a>
+        <button class="control" id="inspectBtn" type="button">Let the fly inspect</button>
+        <button class="control" id="pulseBtn" type="button">Abstract pulse</button>
+        <button class="control" id="resetBtn" type="button">Reset</button>
+      </div>
+    </section>
+
+    <section class="lab-field" aria-labelledby="field-title">
+      <h2 id="field-title">Trace field</h2>
+      <p>
+        These are not instructions. They are small symbolic residues of experimental work:
+        observation, uncertainty, rollback, and a possible next assembly.
+      </p>
+
+      <div class="traces" id="traces">
+        <article class="trace" data-trace="polymer trace" data-meaning="The material remembers the attempt.">
+          <strong>polymer trace</strong>
+          <span>film, surface, drying, incomplete memory</span>
+        </article>
+        <article class="trace" data-trace="copper shadow" data-meaning="A colour can become a research clue.">
+          <strong>copper shadow</strong>
+          <span>oxide, coating, ageing, hidden relation</span>
+        </article>
+        <article class="trace" data-trace="pulse residue" data-meaning="The pulse is visible only through response.">
+          <strong>pulse residue</strong>
+          <span>field, response, before/after, no recipe</span>
+        </article>
+        <article class="trace" data-trace="wrong parameter" data-meaning="Not every error is a failure.">
+          <strong>wrong parameter</strong>
+          <span>shift, mismatch, noise, useful mistake</span>
+        </article>
+        <article class="trace" data-trace="question" data-meaning="The question carries the direction.">
+          <strong>question</strong>
+          <span>why, what changed, what holds, what breaks</span>
+        </article>
+        <article class="trace" data-trace="rollback" data-meaning="Rollback protects the living path.">
+          <strong>rollback</strong>
+          <span>pause, return, boundary, rebalancing</span>
+        </article>
+      </div>
+
+      <div class="assembly" aria-live="polite">
+        <div class="assembly-label">fly assembly</div>
+        <div class="assembly-items" id="assemblyItems">
+          <span class="chip">waiting for traces</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="fly" id="fly" aria-hidden="true"></div>
+    <div class="speech" id="speech">smysloFly entered the page.<small>— playful trace operator</small></div>
+    <div class="pulse-ring" id="pulseRing"></div>
+
+    <div class="status" id="status">
+      <strong>Status:</strong> random walking through symbolic traces.
+    </div>
+  </main>
+
+  <script>
+    const fly = document.getElementById("fly");
+    const speech = document.getElementById("speech");
+    const statusBox = document.getElementById("status");
+    const pulseRing = document.getElementById("pulseRing");
+    const assemblyItems = document.getElementById("assemblyItems");
+    const traces = Array.from(document.querySelectorAll(".trace"));
+    const inspectBtn = document.getElementById("inspectBtn");
+    const pulseBtn = document.getElementById("pulseBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const messages = [
+      "I found a trace, not a final answer.",
+      "This is a weak signal. Hold it gently.",
+      "The setup is hidden. The trace remains.",
+      "Meaning appears when traces begin to connect.",
+      "The mistake is carrying information.",
+      "Do not force the assembly. Let it show its measure."
+    ];
+
+    const assembly = [];
+    let x = window.innerWidth * 0.58;
+    let y = window.innerHeight * 0.52;
+    let walkTimer;
+    let hideSpeechTimer;
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function placeFly(nextX, nextY) {
+      const previousX = x;
+      const previousY = y;
+      x = clamp(nextX, 34, window.innerWidth - 64);
+      y = clamp(nextY, 80, window.innerHeight - 64);
+      const angle = Math.atan2(y - previousY, x - previousX) * 180 / Math.PI + 90;
+      fly.style.left = `${x}px`;
+      fly.style.top = `${y}px`;
+      fly.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+      positionSpeech();
+    }
+
+    function positionSpeech() {
+      const speechWidth = Math.min(340, window.innerWidth - 44);
+      let sx = x + 34;
+      let sy = y - 86;
+      if (sx + speechWidth > window.innerWidth - 18) sx = x - speechWidth - 28;
+      if (sx < 18) sx = 18;
+      if (sy < 18) sy = y + 40;
+      speech.style.left = `${sx}px`;
+      speech.style.top = `${sy}px`;
+    }
+
+    function say(text, small = "— smysloFly") {
+      clearTimeout(hideSpeechTimer);
+      speech.innerHTML = `${text}<small>${small}</small>`;
+      positionSpeech();
+      speech.classList.add("show");
+      hideSpeechTimer = setTimeout(() => speech.classList.remove("show"), 3600);
+    }
+
+    function randomWalk() {
+      const step = 140;
+      const driftX = (Math.random() - 0.5) * step;
+      const driftY = (Math.random() - 0.5) * step;
+      placeFly(x + driftX, y + driftY);
+    }
+
+    function updateAssembly() {
+      assemblyItems.innerHTML = "";
+      if (assembly.length === 0) {
+        const empty = document.createElement("span");
+        empty.className = "chip";
+        empty.textContent = "waiting for traces";
+        assemblyItems.appendChild(empty);
+        return;
+      }
+
+      assembly.slice(-5).forEach(item => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = item;
+        assemblyItems.appendChild(chip);
+      });
+    }
+
+    function inspectTrace() {
+      const target = traces[Math.floor(Math.random() * traces.length)];
+      const rect = target.getBoundingClientRect();
+      const targetX = rect.left + rect.width / 2;
+      const targetY = rect.top + rect.height / 2;
+
+      placeFly(targetX, targetY);
+      fly.classList.add("carrying");
+      target.classList.add("is-found");
+
+      const traceName = target.dataset.trace;
+      const meaning = target.dataset.meaning;
+      if (!assembly.includes(traceName)) assembly.push(traceName);
+      updateAssembly();
+
+      statusBox.innerHTML = `<strong>Status:</strong> inspected ${traceName}.`;
+      say(meaning);
+
+      setTimeout(() => {
+        fly.classList.remove("carrying");
+        target.classList.remove("is-found");
+      }, 1800);
+    }
+
+    function abstractPulse() {
+      pulseRing.style.left = `${x}px`;
+      pulseRing.style.top = `${y}px`;
+      pulseRing.classList.remove("active");
+      void pulseRing.offsetWidth;
+      pulseRing.classList.add("active");
+      fly.classList.add("pulsed");
+
+      const outcome = assembly.length >= 3
+        ? "A small assembly holds: trace → question → meaning."
+        : messages[Math.floor(Math.random() * messages.length)];
+
+      statusBox.innerHTML = `<strong>Status:</strong> abstract pulse released; no technical setup is disclosed.`;
+      say(outcome, "— non-instructional pulse");
+
+      setTimeout(() => fly.classList.remove("pulsed"), 1200);
+    }
+
+    function reset() {
+      assembly.length = 0;
+      traces.forEach(trace => trace.classList.remove("is-found"));
+      updateAssembly();
+      placeFly(window.innerWidth * 0.58, window.innerHeight * 0.52);
+      statusBox.innerHTML = `<strong>Status:</strong> random walking through symbolic traces.`;
+      say("smysloFly entered the page.", "— playful trace operator");
+    }
+
+    function start() {
+      clearInterval(walkTimer);
+      placeFly(x, y);
+      say("smysloFly entered the page.", "— playful trace operator");
+      walkTimer = setInterval(() => {
+        const action = Math.random();
+        if (action < 0.62) randomWalk();
+        else if (action < 0.88) inspectTrace();
+        else abstractPulse();
+      }, 3600);
+    }
+
+    inspectBtn.addEventListener("click", inspectTrace);
+    pulseBtn.addEventListener("click", abstractPulse);
+    resetBtn.addEventListener("click", reset);
+    window.addEventListener("resize", () => placeFly(x, y));
+
+    start();
+  </script>
+</body>
+</html>
