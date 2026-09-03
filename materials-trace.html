@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Materials trace / Lab Fly</title>
+<link rel="stylesheet" href="assets/lab-fly/lab-fly.css" />
+</head>
+<body data-fly-mode="trace">
+<div class="surface" id="surface"></div>
+<nav class="lab-nav">
+  <a href="lab-fly.html">← Back to Lab Fly</a>
+  <a class="exit" href="index.html">Exit to profile</a>
+</nav>
+<main class="page">
+
+<section class="panel material-manifestation-panel">
+  <div class="kicker">Materials trace / virtual setup assembly</div>
+  <h2>Material trace manifestation</h2>
+  <p>The fly gathers a minimal virtual cell from the material branch.</p>
+  <p class="small">Electrolyte, electrodes, and a test surface have to hold together before the question can appear.</p>
+
+  <div class="material-stage">
+    <div class="material-card" data-material-card>
+      <h3>Brass-like electrolyte branch</h3>
+      <p>For a brass-like coating to become visible, a small cell has to be assembled: solution, electrodes, and a test surface.</p>
+      <p class="small">The fly assembles a virtual condition for verification.</p>
+
+      <div class="virtual-cell" aria-hidden="true">
+        <div class="vc-label">virtual coating setup</div>
+        <div class="vc-beaker">
+          <div class="vc-liquid"></div>
+          <div class="vc-electrode vc-left"></div>
+          <div class="vc-electrode vc-right"></div>
+          <div class="vc-current"></div>
+          <div class="vc-gap">gap</div>
+          <div class="vc-coating"></div>
+        </div>
+        <div class="vc-caption">electrolyte → separated electrodes → test surface</div>
+      </div>
+
+      <p class="small material-setup-log" data-trace-log>The brass-like electrolyte branch is waiting for a safe assembly.</p>
+      <span class="material-state" data-material-state>cell waiting</span>
+    </div>
+  </div>
+
+  <div class="manifestation-assembly" data-manifestation-assembly>
+    <div class="assembly-kicker">setup assembly</div>
+    <div class="assembly-row">
+      <span class="assembly-chip" data-material-step="1">electrolyte trace</span>
+      <span class="assembly-chip" data-material-step="2">electrode pair</span>
+      <span class="assembly-chip" data-material-step="3">coating test surface</span>
+    </div>
+    <div class="manifestation-question" data-material-question>“Is there something in this....”</div>
+    <p class="small manifestation-note">The question appears only after the fly has gathered a virtual setup, not only separate material marks.</p>
+  </div>
+</section>
+<div class="fly-bubble" data-fly-bubble>“Is there something in this....”</div>
+
+</main>
+<div class="fly-note">v29 material layer: the fly gathers a virtual setup from the brass-like electrolyte branch.</div>
+<script src="assets/lab-fly/lab-fly.js"></script>
+</body>
+</html>
